@@ -125,3 +125,11 @@ function onFrame(event) {
 	//Give The Black Blob its buttery form
 	blob.smooth({ type: 'continuous' });
 }
+
+function onMouseDown(event) {
+	blob.fullySelected = true;
+}
+
+function onMouseUp(event) {
+	blob.fullySelected = false;
+}
