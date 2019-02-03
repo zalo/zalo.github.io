@@ -58,7 +58,7 @@ function onFrame(event) {
 		//Verlet Integration
 		verletIntegrate(blob.segments[i], blobOld.segments[i]);
 		//Add gravity
-		blob.segments[i].point += new Point(0, event.delta * 60);
+		blob.segments[i].point += new Point(0, event.delta * 30);
 	}
 
 	//Iterate 10 times to resolve the constraints
