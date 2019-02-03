@@ -43,14 +43,14 @@ comments:
     theme                : # "github-light" (default), "github-dark"
     issue_term           : # "pathname" (default)
 staticman:
-  allowedFields          : ['name', 'email', 'url', 'message']
+  allowedFields          : ['name', 'message']
   branch                 : "master"
   commitMessage          : "New comment by {fields.name}"
   filename               : comment-{@timestamp}
   format                 : "yml"
-  moderation             : true
+  moderation             : false
   path                   : "/_data/comments/{options.slug}" #(default)
-  requiredFields         : ['name', 'email', 'message']
+  requiredFields         : ['name', 'message']
   transforms:
     email                : "md5"
   generatedFields:
@@ -107,7 +107,7 @@ analytics:
 # Site Author
 author:
   name             : "Johnathon Selstad"
-  avatar           : "/assets/images/bio-photo.jpg" # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
+  avatar           : "/assets/images/bio-photo.jpeg" # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
   bio              : "Geometry Hobbyist, professional AR/VR and Computer Vision Engineer"
   location         : "San Francisco, CA"
   email            : "makeshifted@gmail.com"
