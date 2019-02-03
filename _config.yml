@@ -48,7 +48,7 @@ staticman:
   commitMessage          : "New comment by {fields.name}"
   filename               : comment-{@timestamp}
   format                 : "yml"
-  moderation             : false
+  moderation             : true # Necessary to get them to appear on the blog...
   path                   : "/_data/comments/{options.slug}" #(default)
   requiredFields         : ['name', 'message']
   transforms:
@@ -288,7 +288,7 @@ defaults:
       type: posts
     values:
       layout: single
-      author_profile: true
+      author_profile: false
       read_time: false
       comments: true
       share: false
