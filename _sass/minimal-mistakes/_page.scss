@@ -376,9 +376,9 @@
   }
   
   .page__comments-title {
-    margin-top: 2rem;
-    margin-bottom: 10px;
-    padding-top: 2rem;
+    margin-top: 1rem;
+    margin-bottom: 5px;
+    padding-top: 1rem;
     font-size: $type-size-6;
     border-top: 1px solid $border-color;
     text-transform: uppercase;
@@ -413,34 +413,34 @@
   
   .comment__avatar-wrapper {
     float: left;
-    width: 60px;
-    height: 60px;
+    width: 0px;
+    height: 0px;
   
     @include breakpoint($large) {
-      width: 100px;
-      height: 100px;
+      width: 0px;
+      height: 0px;
     }
   }
   
   .comment__avatar {
-    width: 40px;
-    height: 40px;
+    width: 0px;
+    height: 0px;
     border-radius: 50%;
   
     @include breakpoint($large) {
-      width: 80px;
-      height: 80px;
-      padding: 5px;
-      border: 1px solid $border-color;
+      width: 0px;
+      height: 0px;
+      padding: 0px;
+      //border: 0px solid $border-color;
     }
   }
   
   .comment__content-wrapper {
-    //float: right;
-    width: calc(100% - 60px);
+    float: left;
+    width: 100%;
   
     @include breakpoint($large) {
-      width: calc(100% - 100px);
+      width: 100%;
     }
   }
   
