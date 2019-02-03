@@ -58,7 +58,7 @@ staticman:
       type               : "date"
       options:
         format           : "iso8601" #(default), "timestamp-seconds", "timestamp-milliseconds"
-  endpoint               : "https://dev.staticman.net/v3/entry/github/zalo/zalo.github.io/master" # URL of your own deployment with trailing slash, will fallback to the public instance
+  endpoint               : "https://dev.staticman.net/v3/entry/github/" # URL of your own deployment with trailing slash, will fallback to the public instance
 reCaptcha:
   siteKey                :
   secret                 :
