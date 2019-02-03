@@ -46,18 +46,18 @@ staticman:
   allowedFields          : ['name', 'email', 'message']
   branch                 : "master"
   commitMessage          : "New comment by {fields.name}"
-  filename               : # comment-{@timestamp}
-  format                 : # "yml"
-  moderation             : # true
-  path                   : # "/_data/comments/{options.slug}" (default)
+  filename               : comment-{@timestamp}
+  format                 : "yml"
+  moderation             : false
+  path                   : "/_data/comments/{options.slug}" #(default)
   requiredFields         : ['name', 'message']
   transforms:
-    email                : # "md5"
+    email                : "md5"
   generatedFields:
     date:
-      type               : # "date"
+      type               : "date"
       options:
-        format           : # "iso8601" (default), "timestamp-seconds", "timestamp-milliseconds"
+        format           : "iso8601" #(default), "timestamp-seconds", "timestamp-milliseconds"
   endpoint               : "https://dev.staticman.net/v3/entry/github/zalo/zalo.github.io/master" # URL of your own deployment with trailing slash, will fallback to the public instance
 reCaptcha:
   siteKey                :
