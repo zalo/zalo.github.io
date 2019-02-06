@@ -44,6 +44,10 @@ function onMouseMove(event) {
     	ball.position += offset;
 	}
 }
+
+//Subscribe to prevent scrolling on iOS
+function onMouseDown(event) {}
+function onMouseUp(event) {}
 </script>
 <canvas id="distance1" width="350" height="350"></canvas>
 
@@ -193,7 +197,7 @@ var circle = new Path.Circle(view.center, length);
 circle.strokeWidth = 1;
 circle.strokeColor = 'black';
 
-//The Black Ball	
+//The Black Balls
 var balls = [];
 for(i = 0; i < num; i++){
     balls.push(Path.Circle(view.center + new Point(Math.random() * 100, Math.random() * 100), 5));
@@ -231,6 +235,9 @@ function onMouseMove(event) {
         }
     }
 }
+//Subscribe to prevent scrolling on iOS
+function onMouseDown(event) {}
+function onMouseUp(event) {}
 </script>
 <canvas id="distance4" width="350" height="350"></canvas>
 
