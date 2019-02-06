@@ -200,7 +200,8 @@ circle.strokeColor = 'black';
 //The Black Balls
 var balls = [];
 for(i = 0; i < num; i++){
-    balls.push(Path.Circle(view.center + new Point(Math.random() * 100, Math.random() * 100), 5));
+    balls.push(Path.Circle(view.center + new Point((Math.random() * 100)-50, 
+                                                   (Math.random() * 100)-50), 5));
     balls[i].strokeWidth = 10;
     balls[i].strokeColor = 'black';
 }
@@ -209,15 +210,17 @@ for(i = 0; i < num; i++){
 var mousePos = view.center;
 function onMouseMove(event) {
 	mousePos = event.point;
-	
+}
+
+function onFrame(event) {
 	circle.position = mousePos;
 
     //Separate the balls from the mouse
     for(i = 0; i < num; i++){
-        var toNext = mousePos - balls[i].position;
+        var toNext = circle.position - balls[i].position;
 	    if (toNext.length < length+10) {
         	toNext.length = length+10;
-        	var offset = (mousePos - balls[i].position) - toNext;
+        	var offset = (circle.position - balls[i].position) - toNext;
         	balls[i].position += offset;
 	    }
     }
