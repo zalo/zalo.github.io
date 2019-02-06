@@ -98,10 +98,20 @@ function onFrame(event) {
     //Give the rope its buttery smoothness
     rope.smooth({ type: 'continuous' });
 }
+
+function onMouseDown(event) {
+	rope.fullySelected = true;
+}
+
+function onMouseUp(event) {
+	rope.fullySelected = false;
+}
 </script>
 <canvas id="distance2" width="350" height="350"></canvas>
 
-The order in which constraints are satisfied is important
+The order in which constraints are satisfied is important.
+
+If the distance constraints are first solved in one direction, and then the other, it creates a form of Inverse Kinematics called "FABRIK"
 
 <script type="text/paperscript" canvas="distance3">
 // The number of points in the rope:
@@ -159,10 +169,16 @@ function onFrame(event) {
     
     rope.smooth({ type: 'geometric', factor: 0.1});
 }
+
+function onMouseDown(event) {
+	rope.fullySelected = true;
+}
+
+function onMouseUp(event) {
+	rope.fullySelected = false;
+}
 </script>
 <canvas id="distance3" width="350" height="350"></canvas>
-
-If the distance constraints are first solved in one direction, and then the other, it creates a form of Inverse Kinematics called "FABRIK".
 
 Distance Constraints can also be used to separate
 
@@ -218,38 +234,13 @@ function onMouseMove(event) {
 </script>
 <canvas id="distance4" width="350" height="350"></canvas>
 
-
-TODO LATER:
-The second basic constraint is the line constraint
-
-<script type="text/paperscript" canvas="line1">
-//Distance Constraint Script
-</script>
-<canvas id="line1" width="350" height="350"></canvas>
-
-It is satisfied by projecting the point onto a line segment.
-
-As with all constraints, line segment constraint can be chained
-
-<script type="text/paperscript" canvas="line2">
-//Distance Constraint Script
-</script>
-<canvas id="line2" width="350" height="350"></canvas>
-
-However you like
-
-<script type="text/paperscript" canvas="line3">
-//Distance Constraint Script
-</script>
-<canvas id="line3" width="350" height="350"></canvas>
-
-If constraints act symmetrically (and multiple contraints are averaged), then the order does not matter
+If constraints act symmetrically (and multiple contraints are averaged), then the order of satisfaction does not matter
 
 <script type="text/paperscript" canvas="line4">
 // The number of points in the rope:
 var points = 10;
 // The distance between the points:
-var length = 25;
+var length = 10;
 
 //The Red Rope (and its previous positions)
 var rope = new Path({
@@ -304,6 +295,14 @@ function onFrame(event) {
 
 	//Give the rope its buttery smoothness
 	rope.smooth({ type: 'continuous' });
+}
+
+function onMouseDown(event) {
+	rope.fullySelected = true;
+}
+
+function onMouseUp(event) {
+	rope.fullySelected = false;
 }
 </script>
 <canvas id="line4" width="350" height="350"></canvas>
