@@ -6,16 +6,14 @@ tags:
   - Constraints
   - Verlet
 ---
-<!-- Load the Paper.js library -->
-<script type="text/javascript" src="../../assets/js/paper-full.min.js"></script>
+The essence of constraints is projection:
 
-Constraints:
-
-The essence of constraints is projection
 **Find the minimum movement that satisfies the constraint.**
 
 The most basic constraint is the distance constraint
 
+<!-- Load the Paper.js library -->
+<script type="text/javascript" src="../../assets/js/paper-full.min.js"></script>
 <script type="text/paperscript" canvas="distance1">
 // The distance between the mouse and the point:
 var length = 50;
