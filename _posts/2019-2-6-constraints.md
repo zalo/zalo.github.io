@@ -14,13 +14,13 @@ The most basic constraint is the distance constraint
 
 <!-- Add the ability to toggle code blocks... -->
 <script type="text/javascript">
-    function toggle_visibility(id) {
-       var e = document.getElementById(id);
-       if(e.style.display == 'block')
-          e.style.display = 'none';
-       else
-          e.style.display = 'block';
-    }
+  function toggle_visibility(id) {
+    var e = document.getElementById(id);
+    if(e.style.display == 'block')
+       e.style.display = 'none';
+    else
+      e.style.display = 'block';
+  }
 </script>
 <!-- Load the Paper.js library -->
 <script type="text/javascript" src="../../assets/js/paper-full.min.js"></script>
@@ -129,8 +129,8 @@ function onMouseUp(event) {
 </script>
 <canvas id="distance2" width="350" height="350"></canvas>
 
-<a href="#" onclick="toggle_visibility('pseudocode1');">Click to Show Pseudocode</a>
-<section id="pseudocode1" markdown="1">
+<a href="" onclick="toggle_visibility('pseudocode1');">Toggle Pseudocode</a>
+<section id="pseudocode1" markdown="1" style="display:none;">
 ~~~ javascript
 //Set the first link's position to be at the mouse
 rope.segments[0] = mousePos;
