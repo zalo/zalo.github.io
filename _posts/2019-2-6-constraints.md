@@ -5,6 +5,8 @@ categories: blog
 tags:
   - Constraints
   - Verlet
+toc: true
+toc_label: "Sections"
 ---
 # Constraints
 
@@ -150,7 +152,7 @@ The order in which constraints are satisfied is important.
 
 ## FABRIK Chain
 
-If the distance constraints are first solved in one direction, and then the other, it creates a form of Inverse Kinematics called "FABRIK"
+If the distance constraints are first solved in one direction, and then the other, it creates a form of Inverse Kinematics called "FABRIK", or "Forwards and Backwards Reaching Inverse Kinematics".
 
 <script type="text/paperscript" canvas="distance3">
 // The number of points in the rope:
@@ -331,7 +333,7 @@ for(i = 0; i < balls.length; i++){
 ~~~
 </section>
 
-## Verlet Separation
+## Constraints with Verlet
 
 If the constraints act symmetrically (according to Newton's 3rd Law), then one can simulate physics by adding momentum with Verlet Integration.
 
@@ -451,7 +453,7 @@ for(iterations = 0; iterations < 5; iterations++){
 Solving constraints sequentially is called the _Gauss-Seidel Method_. It converges faster, but it is not technically correct.
 
 <section id="redRopeHeader" markdown="1">
-## Red Rope
+## Verlet Rope
 </section>
 <script type="text/paperscript" src="../../assets/js/RedRope.js" canvas="redRope"></script>
 <canvas id="redRope" width="350" height="350"></canvas>
