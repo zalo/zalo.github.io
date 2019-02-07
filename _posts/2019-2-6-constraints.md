@@ -47,9 +47,16 @@ function onMouseMove(event) {
 function onMouseDown(event) {}
 function onMouseUp(event) {}
 </script>
-<canvas id="distance1" width="100%" height="auto"></canvas>
+<canvas id="distance1" width="350" height="350"></canvas>
 
 It is satisfied by projecting the point onto a circle around the anchor.
+
+~~~ csharp
+  Vector3 ConstrainDistance(Vector3 position, Vector3 anchor, float distance) {
+    return anchor + ((position - anchor).normalized * distance);
+  }
+~~~
+
 
 As with all constraints, distance constraints can be chained together
 
