@@ -6,11 +6,13 @@ tags:
   - Constraints
   - Verlet
 ---
+# Constraints
+
 The essence of constraint is projection.
 
 **Find the minimum movement that satisfies the constraint.**
 
-### Basic Distance Constraint
+## Basic Distance Constraint
 
 The most basic constraint is the distance constraint
 
@@ -69,7 +71,7 @@ function ConstrainDistance(point, anchor, distance) {
 
 It is satisfied by _projecting_ the point onto a circle around the anchor.
 
-### Distance Constraint Chain
+## Distance Constraint Chain
 
 As with all constraints, distance constraints can be chained together
 
@@ -146,7 +148,7 @@ for (i = 1; i < segments.length; i++) {
 
 The order in which constraints are satisfied is important.
 
-### FABRIK Chain
+## FABRIK Chain
 
 If the distance constraints are first solved in one direction, and then the other, it creates a form of Inverse Kinematics called "FABRIK"
 
@@ -239,7 +241,7 @@ for (i = segments.length - 1; i > 0; i--) {
 ~~~
 </section>
 
-### Separation Constraint
+## Separation Constraint
 
 Distance Constraints can also be used to separate
 
@@ -329,7 +331,7 @@ for(i = 0; i < balls.length; i++){
 ~~~
 </section>
 
-### Verlet Separation
+## Verlet Separation
 
 If the constraints act symmetrically (according to Newton's 3rd Law), then one can simulate physics by adding momentum with Verlet Integration.
 
@@ -449,7 +451,7 @@ for(iterations = 0; iterations < 5; iterations++){
 Solving constraints sequentially is called the _Gauss-Seidel Method_. It converges faster, but it is not technically correct.
 
 <section id="redRopeHeader" markdown="1">
-### Red Rope
+## Red Rope
 </section>
 <script type="text/paperscript" src="../../assets/js/RedRope.js" canvas="redRope"></script>
 <canvas id="redRope" width="350" height="350"></canvas>
@@ -457,7 +459,7 @@ Solving constraints sequentially is called the _Gauss-Seidel Method_. It converg
 
 The alternative is to average the contributions from each constraint before applying them.  This is the _Jacobi Method_.  It is more stable, and makes it so the order does not matter.  However, it is "squishier" because it converges more slowly.
 
-### Volume Preserving Soft Body
+## Volume Preserving Soft Body
 
 If one wraps this rope into a circle, and constrains the shape's volume, one can create a volume preserving soft-body
 
