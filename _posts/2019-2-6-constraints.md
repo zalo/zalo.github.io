@@ -128,8 +128,7 @@ function onMouseUp(event) {
 }
 </script>
 <canvas id="distance2" width="350" height="350"></canvas>
-
-<a onclick="toggle_visibility('pseudocode1');">Toggle Pseudocode</a>
+<a onclick="toggle_visibility('pseudocode1');" size="-5">Pseudocode</a>
 <section id="pseudocode1" markdown="1" style="display:none;">
 ~~~ javascript
 //Set the first link's position to be at the mouse
@@ -215,7 +214,8 @@ function onMouseUp(event) {
 }
 </script>
 <canvas id="distance3" width="350" height="350"></canvas>
-
+<a onclick="toggle_visibility('pseudocode2');" size="-5">Pseudocode</a>
+<section id="pseudocode2" markdown="1" style="display:none;">
 ~~~ javascript
 //Set the first link's position to be at the mouse
 rope.segments[0] = mousePos;
@@ -235,7 +235,7 @@ for (i = segments.length - 1; i > 0; i--) {
   );
 }
 ~~~
-
+</section>
 * * *
 
 Distance Constraints can also be used to separate
@@ -297,7 +297,8 @@ function onMouseDown(event) {}
 function onMouseUp(event) {}
 </script>
 <canvas id="distance4" width="350" height="350"></canvas>
-
+<a onclick="toggle_visibility('pseudocode3');" size="-5">Pseudocode</a>
+<section id="pseudocode3" markdown="1" style="display:none;">
 ~~~ javascript
 //Separate the balls from the mouse
 float cRadius = mRadius + bRadius;
@@ -323,7 +324,7 @@ for(i = 0; i < balls.length; i++){
   }
 }
 ~~~
-
+</section>
 * * *
 
 If the constraints act symmetrically, and their contributuions are averaged, then the order of satisfaction does not matter
