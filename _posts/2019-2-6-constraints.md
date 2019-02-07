@@ -323,7 +323,7 @@ for(i = 0; i < balls.length; i++){
 
 If the constraints act symmetrically (according to Newton's 3rd Law), then one can simulate physics by adding momentum with Verlet Integration.
 
-<script type="text/paperscript" canvas="distance4">
+<script type="text/paperscript" canvas="distance5">
 // The distance between the mouse and the point:
 var length = 50;
 // The number of balls:
@@ -415,9 +415,9 @@ function onFrame(event) {
 function onMouseDown(event) {}
 function onMouseUp(event) {}
 </script>
-<canvas id="distance4" width="350" height="350"></canvas>
-<a onclick="toggle_visibility('pseudocode4');"><small>Show Code</small></a>
-<section id="pseudocode4" markdown="1" style="display:none;">
+<canvas id="distance5" width="350" height="350"></canvas>
+<a onclick="toggle_visibility('pseudocode5');"><small>Show Code</small></a>
+<section id="pseudocode5" markdown="1" style="display:none;">
 ~~~ javascript
 for(i = 0; i < balls.length; i++){
   //-*Use Verlet Integration to add inertia*-
