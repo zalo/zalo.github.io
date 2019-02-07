@@ -65,7 +65,7 @@ function ConstrainDistance(point, anchor, distance) {
 ~~~
 
 
-It is satisfied by projecting the point onto a circle around the anchor.
+It is satisfied by _projecting_ the point onto a circle around the anchor.
 
 As with all constraints, distance constraints can be chained together
 
@@ -126,9 +126,7 @@ function onMouseUp(event) {
 }
 </script>
 <canvas id="distance2" width="350" height="350"></canvas>
-<a onclick="toggle_visibility('pseudocode1');"><small>Show Code</small></a>
-<section id="pseudocode1" markdown="1" style="display:none;">
-~~~ javascript
+<a onclick="toggle_visibility('pseudocode1');"><small>Show Code</small></a><section id="pseudocode1" markdown="1" style="display:none;">~~~ javascript
 //Set the first link's position to be at the mouse
 rope.segments[0] = mousePos;
 for (i = 1; i < segments.length; i++) {
