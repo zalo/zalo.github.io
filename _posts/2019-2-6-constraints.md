@@ -286,14 +286,37 @@ function onMouseUp(event) {}
 <canvas id="distance4" width="350" height="350"></canvas>
 
 ~~~ javascript
-float radius = mouseRadius + ballRadius;
+//Separate the balls from the mouse
+float mRadius = mouseRadius + ballRadius;
 for(i = 0; i < balls.length; i++){
   //If the mouse is closer than some distance
-  if((mousePos-balls[i]).magnitude < radius){
+  if((mousePos-balls[i]).magnitude < mRadius){
     //Push the ball away from the mouse
-    balls[i] = ConstrainDistance(balls[i], 
-                                 mousePos, 
-                                 radius);
+    balls[i] = ConstrainDistance(balls[i], mousePos, mRadius);
+  }
+}
+
+//Separate the balls from each other
+float mRadius = mouseRadius + ballRadius;
+for(i = 0; i < balls.length; i++){
+  //If the mouse is closer than some distance
+  if((mousePos-balls[i]).magnitude < mRadius){
+    //Push the ball away from the mouse
+    balls[i] = ConstrainDistance(balls[i], mousePos, mRadius);
+  }
+}
+
+//Separate the balls from each other
+for(i = 0; i < balls.length; i++){
+  for(j = i; j < balls.length; j++){
+    //If the balls are closer than 2x their radius
+    var curDisplacement = balls[j].position - balls[i].position;
+    if (curDisplacement.magnitude < ballRadius*2) {
+      //Move each ball half of the distance away from the other
+      var temp = ConstrainDistance(balls[i], balls[j], ballRadius);
+      balls[j] = ConstrainDistance(balls[j], balls[i], ballRadius);
+      balls[i] = temp;
+    }
   }
 }
 ~~~
