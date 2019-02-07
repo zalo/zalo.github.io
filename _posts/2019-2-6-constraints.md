@@ -373,7 +373,7 @@ function onFrame(event) {
 	  //Verlet Integration
 	  verletIntegrate(i);
 	  //Add gravity
-	  balls[i].position += new Point(0, event.delta * 30);
+	  balls[i].position += new Point(0, Math.min(1, event.delta * 30));
 	}
 
     //Separate the balls from the mouse
