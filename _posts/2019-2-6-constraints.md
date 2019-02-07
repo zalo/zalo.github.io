@@ -58,14 +58,14 @@ function onMouseDown(event) {}
 function onMouseUp(event) {}
 </script>
 <canvas id="distance1" width="350" height="350"></canvas>
-
-It is satisfied by projecting the point onto a circle around the anchor.
-
 ~~~ javascript
 function ConstrainDistance(point, anchor, distance) {
   return ((point - anchor).normalized * distance) + anchor;
 }
 ~~~
+
+
+It is satisfied by projecting the point onto a circle around the anchor.
 
 * * *
 
@@ -128,7 +128,7 @@ function onMouseUp(event) {
 }
 </script>
 <canvas id="distance2" width="350" height="350"></canvas>
-<a onclick="toggle_visibility('pseudocode1');" size="-5">Pseudocode</a>
+<a onclick="toggle_visibility('pseudocode1');"><small>Show Code</small></a>
 <section id="pseudocode1" markdown="1" style="display:none;">
 ~~~ javascript
 //Set the first link's position to be at the mouse
@@ -214,7 +214,7 @@ function onMouseUp(event) {
 }
 </script>
 <canvas id="distance3" width="350" height="350"></canvas>
-<a onclick="toggle_visibility('pseudocode2');" size="-5">Pseudocode</a>
+<a onclick="toggle_visibility('pseudocode2');"><small>Show Code</small></a>
 <section id="pseudocode2" markdown="1" style="display:none;">
 ~~~ javascript
 //Set the first link's position to be at the mouse
@@ -297,7 +297,7 @@ function onMouseDown(event) {}
 function onMouseUp(event) {}
 </script>
 <canvas id="distance4" width="350" height="350"></canvas>
-<a onclick="toggle_visibility('pseudocode3');" size="-5">Pseudocode</a>
+<a onclick="toggle_visibility('pseudocode3');"><small>Show Code</small></a>
 <section id="pseudocode3" markdown="1" style="display:none;">
 ~~~ javascript
 //Separate the balls from the mouse
