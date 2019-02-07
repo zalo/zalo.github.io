@@ -6,7 +6,7 @@ tags:
   - Constraints
   - Verlet
 ---
-The essence of constraints is projection:
+The essence of constraints is projection.
 
 **Find the minimum movement that satisfies the constraint.**
 
@@ -57,7 +57,7 @@ function ConstrainDistance(point, anchor, distance) {
 }
 ~~~
 
-
+* * *
 
 As with all constraints, distance constraints can be chained together
 
@@ -122,7 +122,7 @@ function onMouseUp(event) {
 ~~~ javascript
 //Set the first link's position to be at the mouse
 rope.segments[0] = mousePos;
-for (var i = 1; i < segments.length; i++) {
+for (i = 1; i < segments.length; i++) {
   //Pull the next segment to the previous one
   rope.segments[i] = ConstrainDistance(
     rope.segments[i], rope.segments[i-1], distance
@@ -131,6 +131,8 @@ for (var i = 1; i < segments.length; i++) {
 ~~~
 
 The order in which constraints are satisfied is important.
+
+* * *
 
 If the distance constraints are first solved in one direction, and then the other, it creates a form of Inverse Kinematics called "FABRIK"
 
@@ -204,7 +206,7 @@ function onMouseUp(event) {
 ~~~ javascript
 //Set the first link's position to be at the mouse
 rope.segments[0] = mousePos;
-for (var i = 1; i < segments.length; i++) {
+for (i = 1; i < segments.length; i++) {
   //Pull the current segment to the previous one
   rope.segments[i] = ConstrainDistance(
     rope.segments[i], rope.segments[i-1], distance
@@ -213,7 +215,7 @@ for (var i = 1; i < segments.length; i++) {
 
 //Set the base link's position to be at the ball
 rope.segments[segments.length - 1] = ball;
-for (var i = segments.length - 1; i > 0; i--) {
+for (i = segments.length - 1; i > 0; i--) {
   //Pull the previous segment to the current one
   rope.segments[i-1] = ConstrainDistance(
     rope.segments[i-1], rope.segments[i], distance
@@ -221,7 +223,7 @@ for (var i = segments.length - 1; i > 0; i--) {
 }
 ~~~
 
-
+* * *
 
 Distance Constraints can also be used to separate
 
@@ -282,6 +284,21 @@ function onMouseDown(event) {}
 function onMouseUp(event) {}
 </script>
 <canvas id="distance4" width="350" height="350"></canvas>
+
+~~~ javascript
+float radius = mouseRadius + ballRadius;
+for(i = 0; i < balls.length; i++){
+  //If the mouse is closer than some distance
+  if((mousePos-balls[i]).magnitude < radius){
+    //Push the ball away from the mouse
+    balls[i] = ConstrainDistance(balls[i], 
+                                 mousePos, 
+                                 radius);
+  }
+}
+~~~
+
+* * *
 
 If constraints act symmetrically (and multiple contraints are averaged), then the order of satisfaction does not matter
 
