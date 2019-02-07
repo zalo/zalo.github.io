@@ -126,8 +126,8 @@ function onMouseUp(event) {
 }
 </script>
 <canvas id="distance2" width="350" height="350"></canvas>
-<a onclick="toggle_visibility('pseudocode1');"><small>Show Code</small>
-</a><section id="pseudocode1" markdown="1" style="display:none;">
+<a onclick="toggle_visibility('pseudocode1');"><small>Show Code</small></a>
+<section id="pseudocode1" markdown="1" style="display:none;">
 ~~~ javascript
 //Set the first link's position to be at the mouse
 rope.segments[0] = mousePos;
