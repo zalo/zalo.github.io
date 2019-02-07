@@ -1,4 +1,8 @@
-// Adapted from the following Processing example:
+// PLAY WITH THIS CODE AT http://sketch.paperjs.org
+
+// Adapted from the following paper js example:
+// http://paperjs.org/examples/chain/
+// Which was adapted from the following Processing example:
 // http://processing.org/learning/topics/follow3.html
 
 // The number of points in the rope:

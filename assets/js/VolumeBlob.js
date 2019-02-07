@@ -1,3 +1,5 @@
+// PLAY WITH THIS CODE AT http://sketch.paperjs.org
+
 // The number of points in the rope:
 var points = 12;
 // The distance between the points:
@@ -49,6 +51,7 @@ function setDistance(currentPoint, anchor, distance) {
 
 //Records the mouse position
 var mousePos = view.center;
+var mouseColliding = false;
 function onMouseMove(event) {
 	mousePos = event.point;
 }
@@ -111,7 +114,7 @@ function onFrame(event) {
 
 		//Handle collisions
 		for (var i = 0; i < points; i++) {
-			if ((blob.segments[i].point - mousePos).length < 40) {
+			if (mouseColliding && (blob.segments[i].point - mousePos).length < 40) {
 				blob.segments[i].point = setDistance(blob.segments[i].point, mousePos, 40);
 			}
 			if ((blob.segments[i].point - view.center).length > 150) {
@@ -127,9 +130,9 @@ function onFrame(event) {
 }
 
 function onMouseDown(event) {
-	blob.fullySelected = true;
+	mouseColliding = true;
 }
 
 function onMouseUp(event) {
-	blob.fullySelected = false;
+	mouseColliding = false;
 }
