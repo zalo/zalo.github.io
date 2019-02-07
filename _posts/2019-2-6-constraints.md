@@ -51,9 +51,9 @@ function onMouseUp(event) {}
 
 It is satisfied by projecting the point onto a circle around the anchor.
 
-~~~ csharp
-  Vector3 ConstrainDistance(Vector3 position, Vector3 anchor, float distance) {
-    return anchor + ((position - anchor).normalized * distance);
+~~~ guess-lang
+  func ConstrainDistance(point, anchor, distance) {
+    return ((point - anchor).normalized * distance) + anchor;
   }
 ~~~
 
