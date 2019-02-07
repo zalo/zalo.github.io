@@ -287,22 +287,12 @@ function onMouseUp(event) {}
 
 ~~~ javascript
 //Separate the balls from the mouse
-float mRadius = mouseRadius + ballRadius;
+float cRadius = mRadius + bRadius;
 for(i = 0; i < balls.length; i++){
   //If the mouse is closer than some distance
-  if((mousePos-balls[i]).magnitude < mRadius){
+  if((mousePos-balls[i]).magnitude < cRadius){
     //Push the ball away from the mouse
-    balls[i] = ConstrainDistance(balls[i], mousePos, mRadius);
-  }
-}
-
-//Separate the balls from each other
-float mRadius = mouseRadius + ballRadius;
-for(i = 0; i < balls.length; i++){
-  //If the mouse is closer than some distance
-  if((mousePos-balls[i]).magnitude < mRadius){
-    //Push the ball away from the mouse
-    balls[i] = ConstrainDistance(balls[i], mousePos, mRadius);
+    balls[i] = ConstrainDistance(balls[i], mousePos, cRadius);
   }
 }
 
@@ -311,10 +301,10 @@ for(i = 0; i < balls.length; i++){
   for(j = i; j < balls.length; j++){
     //If the balls are closer than 2x their radius
     var curDisplacement = balls[j].position - balls[i].position;
-    if (curDisplacement.magnitude < ballRadius*2) {
+    if (curDisplacement.magnitude < bRadius*2) {
       //Move each ball half of the distance away from the other
-      var temp = ConstrainDistance(balls[i], balls[j], ballRadius);
-      balls[j] = ConstrainDistance(balls[j], balls[i], ballRadius);
+      var temp = ConstrainDistance(balls[i], balls[j], bRadius);
+      balls[j] = ConstrainDistance(balls[j], balls[i], bRadius);
       balls[i] = temp;
     }
   }
@@ -323,7 +313,7 @@ for(i = 0; i < balls.length; i++){
 
 * * *
 
-If constraints act symmetrically (and multiple contraints are averaged), then the order of satisfaction does not matter
+If the constraints act symmetrically, and their contributuions are averaged, then the order of satisfaction does not matter
 
 <script type="text/paperscript" canvas="line4">
 // The number of points in the rope:
@@ -397,6 +387,8 @@ function onMouseUp(event) {
 <canvas id="line4" width="350" height="350"></canvas>
 
 As you can see, the chain no longer prioritizes anchors.  This makes it more physically correct, but also more expensive to compute.
+
+* * *
 
 By adding momentum (with Verlet Integration), one can simulate physics with these constraints
 
