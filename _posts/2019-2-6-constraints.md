@@ -47,7 +47,7 @@ function onMouseMove(event) {
 function onMouseDown(event) {}
 function onMouseUp(event) {}
 </script>
-<canvas id="distance1" width="350" height="350"></canvas>
+<canvas id="distance1" width="100%" height="auto"></canvas>
 
 It is satisfied by projecting the point onto a circle around the anchor.
 
