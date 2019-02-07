@@ -10,6 +10,8 @@ The essence of constraint is projection.
 
 **Find the minimum movement that satisfies the constraint.**
 
+### Basic Distance Constraint
+
 The most basic constraint is the distance constraint
 
 <!-- Add the ability to toggle code blocks... -->
@@ -24,9 +26,6 @@ The most basic constraint is the distance constraint
 </script>
 <!-- Load the Paper.js library -->
 <script type="text/javascript" src="../../assets/js/paper-full.min.js"></script>
-<section id="firstHeader" markdown="1">
-### Basic Distance
-</section>
 <script type="text/paperscript" canvas="distance1">
 // The distance between the mouse and the point:
 var length = 50;
@@ -70,11 +69,10 @@ function ConstrainDistance(point, anchor, distance) {
 
 It is satisfied by _projecting_ the point onto a circle around the anchor.
 
+### Distance Constraint Chain
+
 As with all constraints, distance constraints can be chained together
 
-<section id="secondHeader" markdown="1">
-### Rope Distance
-</section>
 <script type="text/paperscript" canvas="distance2">
 // The number of points in the rope:
 var points = 10;
@@ -148,11 +146,10 @@ for (i = 1; i < segments.length; i++) {
 
 The order in which constraints are satisfied is important.
 
+### FABRIK Chain
+
 If the distance constraints are first solved in one direction, and then the other, it creates a form of Inverse Kinematics called "FABRIK"
 
-<section id="fabrikHeader" markdown="1">
-### FABRIK Demo
-</section>
 <script type="text/paperscript" canvas="distance3">
 // The number of points in the rope:
 var points = 4;
@@ -242,11 +239,10 @@ for (i = segments.length - 1; i > 0; i--) {
 ~~~
 </section>
 
+### Separation Constraint
+
 Distance Constraints can also be used to separate
 
-<section id="separationHeader" markdown="1">
-### Separation Constraint
-</section>
 <script type="text/paperscript" canvas="distance4">
 // The distance between the mouse and the point:
 var length = 50;
@@ -333,11 +329,10 @@ for(i = 0; i < balls.length; i++){
 ~~~
 </section>
 
+### Verlet Separation
+
 If the constraints act symmetrically (according to Newton's 3rd Law), then one can simulate physics by adding momentum with Verlet Integration.
 
-<section id="verletHeader" markdown="1">
-### Verlet Separation
-</section>
 <script type="text/paperscript" canvas="distance5">
 // The distance between the mouse and the point:
 var length = 50;
@@ -462,11 +457,10 @@ Solving constraints sequentially is called the _Gauss-Seidel Method_. It converg
 
 The alternative is to average the contributions from each constraint before applying them.  This is the _Jacobi Method_.  It is more stable, and makes it so the order does not matter.  However, it is "squishier" because it converges more slowly.
 
+### Volume Preserving Soft Body
+
 If one wraps this rope into a circle, and constrains the shape's volume, one can create a volume preserving soft-body
 
-<section id="softBodyHeader" markdown="1">
-### Volume Preserving Soft Body
-</section>
 <script type="text/paperscript" src="../../assets/js/VolumeBlob.js" canvas="softBody"></script>
 <canvas id="softBody" width="350" height="350"></canvas>
 <a href="https://github.com/zalo/zalo.github.io/blob/master/assets/js/VolumeBlob.js"><small>See Full Source</small></a>
