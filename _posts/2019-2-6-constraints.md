@@ -51,8 +51,8 @@ function onMouseUp(event) {}
 
 It is satisfied by projecting the point onto a circle around the anchor.
 
-~~~ guess_lang
-func ConstrainDistance(point, anchor, distance) {
+~~~ javascript
+function ConstrainDistance(point, anchor, distance) {
   return ((point - anchor).normalized * distance) + anchor;
 }
 ~~~
