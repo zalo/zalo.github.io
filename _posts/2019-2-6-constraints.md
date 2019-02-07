@@ -377,7 +377,7 @@ function onFrame(event) {
 	}
 
     //Separate the balls from the mouse
-    for(iter = 0; iter < 10; iter++){
+    for(iter = 0; iter < 5; iter++){
     for(i = 0; i < num; i++){
         var toNext = circle.position - balls[i].position;
 	    if (toNext.length < length+10) {
@@ -429,7 +429,7 @@ for(i = 0; i < balls.length; i++){
   balls[i] += new Point(0, 1);
 }
 
-for(iterations = 0; iterations < 10; iterations++){
+for(iterations = 0; iterations < 5; iterations++){
   //The previous example's code here!
   //It must be iterated to fully resolve all collisions
 }
