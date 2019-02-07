@@ -201,6 +201,28 @@ function onMouseUp(event) {
 </script>
 <canvas id="distance3" width="350" height="350"></canvas>
 
+~~~ javascript
+//Set the first link's position to be at the mouse
+rope.segments[0] = mousePos;
+for (var i = 1; i < segments.length; i++) {
+  //Pull the current segment to the previous one
+  rope.segments[i] = ConstrainDistance(
+    rope.segments[i], rope.segments[i-1], distance
+  );
+}
+
+//Set the base link's position to be at the ball
+rope.segments[segments.length - 1] = ball;
+for (var i = segments.length - 1; i > 0; i--) {
+  //Pull the previous segment to the current one
+  rope.segments[i-1] = ConstrainDistance(
+    rope.segments[i-1], rope.segments[i], distance
+  );
+}
+~~~
+
+
+
 Distance Constraints can also be used to separate
 
 <script type="text/paperscript" canvas="distance4">
