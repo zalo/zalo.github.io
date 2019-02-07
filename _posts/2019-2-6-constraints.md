@@ -58,6 +58,7 @@ function ConstrainDistance(point, anchor, distance) {
 ~~~
 
 
+
 As with all constraints, distance constraints can be chained together
 
 <script type="text/paperscript" canvas="distance2">
@@ -85,7 +86,7 @@ function onMouseMove(event) {
   //Set the first link's position to be at the mouse
 	rope.segments[0].point = mousePos;
 	for (var i = 0; i < points - 1; i++) {
-        var segment = rope.segments[i];
+		var segment = rope.segments[i];
 		var nextSegment = rope.segments[i + 1];
 
 		//Pull the segments toward eachother
@@ -117,6 +118,17 @@ function onMouseUp(event) {
 }
 </script>
 <canvas id="distance2" width="350" height="350"></canvas>
+
+~~~ javascript
+//Set the first link's position to be at the mouse
+rope.segments[0] = mousePos;
+for (var i = 1; i < segments.length; i++) {
+  //Pull the next segment to the previous one
+  rope.segments[i] = ConstrainDistance(
+    rope.segments[i], rope.segments[i-1], distance
+  );
+}
+~~~
 
 The order in which constraints are satisfied is important.
 
