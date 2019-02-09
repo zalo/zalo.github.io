@@ -6,8 +6,6 @@ tags:
   - Constraints
   - Verlet
 toc: true
-toc_sticky: true
-toc_label: "Sections"
 ---
 The essence of constraint is projection.
 

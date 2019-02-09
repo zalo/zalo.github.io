@@ -19,6 +19,10 @@
   }
 }
 
+canvas {
+  border:black 1px solid;
+}
+
 .page {
   @include breakpoint($large) {
     float: right;
