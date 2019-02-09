@@ -26,7 +26,7 @@ The most basic constraint is the distance constraint
     else
       e.style.display = 'block';
   }
-  document.getElementsByClassName('sidebar__right sticky').style.display = 'none';
+  document.getElementsByClassName('sidebar__right sticky')[0].style.display = 'none';
 </script>
 <!-- Load the Paper.js library -->
 <script type="text/javascript" src="../../assets/js/paper-full.min.js"></script>
