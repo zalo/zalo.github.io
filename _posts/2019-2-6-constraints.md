@@ -51,10 +51,16 @@ function onMouseMove(event) {
 
   var toNext = mousePos - ball.position;
 	if (toNext.length > length) {
-    	toNext.length = length;
-    	var offset = (mousePos - ball.position) - toNext;
-    	ball.position += offset;
+    	//-*Pull the next segment to the previous one*-
+        ball.position = ConstrainDistance(
+            ball.position, mousePos, length
+        );
 	}
+}
+
+//Projects 'point' to be within 'distance' of 'anchor'
+function ConstrainDistance(point, anchor, distance) {
+  return ((point - anchor).normalize() * distance) + anchor;
 }
 
 //Subscribe to prevent scrolling on iOS
@@ -64,7 +70,7 @@ function onMouseUp(event) {}
 <canvas id="distance1" width="350" height="350"></canvas>
 ~~~ javascript
 function ConstrainDistance(point, anchor, distance) {
-  return ((point - anchor).normalized * distance) + anchor;
+  return ((point - anchor).normalize() * distance) + anchor;
 }
 ~~~
 
@@ -77,19 +83,32 @@ As with all constraints, distance constraints can be chained together
 
 <script type="text/paperscript" canvas="distance2">
 // The number of points in the rope:
-var points = 10;
+var points = 5;
 // The distance between the points:
-var length = 25;
+var length = 50;
 
-//The Red Rope (and its previous positions)
+//Set up the drawable elements (the rope, joints, and circles)
+var joints = [];
+var circles = [];
 var rope = new Path({
-	strokeColor: 'red',
-	strokeWidth: 5,
+	strokeColor: 'black',
+	strokeWidth: 3,
 	strokeCap: 'round'
 });
 var start = view.center;
 for (var i = 0; i < points; i++) {
 	rope.add(start + new Point(i * length, 0));
+	var ball = new Path.Circle(rope.segments[i].point, 5);
+    ball.strokeWidth = 10;
+    ball.strokeColor = 'black';
+	joints.push(ball);
+	if(i+1 < points) { 
+        var circle = new Path.Circle(rope.segments[i].point, length);
+        circle.strokeWidth = 1;
+        circle.strokeColor = 'black';
+        circle.visible = false;
+    	circles.push(circle);
+	}
 }
 
 //Records the mouse position
@@ -99,36 +118,39 @@ function onMouseMove(event) {
 	
   //Set the first link's position to be at the mouse
 	rope.segments[0].point = mousePos;
+	joints[0].position = rope.segments[0].point;
+	circles[0].position = rope.segments[0].point;
 	for (var i = 0; i < points - 1; i++) {
-		var segment = rope.segments[i];
-		var nextSegment = rope.segments[i + 1];
-
-		//Pull the segments toward eachother
-		var toNext = segment.point - nextSegment.point;
-		toNext.length = length;
-		var offset = (segment.point - nextSegment.point) - toNext;
-		nextSegment.point += offset;
+		//-*Pull the next segment to the previous one*-
+        rope.segments[i+1].point = ConstrainDistance(
+            rope.segments[i+1].point, rope.segments[i].point, length
+        );
+        
+        //Draw the Joints and Circles in the correct place
+        joints[i+1].position = rope.segments[i+1].point;
+        if(i+2 < points) { 
+            circles[i+1].position = rope.segments[i+1].point;
+        }
 	}
+    //Give the rope its rigid segmentedness
+    rope.smooth({ type: 'geometric', factor: 0.1});
 }
 
-//Projects 'currentPoint' to be within 'distance' of 'anchor'
-function setDistance(currentPoint, anchor, distance) {
-	var toAnchor = currentPoint - anchor;
-	toAnchor.length = distance;
-	return toAnchor + anchor;
-}
-
-function onFrame(event) {
-    //Give the rope its buttery smoothness
-    rope.smooth({ type: 'continuous' });
+//Projects 'point' to be within 'distance' of 'anchor'
+function ConstrainDistance(point, anchor, distance) {
+  return ((point - anchor).normalize() * distance) + anchor;
 }
 
 function onMouseDown(event) {
-	rope.fullySelected = true;
+    for (var i = 0; i < points - 1; i++) {
+        circles[i].visible = true;
+    }
 }
 
 function onMouseUp(event) {
-	rope.fullySelected = false;
+    for (var i = 0; i < points - 1; i++) {
+        circles[i].visible = false;
+    }
 }
 </script>
 <canvas id="distance2" width="350" height="350"></canvas>
@@ -241,7 +263,7 @@ for (i = segments.length - 1; i > 0; i--) {
 ~~~
 </section>
 
-## Separation Constraint
+## Collision Constraint
 
 Distance Constraints can also be used to separate
 
@@ -331,7 +353,7 @@ for(i = 0; i < balls.length; i++){
 ~~~
 </section>
 
-## Constraints with Verlet
+## Collision Constraints with Verlet
 
 If the constraints act symmetrically (according to Newton's 3rd Law), then one can simulate physics by adding momentum with Verlet Integration.
 
@@ -467,4 +489,4 @@ If one wraps this rope into a circle, and constrains the shape's volume, one can
 
 The Jacobi Method is useful for keeping phantom forces from appearing in complex systems like this one.
 
-This introduction to Constraints is the first in (hopefully) a series of blog posts exploring the power of simple mathematics.
+This light introduction to constraints is the first in (hopefully) a series of blog posts exploring the power of simple mathematics.
