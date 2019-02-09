@@ -168,7 +168,7 @@ for (i = 1; i < segments.length; i++) {
 ~~~
 </section>
 
-The order in which constraints are satisfied is important.
+The order in which constraints are satisfied is important.  The ones here are solved stepping away from the mouse, which pulls them _towards_ the mouse.
 
 ## FABRIK Chain
 
@@ -355,7 +355,7 @@ for(i = 0; i < balls.length; i++){
 
 ## Collision Constraints with Verlet
 
-If the constraints act symmetrically (according to Newton's 3rd Law), then one can simulate physics by adding momentum with Verlet Integration.
+If the constraints act symmetrically (where each participant steps half-way towards satisfying the constraint), then one can simulate physics by adding momentum with Verlet Integration.
 
 <script type="text/paperscript" canvas="distance5">
 // The distance between the mouse and the point:

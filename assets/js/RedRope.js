@@ -35,7 +35,7 @@ ball.strokeColor = 'black';
 ballPrev = new Point(view.center);
 
 //Records the mouse position (and depenetrates it from The Black Circle)
-var mousePos = view.center;
+var mousePos = view.center + new Point(70, 0);
 function onMouseMove(event) {
 	mousePos = event.point;
 	if ((mousePos - circle.position).length <= 55) {
