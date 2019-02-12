@@ -1,3 +1,5 @@
+// Run this example at http://sketch.paperjs.org/
+
 // The distance between the mouse and the point:
 var length = 50;
 

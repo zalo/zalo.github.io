@@ -1,4 +1,4 @@
-// PLAY WITH THIS CODE AT http://sketch.paperjs.org
+// Run this example at http://sketch.paperjs.org/
 
 // Adapted from the following paper js example:
 // http://paperjs.org/examples/chain/

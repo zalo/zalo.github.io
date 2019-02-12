@@ -57,6 +57,7 @@ for (i = 1; i < segments.length; i++) {
   );
 }
 ~~~
+<a href="https://github.com/zalo/zalo.github.io/blob/master/assets/js/Constraints/Chain.js"><small>Full Source</small></a>
 </section>
 
 The order in which constraints are satisfied is important.  The ones here are solved stepping away from the mouse, which pulls them _towards_ the mouse.
@@ -88,6 +89,7 @@ for (i = segments.length - 1; i > 0; i--) {
   );
 }
 ~~~
+<a href="https://github.com/zalo/zalo.github.io/blob/master/assets/js/Constraints/FABRIK.js"><small>Full Source</small></a>
 </section>
 
 ## Collision Constraint
@@ -123,6 +125,7 @@ for(i = 0; i < balls.length; i++){
   }
 }
 ~~~
+<a href="https://github.com/zalo/zalo.github.io/blob/master/assets/js/Constraints/Collision.js"><small>Full Source</small></a>
 </section>
 
 ## Collision Constraints with Verlet
@@ -151,24 +154,26 @@ for(iterations = 0; iterations < 5; iterations++){
   //It must be iterated to fully resolve all collisions
 }
 ~~~
+<a href="https://github.com/zalo/zalo.github.io/blob/master/assets/js/Constraints/VerletCollision.js"><small>Full Source</small></a>
 </section>
+
+## Verlet Rope
 
 Solving constraints sequentially is called the _Gauss-Seidel Method_. It converges faster, but it is not technically correct.
 
-## Verlet Rope
 <script type="text/paperscript" src="../../assets/js/Constraints/RedRope.js" canvas="redRope"></script>
 <canvas id="redRope" width="350" height="350"></canvas>
-<a href="https://github.com/zalo/zalo.github.io/blob/master/assets/js/RedRope.js"><small>See Full Source</small></a>
-
-The alternative is to average the contributions from each constraint before applying them.  This is the _Jacobi Method_.  It is more stable, and makes it so the order does not matter.  However, it is "squishier" because it converges more slowly.
+<a href="https://github.com/zalo/zalo.github.io/blob/master/assets/js/RedRope.js"><small>Full Source</small></a>
 
 ## Volume Preserving Soft Body
 
-If one wraps this rope into a circle, and constrains the shape's volume, one can create a volume preserving soft-body
+The alternative is to average the contributions from each constraint before applying them.  This is the _Jacobi Method_.  It is more stable, and makes it so the order does not matter.  However, it is "squishier" because it converges more slowly.
+
+If one wraps the rope above into a circle, and constrains the shape's volume, one can create a volume preserving soft-body
 
 <script type="text/paperscript" src="../../assets/js/Constraints/VolumeBlob.js" canvas="softBody"></script>
 <canvas id="softBody" width="350" height="350"></canvas>
-<a href="https://github.com/zalo/zalo.github.io/blob/master/assets/js/VolumeBlob.js"><small>See Full Source</small></a>
+<a href="https://github.com/zalo/zalo.github.io/blob/master/assets/js/VolumeBlob.js"><small>Full Source</small></a>
 
 The Jacobi Method is useful for keeping phantom forces from appearing in complex systems like this one.
 

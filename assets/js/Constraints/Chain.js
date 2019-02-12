@@ -1,3 +1,5 @@
+// Run this example at http://sketch.paperjs.org/
+
 // The number of points in the chain:
 var points = 5;
 // The distance between the points:

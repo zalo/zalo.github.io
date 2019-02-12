@@ -1,4 +1,4 @@
-// PLAY WITH THIS CODE AT http://sketch.paperjs.org
+// Run this example at http://sketch.paperjs.org/
 
 // The number of points in the rope:
 var points = 12;
