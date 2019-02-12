@@ -33,13 +33,10 @@ circle.strokeWidth = 5;
 circle.strokeColor = 'black';
 
 //Integrates the points forward in time based off their current and previous positions
-function verletIntegrate(currentSegment, previousSegment) {
-	var tempCurPtx = currentSegment.point.x;
-	var tempCurPty = currentSegment.point.y;
-	currentSegment.point.x += (currentSegment.point.x - previousSegment.point.x);
-	currentSegment.point.y += (currentSegment.point.y - previousSegment.point.y);
-	previousSegment.point.x = tempCurPtx;
-	previousSegment.point.y = tempCurPty;
+function verletIntegrate(curPt, prevPt) {
+	var temp = new Point(curPt);
+	curPt.set(curPt + (curPt - prevPt));
+	prevPt.set(temp);
 }
 
 //Projects 'currentPoint' to be within 'distance' of 'anchor'
@@ -59,7 +56,7 @@ function onMouseMove(event) {
 function onFrame(event) {
 	for (var i = 0; i < points; i++) {
 		//Verlet Integration
-		verletIntegrate(blob.segments[i], blobOld.segments[i]);
+		verletIntegrate(blob.segments[i].point, blobOld.segments[i].point);
 		//Add gravity
 		blob.segments[i].point += new Point(0, Math.min(1, event.delta * 30));
 	}

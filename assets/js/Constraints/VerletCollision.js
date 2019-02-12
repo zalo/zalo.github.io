@@ -27,13 +27,10 @@ for (i = 0; i < num; i++) {
 }
 
 //Integrates the points forward in time based off their current and previous positions
-function verletIntegrate(i) {
-  var tempCurPtx = balls[i].position.x;
-  var tempCurPty = balls[i].position.y;
-  balls[i].position.x += (balls[i].position.x - prevBalls[i].x);
-  balls[i].position.y += (balls[i].position.y - prevBalls[i].y);
-  prevBalls[i].x = tempCurPtx;
-  prevBalls[i].y = tempCurPty;
+function verletIntegrate(curPt, prevPt) {
+  var temp = new Point(curPt);
+  curPt.set(curPt + (curPt - prevPt));
+  prevPt.set(temp);
 }
 
 //Records the mouse position
@@ -47,7 +44,7 @@ function onFrame(event) {
 
   for (var i = 0; i < num; i++) {
     //Verlet Integration
-    verletIntegrate(i);
+    verletIntegrate(balls[i].position, prevBalls[i]);
     //Add gravity
     balls[i].position += new Point(0, Math.min(1, event.delta * 30));
   }
