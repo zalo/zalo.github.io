@@ -28,45 +28,7 @@ The most basic constraint is the distance constraint
 </script>
 <!-- Load the Paper.js library -->
 <script type="text/javascript" src="../../assets/js/paper-full.min.js"></script>
-<script type="text/paperscript" canvas="distance1">
-// The distance between the mouse and the point:
-var length = 50;
-
-//The Black Circle
-var circle = new Path.Circle(view.center, length);
-circle.strokeWidth = 1;
-circle.strokeColor = 'black';
-
-//The Black Ball	
-var ball = new Path.Circle(view.center, 5);
-ball.strokeWidth = 10;
-ball.strokeColor = 'black';
-
-//Records the mouse position
-var mousePos = view.center;
-function onMouseMove(event) {
-	mousePos = event.point;
-	
-	circle.position = mousePos;
-
-  var toNext = mousePos - ball.position;
-	if (toNext.length > length) {
-    	//-*Pull the next segment to the previous one*-
-        ball.position = ConstrainDistance(
-            ball.position, mousePos, length
-        );
-	}
-}
-
-//Projects 'point' to be within 'distance' of 'anchor'
-function ConstrainDistance(point, anchor, distance) {
-  return ((point - anchor).normalize() * distance) + anchor;
-}
-
-//Subscribe to prevent scrolling on iOS
-function onMouseDown(event) {}
-function onMouseUp(event) {}
-</script>
+<script type="text/paperscript" src="../../assets/js/Constraints/SimpleDistance.js" canvas="distance1"></script>
 <canvas id="distance1" width="350" height="350"></canvas>
 ~~~ javascript
 function ConstrainDistance(point, anchor, distance) {
@@ -81,78 +43,7 @@ It is satisfied by _projecting_ the point onto a circle around the anchor.
 
 As with all constraints, distance constraints can be chained together
 
-<script type="text/paperscript" canvas="distance2">
-// The number of points in the rope:
-var points = 5;
-// The distance between the points:
-var length = 50;
-
-//Set up the drawable elements (the rope, joints, and circles)
-var joints = [];
-var circles = [];
-var rope = new Path({
-	strokeColor: 'black',
-	strokeWidth: 3,
-	strokeCap: 'round'
-});
-var start = view.center;
-for (var i = 0; i < points; i++) {
-	rope.add(start + new Point(i * length, 0));
-	var ball = new Path.Circle(rope.segments[i].point, 5);
-    ball.strokeWidth = 10;
-    ball.strokeColor = 'black';
-	joints.push(ball);
-	if(i+1 < points) { 
-        var circle = new Path.Circle(rope.segments[i].point, length);
-        circle.strokeWidth = 1;
-        circle.strokeColor = 'black';
-        circle.visible = false;
-    	circles.push(circle);
-	}
-}
-
-//Records the mouse position
-var mousePos = view.center;
-function onMouseMove(event) {
-	mousePos = event.point;
-	
-  //Set the first link's position to be at the mouse
-	rope.segments[0].point = mousePos;
-	joints[0].position = rope.segments[0].point;
-	circles[0].position = rope.segments[0].point;
-	for (var i = 0; i < points - 1; i++) {
-		//-*Pull the next segment to the previous one*-
-        rope.segments[i+1].point = ConstrainDistance(
-            rope.segments[i+1].point, rope.segments[i].point, length
-        );
-        
-        //Draw the Joints and Circles in the correct place
-        joints[i+1].position = rope.segments[i+1].point;
-        if(i+2 < points) { 
-            circles[i+1].position = rope.segments[i+1].point;
-        }
-	}
-    //Give the rope its rigid segmentedness
-    rope.smooth({ type: 'geometric', factor: 0.1});
-}
-
-//Projects 'point' to be within 'distance' of 'anchor'
-function ConstrainDistance(point, anchor, distance) {
-  return ((point - anchor).normalize() * distance) + anchor;
-}
-
-function onMouseDown(event) {
-    for (var i = 0; i < points - 1; i++) {
-        circles[i].visible = true;
-    }
-}
-
-function onMouseUp(event) {
-    for (var i = 0; i < points - 1; i++) {
-        circles[i].visible = false;
-    }
-}
-</script>
+<script type="text/paperscript" src="../../assets/js/Constraints/Chain.js" canvas="distance2"></script>
 <canvas id="distance2" width="350" height="350"></canvas>
 <a onclick="toggle_visibility('pseudocode1');"><small>Show Code</small></a>
 <section id="pseudocode1" markdown="1" style="display:none;">
@@ -174,71 +65,7 @@ The order in which constraints are satisfied is important.  The ones here are so
 
 If the distance constraints are first solved in one direction, and then the other, it creates a form of Inverse Kinematics called "FABRIK", or "Forwards and Backwards Reaching Inverse Kinematics".
 
-<script type="text/paperscript" canvas="distance3">
-// The number of points in the rope:
-var points = 4;
-// The distance between the points:
-var length = 50;
-
-//The Red Rope (and its previous positions)
-var rope = new Path({
-	strokeColor: 'red',
-	strokeWidth: 5,
-	strokeCap: 'round'
-});
-var start = view.center;
-for (var i = 0; i < points; i++) {
-	rope.add(start + new Point(i * length, 0));
-}
-
-//The Black Ball	
-var ball = new Path.Circle(view.center, 5);
-ball.strokeWidth = 10;
-ball.strokeColor = 'black';
-
-//Records the mouse position
-var mousePos = view.center;
-function onMouseMove(event) {
-	mousePos = event.point;
-}
-
-//Projects 'currentPoint' to be within 'distance' of 'anchor'
-function setDistance(currentPoint, anchor, distance) {
-	var toAnchor = currentPoint - anchor;
-	toAnchor.length = distance;
-	return toAnchor + anchor;
-}
-
-function onFrame(event) {
-    //Set the first link's position to be at the mouse
-    //And solve from first to last
-	rope.segments[0].point = mousePos;
-	for (var i = 0; i < points - 1; i++) {
-		rope.segments[i + 1].point = 
-		    setDistance(rope.segments[i + 1].point, 
-		                rope.segments[i].point, length);
-	}
-	
-	//Set the last link's position to be at the anchor
-	//And solve from last to first
-	rope.segments[points-1].point = ball.position;
-	for (var i = points - 1; i > 0; i--) {
-		rope.segments[i - 1].point = 
-		    setDistance(rope.segments[i - 1].point, 
-		                rope.segments[i].point, length);
-	}
-    
-    rope.smooth({ type: 'geometric', factor: 0.1});
-}
-
-function onMouseDown(event) {
-	rope.fullySelected = true;
-}
-
-function onMouseUp(event) {
-	rope.fullySelected = false;
-}
-</script>
+<script type="text/paperscript" src="../../assets/js/Constraints/FABRIK.js" canvas="distance3"></script>
 <canvas id="distance3" width="350" height="350"></canvas>
 <a onclick="toggle_visibility('pseudocode2');"><small>Show Code</small></a>
 <section id="pseudocode2" markdown="1" style="display:none;">
@@ -267,62 +94,7 @@ for (i = segments.length - 1; i > 0; i--) {
 
 Distance Constraints can also be used to separate
 
-<script type="text/paperscript" canvas="distance4">
-// The distance between the mouse and the point:
-var length = 50;
-// The number of balls:
-var num = 20;
-
-//The Black Circle
-var circle = new Path.Circle(view.center, length);
-circle.strokeWidth = 1;
-circle.strokeColor = 'black';
-
-//The Black Balls
-var balls = [];
-for(i = 0; i < num; i++){
-    balls.push(Path.Circle(view.center + new Point((Math.random() * 100)-50, 
-                                                   (Math.random() * 100)-50), 5));
-    balls[i].strokeWidth = 10;
-    balls[i].strokeColor = 'black';
-}
-
-//Records the mouse position
-var mousePos = view.center;
-function onMouseMove(event) {
-	mousePos = event.point;
-}
-
-function onFrame(event) {
-	circle.position = mousePos;
-
-    //Separate the balls from the mouse
-    for(i = 0; i < num; i++){
-        var toNext = circle.position - balls[i].position;
-	    if (toNext.length < length+10) {
-        	toNext.length = length+10;
-        	var offset = (circle.position - balls[i].position) - toNext;
-        	balls[i].position += offset;
-	    }
-    }
-    
-    //Separate the balls from each other
-    for(i = 0; i < num; i++){
-        for(j = i; j < num; j++){
-            var toNext = balls[j].position - balls[i].position;
-	        if (toNext.length < 20) {
-            	toNext.length = 20;
-            	var offset = (balls[j].position - balls[i].position) - toNext;
-            	balls[i].position += offset / 2;
-            	balls[j].position -= offset / 2;
-	        }
-        }
-    }
-}
-//Subscribe to prevent scrolling on iOS
-function onMouseDown(event) {}
-function onMouseUp(event) {}
-</script>
+<script type="text/paperscript" src="../../assets/js/Constraints/Collision.js" canvas="distance4"></script>
 <canvas id="distance4" width="350" height="350"></canvas>
 <a onclick="toggle_visibility('pseudocode3');"><small>Show Code</small></a>
 <section id="pseudocode3" markdown="1" style="display:none;">
@@ -357,97 +129,8 @@ for(i = 0; i < balls.length; i++){
 
 If the constraints act symmetrically (where each participant steps half-way towards satisfying the constraint), then one can simulate physics by adding momentum with Verlet Integration.
 
-<script type="text/paperscript" canvas="distance5">
-// The distance between the mouse and the point:
-var length = 50;
-// The number of balls:
-var num = 30;
+<script type="text/paperscript" src="../../assets/js/Constraints/VerletCollision.js" canvas="distance5">
 
-//The Black Circle
-var circle = new Path.Circle(view.center, length);
-circle.strokeWidth = 0;
-circle.strokeColor = 'black';
-
-//The Black Circle
-var domain = new Path.Circle(view.center, 152.5);
-domain.strokeWidth = 5;
-domain.strokeColor = 'black';
-
-//The Black Balls
-var balls = [];
-var prevBalls = [];
-for(i = 0; i < num; i++){
-    balls.push(Path.Circle(view.center + new Point((Math.random() * 100)-50, 
-                                                   (Math.random() * 100)-50), 5));
-    prevBalls.push(new Point(balls[i].position.x, balls[i].position.y));                                           
-    balls[i].strokeWidth = 10;
-    balls[i].strokeColor = 'black';
-}
-
-//Integrates the points forward in time based off their current and previous positions
-function verletIntegrate(i) {
-	var tempCurPtx = balls[i].position.x;
-	var tempCurPty = balls[i].position.y;
-	balls[i].position.x += (balls[i].position.x - prevBalls[i].x);
-	balls[i].position.y += (balls[i].position.y - prevBalls[i].y);
-	prevBalls[i].x = tempCurPtx;
-	prevBalls[i].y = tempCurPty;
-}
-
-//Records the mouse position
-var mousePos = view.center;
-function onMouseMove(event) {
-	mousePos = event.point;
-}
-
-function onFrame(event) {
-	circle.position = mousePos;
-
-    for (var i = 0; i < num; i++) {
-	  //Verlet Integration
-	  verletIntegrate(i);
-	  //Add gravity
-	  balls[i].position += new Point(0, Math.min(1, event.delta * 30));
-	}
-
-    //Separate the balls from the mouse
-    for(iter = 0; iter < 5; iter++){
-    for(i = 0; i < num; i++){
-        var toNext = circle.position - balls[i].position;
-	    if (toNext.length < length+10) {
-        	toNext.length = length+10;
-        	var offset = (circle.position - balls[i].position) - toNext;
-        	balls[i].position += offset;
-	    }
-    }
-    
-    //Separate the balls from each other
-    for(i = 0; i < num; i++){
-        for(j = i; j < num; j++){
-            var toNext = balls[j].position - balls[i].position;
-	        if (toNext.length < 20) {
-            	toNext.length = 20;
-            	var offset = (balls[j].position - balls[i].position) - toNext;
-            	balls[i].position += offset / 2;
-            	balls[j].position -= offset / 2;
-	        }
-        }
-    }
-    
-    //Keep the balls inside the domain
-    for(i = 0; i < num; i++){
-        var toNext = domain.position - balls[i].position;
-	    if (toNext.length > 150-10) {
-        	toNext.length = 150-10;
-        	var offset = (domain.position - balls[i].position) - toNext;
-        	balls[i].position += offset;
-	    }
-    }
-    }
-}
-//Subscribe to prevent scrolling on iOS
-function onMouseDown(event) {}
-function onMouseUp(event) {}
 </script>
 <canvas id="distance5" width="350" height="350"></canvas>
 <a onclick="toggle_visibility('pseudocode5');"><small>Show Code</small></a>
@@ -473,7 +156,7 @@ for(iterations = 0; iterations < 5; iterations++){
 Solving constraints sequentially is called the _Gauss-Seidel Method_. It converges faster, but it is not technically correct.
 
 ## Verlet Rope
-<script type="text/paperscript" src="../../assets/js/RedRope.js" canvas="redRope"></script>
+<script type="text/paperscript" src="../../assets/js/Constraints/RedRope.js" canvas="redRope"></script>
 <canvas id="redRope" width="350" height="350"></canvas>
 <a href="https://github.com/zalo/zalo.github.io/blob/master/assets/js/RedRope.js"><small>See Full Source</small></a>
 
@@ -483,7 +166,7 @@ The alternative is to average the contributions from each constraint before appl
 
 If one wraps this rope into a circle, and constrains the shape's volume, one can create a volume preserving soft-body
 
-<script type="text/paperscript" src="../../assets/js/VolumeBlob.js" canvas="softBody"></script>
+<script type="text/paperscript" src="../../assets/js/Constraints/VolumeBlob.js" canvas="softBody"></script>
 <canvas id="softBody" width="350" height="350"></canvas>
 <a href="https://github.com/zalo/zalo.github.io/blob/master/assets/js/VolumeBlob.js"><small>See Full Source</small></a>
 
