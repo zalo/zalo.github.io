@@ -163,7 +163,7 @@ Solving constraints sequentially is called the _Gauss-Seidel Method_. It converg
 
 <script type="text/paperscript" src="../../assets/js/Constraints/RedRope.js" canvas="redRope"></script>
 <canvas id="redRope" width="350" height="350"></canvas>
-<a href="https://github.com/zalo/zalo.github.io/blob/master/assets/js/RedRope.js"><small>Full Source</small></a>
+<a href="https://github.com/zalo/zalo.github.io/blob/master/assets/js/Constraints/RedRope.js"><small>Full Source</small></a>
 
 ## Volume Preserving Soft Body
 
@@ -173,7 +173,7 @@ If one wraps the rope above into a circle, and constrains the shape's volume, on
 
 <script type="text/paperscript" src="../../assets/js/Constraints/VolumeBlob.js" canvas="softBody"></script>
 <canvas id="softBody" width="350" height="350"></canvas>
-<a href="https://github.com/zalo/zalo.github.io/blob/master/assets/js/VolumeBlob.js"><small>Full Source</small></a>
+<a href="https://github.com/zalo/zalo.github.io/blob/master/assets/js/Constraints/VolumeBlob.js"><small>Full Source</small></a>
 
 The Jacobi Method is useful for keeping phantom forces from appearing in complex systems like this one.
 
