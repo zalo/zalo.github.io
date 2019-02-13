@@ -41,15 +41,10 @@ function init() {
   scene.add(grid);
   var canvasID = document.getElementById("IK");
   renderer = new THREE.WebGLRenderer({ canvas: canvasID, antialias: true });
-  renderer.setPixelRatio(window.devicePixelRatio);
-  //renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setPixelRatio(1);
   renderer.shadowMap.enabled = true;
-  //container.appendChild(renderer.domElement);
-  //window.addEventListener('resize', onWindowResize, false);
 
   //Assemble the Robot Arm
-  //var base = new THREE.Group();
-  //scene.add(base);
   var base = addJoint(scene, [0, 0, 0], [0, 1, 0], [0, 0], [0.05, 0.1, 0.05], [0, 5, 0]);
   var firstJoint = addJoint(base, [0, 11.52001, 0], [0, 1, 0], [-180, 180], [0.1, 0.1, 0.1], [0, 2.5, 0]);
   var secondJoint = addJoint(firstJoint, [-6.55, 4.6, 0.0], [1, 0, 0], [-90, 90], [0.1, 0.45, 0.1], [-3.450041, 14.7, 0]);
@@ -127,7 +122,7 @@ function solveIK(targetPosition) {
 }
 
 function animate() {
-  solveIK(draggableObjects[0].position);
   requestAnimationFrame(animate);
+  solveIK(draggableObjects[0].position);
   renderer.render(scene, camera);
 }
