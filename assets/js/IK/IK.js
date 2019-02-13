@@ -14,6 +14,8 @@ function init() {
   camera.position.set(50, 100, 150);
   controls = new THREE.OrbitControls(camera);
   controls.target.set(0, 45, 0);
+  controls.panSpeed = 3;
+  controls.zoomSpeed = 1.5;
   controls.update();
   scene = new THREE.Scene();
   scene.background = new THREE.Color(0xffffff);//0xa0a0a0
@@ -41,7 +43,8 @@ function init() {
   scene.add(grid);
   var canvasID = document.getElementById("IK");
   renderer = new THREE.WebGLRenderer({ canvas: canvasID, antialias: true });
-  renderer.setPixelRatio(1);
+  renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.setSize(350 / window.devicePixelRatio, 350 / window.devicePixelRatio);
   renderer.shadowMap.enabled = true;
 
   //Assemble the Robot Arm
