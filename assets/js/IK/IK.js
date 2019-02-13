@@ -41,8 +41,8 @@ function init() {
   scene.add(grid);
   var canvasID = document.getElementById("IK");
   renderer = new THREE.WebGLRenderer({ canvas: canvasID, antialias: true });
-  renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setSize(window.innerWidth, window.innerHeight);
+  //renderer.setPixelRatio(window.devicePixelRatio);
+  //renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.shadowMap.enabled = true;
   //container.appendChild(renderer.domElement);
   //window.addEventListener('resize', onWindowResize, false);
