@@ -44,7 +44,7 @@ function init() {
   var canvasID = document.getElementById("IK");
   renderer = new THREE.WebGLRenderer({ canvas: canvasID, antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setSize(350 / window.devicePixelRatio, 350 / window.devicePixelRatio);
+  renderer.setSize(350, 350);
   renderer.shadowMap.enabled = true;
 
   //Assemble the Robot Arm
