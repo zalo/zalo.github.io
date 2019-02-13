@@ -43,7 +43,7 @@ function init() {
   renderer.shadowMap.enabled = true;
   controls = new THREE.OrbitControls(camera, renderer.domElement);
   controls.target.set(0, 45, 0);
-  controls.panSpeed = 3;
+  controls.panSpeed = 2;
   controls.zoomSpeed = 1;
   controls.screenSpacePanning = true;
   controls.update();
