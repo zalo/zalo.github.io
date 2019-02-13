@@ -10,7 +10,7 @@ animate();
 function init() {
   container = document.createElement('div');
   document.body.appendChild(container);
-  camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 2000);
+  camera = new THREE.PerspectiveCamera(45, 1, 1, 2000);
   camera.position.set(50, 100, 150);
   controls = new THREE.OrbitControls(camera);
   controls.target.set(0, 45, 0);
@@ -41,7 +41,7 @@ function init() {
   scene.add(grid);
   var canvasID = document.getElementById("IK");
   renderer = new THREE.WebGLRenderer({ canvas: canvasID, antialias: true });
-  //renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.setPixelRatio(window.devicePixelRatio);
   //renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.shadowMap.enabled = true;
   //container.appendChild(renderer.domElement);
@@ -66,7 +66,7 @@ function init() {
   target.transparent = true;
   target.opacity = 0.5;
   target.castShadow = true;
-  target.receiveShadow = true;
+  //target.receiveShadow = true;
   scene.add(target);
   draggableObjects.push(target);
 
