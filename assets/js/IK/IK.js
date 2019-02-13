@@ -41,12 +41,12 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(350, 350);
   renderer.shadowMap.enabled = true;
-  /*controls = new THREE.OrbitControls(camera, renderer.domElement);
+  controls = new THREE.OrbitControls(camera, renderer.domElement);
   controls.target.set(0, 45, 0);
   controls.panSpeed = 2;
   controls.zoomSpeed = 1;
   controls.screenSpacePanning = true;
-  controls.update();*/
+  controls.update();
 
   //Assemble the Robot Arm
   var base = addJoint(scene, [0, 0, 0], [0, 1, 0], [0, 0], [0.05, 0.1, 0.05], [0, 5, 0]);
@@ -70,12 +70,12 @@ function init() {
   draggableObjects.push(target);
 
   var dragControls = new THREE.DragControls(draggableObjects, camera, renderer.domElement);
-  /*dragControls.addEventListener('dragstart', function () {
+  dragControls.addEventListener('dragstart', function () {
     controls.enabled = false;
   });
   dragControls.addEventListener('dragend', function () {
     controls.enabled = true;
-  });*/
+  });
 }
 
 function addJoint(base, position, axis, limits, size, graphicsOffset) {
