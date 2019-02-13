@@ -12,11 +12,6 @@ function init() {
   document.body.appendChild(container);
   camera = new THREE.PerspectiveCamera(45, 1, 1, 2000);
   camera.position.set(50, 100, 150);
-  controls = new THREE.OrbitControls(camera);
-  controls.target.set(0, 45, 0);
-  controls.panSpeed = 3;
-  controls.zoomSpeed = 1.5;
-  controls.update();
   scene = new THREE.Scene();
   scene.background = new THREE.Color(0xffffff);//0xa0a0a0
   scene.fog = new THREE.Fog(0xffffff, 200, 600);//0xa0a0a0
@@ -46,6 +41,12 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(350, 350);
   renderer.shadowMap.enabled = true;
+  controls = new THREE.OrbitControls(camera, renderer.domElement);
+  controls.target.set(0, 45, 0);
+  controls.panSpeed = 3;
+  controls.zoomSpeed = 1;
+  controls.screenSpacePanning = true;
+  controls.update();
 
   //Assemble the Robot Arm
   var base = addJoint(scene, [0, 0, 0], [0, 1, 0], [0, 0], [0.05, 0.1, 0.05], [0, 5, 0]);
