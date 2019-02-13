@@ -39,7 +39,8 @@ function init() {
   grid.material.opacity = 0.2;
   grid.material.transparent = true;
   scene.add(grid);
-  renderer = new THREE.WebGLRenderer({ antialias: true });
+  var canvasID = document.getElementById("IK");
+  renderer = new THREE.WebGLRenderer({ canvas: canvasID, antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.shadowMap.enabled = true;
