@@ -60,11 +60,11 @@ function init() {
   fifthJoint.add(endEffector);
   endEffector.position.set(8.3, 1.0, 0.0);
 
-  var target = new THREE.Mesh(boxGeometry, new THREE.MeshLambertMaterial({ color: Math.random() * 0xffffff }));
+  var target = new THREE.Mesh(boxGeometry, new THREE.MeshPhongMaterial({ color: Math.random() * 0xffffff, depthWrite: false }));
   target.position.set(0, 100, 0);
-  target.scale.set(0.05, 0.05, 0.05);
+  target.scale.set(0.075, 0.075, 0.075);
   target.transparent = true;
-  target.opacity = 0.5;
+  target.opacity = 0.25;
   target.castShadow = true;
   //target.receiveShadow = true;
   scene.add(target);
@@ -129,5 +129,7 @@ function solveIK(targetPosition) {
 function animate() {
   requestAnimationFrame(animate);
   solveIK(draggableObjects[0].position);
+  // Keep the target from going beneath the floor...
+  draggableObjects[0].position.y = Math.max(0, draggableObjects[0].position.y);
   renderer.render(scene, camera);
 }
