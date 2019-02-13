@@ -18,7 +18,7 @@ function init() {
   light = new THREE.HemisphereLight(0xffffff, 0x444444);
   light.position.set(0, 200, 0);
   scene.add(light);
-  light = new THREE.DirectionalLight(0xffffff);
+  light = new THREE.DirectionalLight(0xbbbbbb);
   light.position.set(0, 200, 100);
   light.castShadow = true;
   light.shadow.camera.top = 180;
@@ -60,7 +60,7 @@ function init() {
   fifthJoint.add(endEffector);
   endEffector.position.set(8.3, 1.0, 0.0);
 
-  var target = new THREE.Mesh(boxGeometry, new THREE.MeshPhongMaterial({ color: Math.random() * 0xffffff, depthWrite: false }));
+  var target = new THREE.Mesh(boxGeometry, new THREE.MeshPhongMaterial({ color: 0x3399dd, depthWrite: false }));
   target.position.set(0, 100, 0);
   target.scale.set(0.075, 0.075, 0.075);
   target.transparent = true;
