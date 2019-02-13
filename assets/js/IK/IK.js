@@ -41,7 +41,7 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(350, 350);
   renderer.shadowMap.enabled = true;
-  camera.lookat(0, 45, 0);
+  camera.lookAt(0, 45, 0);
   /*controls = new THREE.OrbitControls(camera, renderer.domElement);
   controls.target.set(0, 45, 0);
   controls.panSpeed = 2;
