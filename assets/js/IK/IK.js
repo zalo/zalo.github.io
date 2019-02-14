@@ -88,8 +88,10 @@ function handleIntersect(entries, observer) {
   entries.forEach(function (entry) {
     if (entry.isIntersecting) {
       isVisible = true;
+      console.log("Intersecting!");
     } else {
       isVisible = false;
+      console.log("Not Intersecting!");
     }
   });
 }
