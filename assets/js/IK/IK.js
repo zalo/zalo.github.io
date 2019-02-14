@@ -38,8 +38,8 @@ function init() {
   scene.add(grid);
   var canvasID = document.getElementById(document.currentScript.getAttribute("canvas"));
   renderer = new THREE.WebGLRenderer({ canvas: canvasID, antialias: true });
-  renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setSize(350 * window.devicePixelRatio, 350 * window.devicePixelRatio);
+  renderer.setPixelRatio(2);
+  renderer.setSize(350, 350);
   renderer.shadowMap.enabled = true;
   camera.lookAt(0, 45, 0);
   /*controls = new THREE.OrbitControls(camera, renderer.domElement);
