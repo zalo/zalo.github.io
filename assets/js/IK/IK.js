@@ -36,10 +36,10 @@ function init() {
   grid.material.opacity = 0.2;
   grid.material.transparent = true;
   scene.add(grid);
-  var canvasID = document.getElementById("IK");
+  var canvasID = document.getElementById(document.currentScript.getAttribute("canvas"));
   renderer = new THREE.WebGLRenderer({ canvas: canvasID, antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setSize(350, 350);
+  renderer.setSize(350 * window.devicePixelRatio, 350 * window.devicePixelRatio);
   renderer.shadowMap.enabled = true;
   camera.lookAt(0, 45, 0);
   /*controls = new THREE.OrbitControls(camera, renderer.domElement);
@@ -60,11 +60,11 @@ function init() {
   fifthJoint.add(endEffector);
   endEffector.position.set(8.3, 1.0, 0.0);
 
-  var target = new THREE.Mesh(boxGeometry, new THREE.MeshPhongMaterial({ color: 0x3399dd, depthWrite: false }));
+  var target = new THREE.Mesh(boxGeometry, new THREE.MeshPhongMaterial({ color: 0x3399dd }));
   target.position.set(0, 100, 0);
   target.scale.set(0.075, 0.075, 0.075);
-  target.transparent = true;
-  target.opacity = 0.25;
+  //target.transparent = true;
+  //target.opacity = 0.25;
   target.castShadow = true;
   //target.receiveShadow = true;
   scene.add(target);
