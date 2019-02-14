@@ -1,6 +1,6 @@
 var container, stats, controls;
 var camera, scene, renderer, light;
-var isVisible = false;
+var isVisible = true;
 var updating = false;
 var draggableObjects = [];
 var IKJoints = [];
