@@ -1,5 +1,7 @@
 var container, stats, controls;
 var camera, scene, renderer, light;
+var isVisible = false;
+var updating = false;
 var draggableObjects = [];
 var IKJoints = [];
 var endEffector = null;
@@ -36,8 +38,8 @@ function init() {
   grid.material.opacity = 0.2;
   grid.material.transparent = true;
   scene.add(grid);
-  var canvasID = document.getElementById(document.currentScript.getAttribute("canvas"));
-  renderer = new THREE.WebGLRenderer({ canvas: canvasID, antialias: true });
+  var canvas = document.getElementById(document.currentScript.getAttribute("canvas"));
+  renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true });
   renderer.setPixelRatio(2);
   renderer.setSize(350, 350);
   renderer.shadowMap.enabled = true;
@@ -48,6 +50,9 @@ function init() {
   controls.zoomSpeed = 1;
   controls.screenSpacePanning = true;
   controls.update();*/
+
+  observer = new IntersectionObserver(handleIntersect);
+  observer.observe(canvas)
 
   //Assemble the Robot Arm
   var base = addJoint(scene, [0, 0, 0], [0, 1, 0], [0, 0], [0.05, 0.1, 0.05], [0, 5, 0]);
@@ -77,6 +82,16 @@ function init() {
   dragControls.addEventListener('dragend', function () {
     controls.enabled = true;
   });*/
+}
+
+function handleIntersect(entries, observer) {
+  entries.forEach(function (entry) {
+    if (entry.isIntersecting) {
+      isVisible = true;
+    } else {
+      isVisible = false;
+    }
+  });
 }
 
 function addJoint(base, position, axis, limits, size, graphicsOffset) {
@@ -128,8 +143,12 @@ function solveIK(targetPosition) {
 
 function animate() {
   requestAnimationFrame(animate);
-  solveIK(draggableObjects[0].position);
+
   // Keep the target from going beneath the floor...
   draggableObjects[0].position.y = Math.max(0, draggableObjects[0].position.y);
-  renderer.render(scene, camera);
+
+  if (isVisible || updating) {
+    solveIK(draggableObjects[0].position);
+    renderer.render(scene, camera);
+  }
 }
