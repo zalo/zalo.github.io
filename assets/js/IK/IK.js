@@ -81,11 +81,11 @@ function init() {
     controls.enabled = true;
   });*/
 
-  observer = new IntersectionObserver(handleIntersect);
-  observer.observe(canvas)
+  //observer = new IntersectionObserver(handleIntersect);
+  //observer.observe(canvas)
 }
 
-function handleIntersect(entries, observer) {
+/*function handleIntersect(entries, observer) {
   var iOS = !!navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform);
   entries.forEach(function (entry) {
     if (iOS || typeof entry.isIntersecting === "undefined" || entry.isIntersecting) {
@@ -96,7 +96,7 @@ function handleIntersect(entries, observer) {
       console.log("Not Intersecting!");
     }
   });
-}
+}*/
 
 function addJoint(base, position, axis, limits, size, graphicsOffset) {
   var joint = new THREE.Group();
