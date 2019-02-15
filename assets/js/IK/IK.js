@@ -85,8 +85,9 @@ function init() {
 }
 
 function handleIntersect(entries, observer) {
+  var iOS = !!navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform);
   entries.forEach(function (entry) {
-    if (entry.isIntersecting) {
+    if (iOS || typeof entry.isIntersecting === "undefined" || entry.isIntersecting) {
       isVisible = true;
       console.log("Intersecting!");
     } else {
