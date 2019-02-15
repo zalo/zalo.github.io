@@ -83,7 +83,7 @@ function init() {
   var iOS = !!navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform);
   if (!iOS) {
     observer = new IntersectionObserver(handleIntersect);
-    observer.observe(canvas)
+    observer.observe(canvasID)
   }
 }
 
