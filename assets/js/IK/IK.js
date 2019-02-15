@@ -10,6 +10,7 @@ var white = new THREE.MeshLambertMaterial({ color: 0x888888 });
 init();
 animate();
 function init() {
+  isVisible = true;
   container = document.createElement('div');
   document.body.appendChild(container);
   camera = new THREE.PerspectiveCamera(45, 1, 1, 2000);
@@ -51,9 +52,6 @@ function init() {
   controls.screenSpacePanning = true;
   controls.update();*/
 
-  observer = new IntersectionObserver(handleIntersect);
-  observer.observe(canvas)
-
   //Assemble the Robot Arm
   var base = addJoint(scene, [0, 0, 0], [0, 1, 0], [0, 0], [0.05, 0.1, 0.05], [0, 5, 0]);
   var firstJoint = addJoint(base, [0, 11.52001, 0], [0, 1, 0], [-180, 180], [0.1, 0.1, 0.1], [0, 2.5, 0]);
@@ -82,6 +80,9 @@ function init() {
   dragControls.addEventListener('dragend', function () {
     controls.enabled = true;
   });*/
+
+  observer = new IntersectionObserver(handleIntersect);
+  observer.observe(canvas)
 }
 
 function handleIntersect(entries, observer) {
