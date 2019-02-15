@@ -10,7 +10,6 @@ var white = new THREE.MeshLambertMaterial({ color: 0x888888 });
 init();
 animate();
 function init() {
-  isVisible = true;
   container = document.createElement('div');
   document.body.appendChild(container);
   camera = new THREE.PerspectiveCamera(45, 1, 1, 2000);
@@ -81,14 +80,16 @@ function init() {
     controls.enabled = true;
   });*/
 
-  //observer = new IntersectionObserver(handleIntersect);
-  //observer.observe(canvas)
+  var iOS = !!navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform);
+  if (!iOS) {
+    observer = new IntersectionObserver(handleIntersect);
+    observer.observe(canvas)
+  }
 }
 
-/*function handleIntersect(entries, observer) {
-  var iOS = !!navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform);
+function handleIntersect(entries, observer) {
   entries.forEach(function (entry) {
-    if (iOS || typeof entry.isIntersecting === "undefined" || entry.isIntersecting) {
+    if (entry.isIntersecting) {
       isVisible = true;
       console.log("Intersecting!");
     } else {
@@ -96,7 +97,7 @@ function init() {
       console.log("Not Intersecting!");
     }
   });
-}*/
+}
 
 function addJoint(base, position, axis, limits, size, graphicsOffset) {
   var joint = new THREE.Group();
@@ -151,8 +152,8 @@ function animate() {
   // Keep the target from going beneath the floor...
   draggableObjects[0].position.y = Math.max(0, draggableObjects[0].position.y);
 
-  //if (isVisible || updating) {
-  solveIK(draggableObjects[0].position);
-  renderer.render(scene, camera);
-  //}
+  if (isVisible || updating) {
+    solveIK(draggableObjects[0].position);
+    renderer.render(scene, camera);
+  }
 }
