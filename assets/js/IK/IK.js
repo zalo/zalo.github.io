@@ -151,8 +151,8 @@ function animate() {
   // Keep the target from going beneath the floor...
   draggableObjects[0].position.y = Math.max(0, draggableObjects[0].position.y);
 
-  if (isVisible || updating) {
-    solveIK(draggableObjects[0].position);
-    renderer.render(scene, camera);
-  }
+  //if (isVisible || updating) {
+  solveIK(draggableObjects[0].position);
+  renderer.render(scene, camera);
+  //}
 }
