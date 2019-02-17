@@ -78,14 +78,14 @@ This final aspect gives you an iterative 3D IK algorithm that beats every other 
 
 
 ### Properties of Various IK Algorithms
-|---
-|              IK Algorithms |      Analytic     | Automatic Differentiation | Jacobian Transpose |       FABRIK      |           Quaternion CCDIK           |
-|-:|:-:|:-:|:-:|:-:|:-:|
-| Implementation Complexity? | Extremely Complex |            Hard           |        Hard        |        Easy       |                 Easy                 |
-|                      Speed |   Extremely Fast  |      Slow To Converge     |  Slow To Converge  |        Fast       |                 Fast                 |
-|              Hinges Joints |    Only Hinges?   |            Yes            |         Yes        |        No!        |                  Yes                 |
-|               Joint Limits |     Difficult     |            Yes            |         No         |   Conical Limits  |                  Yes                 |
-|         Hits Singularities |       Never       |           Often           |        Often       |       Never       | Rarely (often anneals  through them) |
-|      Convergence Behaviour |      Instant      |           Stable          |       Stable       | Very Well Behaved |  Well Behaved across short distances |
-|           Number of Joints |       Max ~5      |         Arbitrary         |      Arbitrary     |     Arbitrary     |               Arbitrary              |
-|===
+---
+              IK Algorithms |      Analytic     | Automatic Differentiation | Jacobian Transpose |       FABRIK      |           Quaternion CCDIK           |
+-:|:-:|:-:|:-:|:-:|:-:|
+ Implementation Complexity? | Extremely Complex |            Hard           |        Hard        |        Easy       |                 Easy                 |
+                      Speed |   Extremely Fast  |      Slow To Converge     |  Slow To Converge  |        Fast       |                 Fast                 |
+              Hinges Joints |    Only Hinges?   |            Yes            |         Yes        |        No!        |                  Yes                 |
+               Joint Limits |     Difficult     |            Yes            |         No         |   Conical Limits  |                  Yes                 |
+         Hits Singularities |       Never       |           Often           |        Often       |       Never       | Rarely (often anneals  through them) |
+      Convergence Behaviour |      Instant      |           Stable          |       Stable       | Very Well Behaved |  Well Behaved across short distances |
+           Number of Joints |       Max ~5      |         Arbitrary         |      Arbitrary     |     Arbitrary     |               Arbitrary              |
+---
