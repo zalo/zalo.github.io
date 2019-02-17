@@ -88,4 +88,19 @@ This final aspect gives you an iterative 3D IK algorithm that beats every other 
 |         Hits Singularities |       Never       |           Often           |        Often       |       Never       | Rarely (often anneals  through them) 
 |      Convergence Behaviour |      Instant      |           Stable          |       Stable       | Very Well Behaved |  Well Behaved across short distances 
 |           Number of Joints |       Max ~5      |         Arbitrary         |      Arbitrary     |     Arbitrary     |               Arbitrary              
+|===
+| Footer row
+
+
+Example Table
 |---
+| Default aligned | Left aligned | Center aligned | Right aligned
+|-|:-|:-:|-:
+| First body part | Second cell | Third cell | fourth cell
+| Second line |foo | **strong** | baz
+| Third line |quux | baz | bar
+|---
+| Second body
+| 2 line
+|===
+| Footer row
