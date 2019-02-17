@@ -6,7 +6,7 @@ tags:
   - Inverse
   - Kinematics
   - IK
-  toc: true
+toc: true
 ---
 
 Inverse Kinematics is the process of finding a set of joint angles that reach a goal position.
