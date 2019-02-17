@@ -13,6 +13,11 @@ Inverse Kinematics is the process of finding a set of joint angles that reach a 
 
 My favorite way of doing Inverse Kinematics is called "Quaternion Cyclic Coordinate Descent" or "CCDIK":
 
+<!-- Hide the Table of Contents (but keep the navigation :^) ... -->
+<script type="text/javascript">
+  document.getElementsByClassName('toc')[0].style.display = 'none';
+</script>
+
 <!-- Load the Three.js library, assorted helpers, and the actual IK script code... -->
 <script type="text/javascript" src="../../assets/js/three.js"></script>
 <script type="text/javascript" src="../../assets/js/DragControls.js"></script>
@@ -22,7 +27,7 @@ My favorite way of doing Inverse Kinematics is called "Quaternion Cyclic Coordin
 
 ### CCDIK
 
-At its core, the algorithm is very simple:
+At its core, the algorithm is very simple
 ```
 foreach joint in joints {
   // Point the effector towards the goal
@@ -32,7 +37,7 @@ foreach joint in joints {
 }
 ```
 
-At each joint, we're just telling the joint to point the end effector towards the goal position.
+We're just telling each joint to _point the end effector_ towards the goal position.
 
 <script type="text/javascript" src="../../assets/js/IK/IKExample.js" ccd="enabled" hinge="disabled" limits="disabled"></script>
 
@@ -40,7 +45,7 @@ Of course, if it reaches for the goal without regard for the hinges, it looks un
 
 ### Hinges
 
-We can take the hinges into account by enforcing the hinge-axis after the CCD step:
+We can take the hinges into account by enforcing the hinge-axis after the CCD step
 ```
 foreach joint in joints {
   // Point the effector towards the goal (See Above)
@@ -57,7 +62,7 @@ This is beginning to look pretty good, but real joints often have limits.
 
 ### Limits
 
-You can apply limits in local-euler angle space:
+You can apply limits in local-euler angle space
 ```
 foreach joint in joints {
   // Point the effector towards the goal (See Above)
@@ -73,8 +78,9 @@ This final aspect gives you an iterative 3D IK algorithm that beats every other 
 
 
 ### Properties of Various IK Algorithms
+|---
 |              IK Algorithms |      Analytic     | Automatic Differentiation | Jacobian Transpose |       FABRIK      |           Quaternion CCDIK           |
-|---------------------------:|:-----------------:|:-------------------------:|:------------------:|:-----------------:|:------------------------------------:|
+|-:|:-:|:-:|:-:|:-:|:-:|
 | Implementation Complexity? | Extremely Complex |            Hard           |        Hard        |        Easy       |                 Easy                 |
 |                      Speed |   Extremely Fast  |      Slow To Converge     |  Slow To Converge  |        Fast       |                 Fast                 |
 |              Hinges Joints |    Only Hinges?   |            Yes            |         Yes        |        No!        |                  Yes                 |
@@ -82,3 +88,4 @@ This final aspect gives you an iterative 3D IK algorithm that beats every other 
 |         Hits Singularities |       Never       |           Often           |        Often       |       Never       | Rarely (often anneals  through them) |
 |      Convergence Behaviour |      Instant      |           Stable          |       Stable       | Very Well Behaved |  Well Behaved across short distances |
 |           Number of Joints |       Max ~5      |         Arbitrary         |      Arbitrary     |     Arbitrary     |               Arbitrary              |
+|===
