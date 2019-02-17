@@ -29,7 +29,7 @@ My favorite way of doing Inverse Kinematics is called "Quaternion Cyclic Coordin
 
 At its core, the algorithm is very simple
 ```
-foreach joint in joints {
+foreach joint in jointsTipToBase {
   // Point the effector towards the goal
   directionToEffector = effector.position - joint.position;
   directionToGoal = goal.position - joint.position;
@@ -47,7 +47,7 @@ Of course, if it reaches for the goal without regard for the hinges, it looks un
 
 We can take the hinges into account by enforcing the hinge-axis after the CCD step
 ```
-foreach joint in joints {
+foreach joint in jointsTipToBase {
   // Point the effector towards the goal (See Above)
 
   // Constrain to rotate about the axis
@@ -64,7 +64,7 @@ Even at one iteration per frame, this is beginning to look pretty good! But real
 
 You can apply limits in local-euler angle space
 ```
-foreach joint in joints {
+foreach joint in jointsTipToBase {
   // Point the effector towards the goal (See Above)
   // Constrain to rotate about the axis (See Above)
 
@@ -96,7 +96,7 @@ The astute among you might notice that this is a 5-DoF arm.  This means it is ov
 With 5-Dof, you can hypothetically touch any point _from any direction_.
 
 ```
-foreach joint in joints {
+foreach joint in jointsTipToBase {
   if(joint.id > 3)
     // Point the effector along the desired direction
     joint.rotateFromTo(effector.direction, goal.direction);
