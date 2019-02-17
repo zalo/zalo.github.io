@@ -80,7 +80,7 @@ This final aspect gives you an iterative 3D IK algorithm that beats every other 
 ### Properties of Various IK Algorithms
 ---
               IK Algorithms |      Analytic     | Automatic Differentiation | Jacobian Transpose |       FABRIK      |           Quaternion CCDIK           |
--:|:-:|:-:|:-:|:-:|:-:|
+|-:|:-:|:-:|:-:|:-:|:-:|
  Implementation Complexity? | Extremely Complex |            Hard           |        Hard        |        Easy       |                 Easy                 |
                       Speed |   Extremely Fast  |      Slow To Converge     |  Slow To Converge  |        Fast       |                 Fast                 |
               Hinges Joints |    Only Hinges?   |            Yes            |         Yes        |        No!        |                  Yes                 |
