@@ -58,7 +58,7 @@ foreach joint in joints {
 ```
 <script type="text/javascript" src="../../assets/js/IK/IKExample.js" ccd="enabled" hinge="enabled"  limits="disabled"></script>
 
-This is beginning to look pretty good, but real joints often have limits.  
+Even at one iteration per frame, this is beginning to look pretty good! But real joints often have limits...
 
 ### Limits
 
@@ -74,17 +74,41 @@ foreach joint in joints {
 ```
 <script type="text/javascript" src="../../assets/js/IK/IKExample.js" ccd="enabled" hinge="enabled" limits="enabled" orbit="enabled"></script>
 
-This final aspect gives you an iterative 3D IK algorithm that beats every other Inverse Kinematics algorithm out there.
+This final aspect gives you an iterative 3D IK algorithm that beats nearly every other Heuristic Inverse Kinematics algorithm out there.
 
 
 ### Properties of Various IK Algorithms
 
-| IK Algorithms              | Analytic          | Automatic Differentiation | Jacobian Transpose | FABRIK            | Quaternion CCDIK                     |
-|----------------------------|-------------------|---------------------------|--------------------|-------------------|--------------------------------------|
-| Implementation Complexity? | Extremely Complex | Hard                      | Hard               | Easy              | Easy                                 |
-| Speed                      | Extremely Fast    | Slow To Converge          | Slow To Converge   | Fast              | Fast                                 |
-| Hinges Joints              | Only Hinges?      | Yes                       | Yes                | No!               | Yes                                  |
-| Joint Limits               | Difficult         | Yes                       | No                 | Conical Limits    | Yes                                  |
-| Hits Singularities         | Never             | Often                     | Often              | Never             | Rarely (often anneals  through them) |
-| Convergence Behaviour      | Instant           | Stable                    | Stable             | Very Well Behaved | Well Behaved across short distances  |
-| Number of Joints           | Max ~5            | Arbitrary                 | Arbitrary          | Arbitrary         | Arbitrary                            |
+| IK Algorithms              | Analytic          | Automatic Differentiation | Jacobian Transpose | FABRIK              | Quaternion CCDIK                     |
+|----------------------------|-------------------|---------------------------|--------------------|---------------------|--------------------------------------|
+| Implementation Complexity? | Extremely Complex | Hard                      | Hard               | Easy                | Easy                                 |
+| Speed                      | Extremely Fast    | Slow To Converge          | Slow To Converge   | Fast                | Fast                                 |
+| Hinges Joints              | Only Hinges?      | Yes                       | Yes                | No!                 | Yes                                  |
+| Joint Limits               | Difficult         | Yes                       | No                 | Conical Limits      | Yes                                  |
+| Hits Singularities         | Never             | Often                     | Often              | Never (w/out hinges)| Rarely (often anneals through them) |
+| Convergence Behaviour      | Instant           | Stable                    | Stable             | Very Well Behaved   | Well Behaved across short distances  |
+| Number of Joints           | Max ~5            | Arbitrary                 | Arbitrary          | Arbitrary           | Arbitrary                            |
+
+### Bonus: Direction
+
+The astute among you might notice that this is a 5-DoF arm.  This means it is over-actuated for just touching a 3-DoF point.
+
+With 5-Dof, you can hypothetically touch any point _from any direction_.
+
+```
+foreach joint in joints {
+  if(joint.id > 3)
+    // Point the effector along the desired direction
+    joint.rotateFromTo(effector.direction, goal.direction);
+  } else {
+    // Point the effector towards the goal (See Above)
+  }
+  // Constrain to rotate about the axis (See Above)
+  // Enforce Joint Limits (See Above)
+}
+```
+<script type="text/javascript" src="../../assets/js/IK/IKExample.js" ccd="enabled" hinge="enabled" limits="enabled" orbit="enabled" matchDirection="enabled"></script>
+
+Now that the system is only "sufficiently actuated" (where the IK is using each degree of freedom the arm possesses), you'll notice that it hits joint-limit based singularities more often.   
+
+These concavities are impossible to avoid in a heuristic IK algorithm (read: all of them except `Analytic`).  However, it is possible for to "jump out of" concavities by adding large random offsets to each joint, and then attempting the IK solve again.   This is known as ["Simulated Annealing"](https://en.wikipedia.org/wiki/Simulated_annealing).  Implementing this is left as an exercise to the reader.

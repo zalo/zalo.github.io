@@ -1,6 +1,4 @@
 var Environment = function () {
-  'use strict';
-
   this.time = new THREE.Clock();
   this.lastTimeRendered = 0.0;
   this.camera = new THREE.PerspectiveCamera(45, 1, 1, 2000);
@@ -53,7 +51,7 @@ var Environment = function () {
     document.currentScript.parentNode.insertBefore(curCanvas, document.currentScript.nextSibling);
     this.renderer = new THREE.WebGLRenderer({ canvas: curCanvas, antialias: true });
     this.renderer.setPixelRatio(2);
-    var parentWidth = document.currentScript.parentNode.getBoundingClientRect().width;
+    var parentWidth = 350;//document.currentScript.parentNode.getBoundingClientRect().width;
     this.renderer.setSize(parentWidth, 350);
     this.renderer.shadowMap.enabled = true;
     this.camera.aspect = parentWidth / 350;

@@ -1,6 +1,4 @@
 var IKEnvironment = function () {
-  'use strict';
-
   this.environment = new Environment();
   this.updating = false;
 
@@ -12,6 +10,7 @@ var IKEnvironment = function () {
   this.ccd = document.currentScript.getAttribute("ccd") == "enabled";
   this.hinge = document.currentScript.getAttribute("hinge") == "enabled";
   this.limits = document.currentScript.getAttribute("limits") == "enabled";
+  this.matchDirection = document.currentScript.getAttribute("matchDirection") == "enabled";
 
   this.initArm = function () {
     //Assemble the Robot Arm
@@ -19,7 +18,7 @@ var IKEnvironment = function () {
     var firstJoint = this.addJoint(base, [0, 11.52001, 0], [0, 1, 0], [-180, 180], [0.1, 0.1, 0.1], [0, 2.5, 0]);
     var secondJoint = this.addJoint(firstJoint, [-6.55, 4.6, 0.0], [1, 0, 0], [-90, 90], [0.1, 0.45, 0.1], [-3.450041, 14.7, 0]);
     var thirdJoint = this.addJoint(secondJoint, [1.247041, 32.02634, -0.0739485], [1, 0, 0], [-150, 150], [0.05, 0.35, 0.05], [2.8, 15.14, 0]);
-    var fourthJoint = this.addJoint(thirdJoint, [2.984276, 30.01859, 0.0], [1, 0, 0], [-90, 90], [0.05, 0.05, 0.05], [4.8, 0.17, 0]);
+    var fourthJoint = this.addJoint(thirdJoint, [2.984276, 30.01859, 0.0], [1, 0, 0], [-130, 130], [0.05, 0.05, 0.05], [4.8, 0.17, 0]);
     var fifthJoint = this.addJoint(fourthJoint, [4.333822, 4.200262, 0.0], [0, 1, 0], [-180, 180], [0.1, 0.035, 0.035], [3.156178, 0.3, 0]);
     this.endEffector = new THREE.Group();
     fifthJoint.add(this.endEffector);
@@ -50,22 +49,48 @@ var IKEnvironment = function () {
     box.position.set(graphicsOffset[0], graphicsOffset[1], graphicsOffset[2]);
     box.castShadow = true;
     //box.receiveShadow = true;
+
+    //joint.arrow = new THREE.ArrowHelper(new THREE.Vector3(1.0, 0, 0), new THREE.Vector3(0.0, 0, 0), 20, 0x3399dd);
+    //joint.add(joint.arrow);
+
     return joint;
   }
 
   //Beautiful CCDIK
   this.solveIK = function (targetPosition) {
     var tooltipPosition = new THREE.Vector3();
+    var toolRotation = new THREE.Quaternion();
+    var invToolRotation = new THREE.Quaternion();
+    var fromToQuat = new THREE.Quaternion();
     for (var i = this.IKJoints.length - 1; i >= 0; i--) {
       this.IKJoints[i].updateMatrixWorld();
       this.endEffector.getWorldPosition(tooltipPosition);
 
-      //Rotate towards the Target
-      //(Ideally this could be done entirely in worldspace (instead of local space))
-      if (this.ccd) {
+      if (this.matchDirection) {
+        tooltipPosition.add(new THREE.Vector3(3.25, 0, 0));
+      }
+
+      //(Ideally this could be done entirely in worldspace (instead of local space
+      //(which require all of these terrible hacks that you see)))
+      // An example of a clean implementation can be seen in the Unity code:
+      // https://github.com/zalo/MathUtilities/blob/master/Assets/IK/CCDIK/CCDIKJoint.cs
+      if (this.matchDirection && (i > this.IKJoints.length - 3)) {
+        //Rotate to align with a direction
+        var toolDirection = new THREE.Vector3(1.0, 0, 0);
+        this.endEffector.getWorldQuaternion(toolRotation);
+        invToolRotation = toolRotation.clone().inverse();
+        var targetDirection = toolDirection.clone().applyQuaternion(invToolRotation);
+        if (i == this.IKJoints.length - 2) {
+          toolDirection.applyQuaternion(this.IKJoints[this.IKJoints.length - 1].quaternion);
+          targetDirection.applyQuaternion(this.IKJoints[this.IKJoints.length - 1].quaternion);
+        }
+        fromToQuat.setFromUnitVectors(toolDirection, targetDirection);
+        this.IKJoints[i].quaternion.multiply(fromToQuat);
+      } else if (this.ccd) {
+        //Rotate towards the Target
         var toolDirection = this.IKJoints[i].worldToLocal(tooltipPosition.clone()).normalize();
         var targetDirection = this.IKJoints[i].worldToLocal(targetPosition.clone()).normalize();
-        var fromToQuat = new THREE.Quaternion(0, 0, 0, 1).setFromUnitVectors(toolDirection, targetDirection);
+        fromToQuat.setFromUnitVectors(toolDirection, targetDirection);
         this.IKJoints[i].quaternion.multiply(fromToQuat);
       }
 
@@ -97,7 +122,7 @@ var IKEnvironment = function () {
       this.environment.lastTimeRendered = this.environment.time.getElapsedTime();
       this.environment.viewDirty = false;
     }
-    if (this.environment.time.getElapsedTime() - this.environment.lastTimeRendered < 1.0) {
+    if (this.environment.time.getElapsedTime() - this.environment.lastTimeRendered < 2.0) {
       // Keep the target from going beneath the floor...
       if (this.limits == "enabled") {
         this.environment.draggableObjects[0].position.y = Math.max(0, this.environment.draggableObjects[0].position.y);
