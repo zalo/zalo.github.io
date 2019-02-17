@@ -51,7 +51,7 @@ var Environment = function () {
     document.currentScript.parentNode.insertBefore(curCanvas, document.currentScript.nextSibling);
     this.renderer = new THREE.WebGLRenderer({ canvas: curCanvas, antialias: true });
     this.renderer.setPixelRatio(2);
-    var parentWidth = 350;//document.currentScript.parentNode.getBoundingClientRect().width;
+    var parentWidth = document.currentScript.parentNode.getBoundingClientRect().width; //350;//
     this.renderer.setSize(parentWidth, 350);
     this.renderer.shadowMap.enabled = true;
     this.camera.aspect = parentWidth / 350;
