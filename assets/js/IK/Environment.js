@@ -53,8 +53,11 @@ var Environment = function () {
     document.currentScript.parentNode.insertBefore(curCanvas, document.currentScript.nextSibling);
     this.renderer = new THREE.WebGLRenderer({ canvas: curCanvas, antialias: true });
     this.renderer.setPixelRatio(2);
-    this.renderer.setSize(350, 350);
+    var parentWidth = document.currentScript.parentNode.getBoundingClientRect().width;
+    this.renderer.setSize(parentWidth, 350);
     this.renderer.shadowMap.enabled = true;
+    this.camera.aspect = parentWidth / 350;
+    this.camera.updateProjectionMatrix();
 
     this.draggableObjects = [];
     this.dragControls = new THREE.DragControls(this.draggableObjects, this.camera, this.renderer.domElement);
