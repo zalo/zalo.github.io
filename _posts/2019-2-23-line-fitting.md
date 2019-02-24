@@ -1,6 +1,6 @@
 ---
 title: "Orthogonal Regression"
-date: 2019-2-16 16:10:33 -0000
+date: 2019-2-23 16:10:33 -0000
 categories: blog
 tags:
   - Least Squares
