@@ -33,7 +33,7 @@ The first key insight is that the orthogonal regression line will always pass th
 
 The centroid can be computed by adding the points together, and then dividing by the number of points.
 ```
-centroid = Vector3(0,0,0);
+centroid = Vector3.zero;
 foreach point in points {
   centroid += point;
 }
@@ -53,7 +53,7 @@ The key to calculating the next direction estimate is to multiply each point by 
 
 ```
 // Solve for the centroid (See Above)
-nextDirection = Vector3(0, 0, 0);
+nextDirection = Vector3.zero;
 foreach point in points {
   centeredPoint = point - centroid;
   nextDirection += dot(centeredPoint, direction) * centeredPoint;
@@ -83,6 +83,47 @@ No SVD's required!
 (* There _might_ be an analytic 3D solution [with quaternions](https://en.wikipedia.org/wiki/Deming_regression#Orthogonal_regression), but I have not been able to get this technique to work when the points leave the XY plane (whereas the technique presented above works in any number of dimensions).  [The Unity code I've been using to test this "quaternion-based" fitting is here](https://github.com/zalo/MathUtilities/blob/master/Assets/LeastSquares/LeastSquaresFitting.cs#L163-L179) )
 </small>
 
+## Multi-Axial Fitting
+
 <small>
-(** The observant among you will notice that there exists starting angles where the progress towards the true fitting line is **0**.  This is actually a singularity that occurs when the starting guess is perfectly orthogonal to the true answer.   One should include checks for this, though it's rare in practice.  Interestingly, one can abuse this singularity to save on the computation of down projecting the data when fitting secondary principal component axes.  This even allows one to fit all of the principal component axes simultaneously! )
+** The observant among you will notice that there exists starting angles where the progress towards the true fitting line is **0**.  This is actually a singularity that occurs when the starting guess is perfectly orthogonal to the true answer.   One should for these cases, though it's rare in practice. 
 </small>
+
+### Sequential Down Projection for Secondary Axes
+
+Typically one might extend the line fitting code to fit planes by projecting the points onto the plane defined by the primary axis, and then fitting the secondary axis on that flattened set of points.
+
+```
+// Solve for the centroid (See Above)
+// Fit Primary Axis with normal points(See Above)
+foreach(point in points){
+  flattenedPoints.push(projectOnPlane(point, primaryAxis));
+} 
+// Fit Secondary Axis with flattened points (See Above)
+normal = cross(primaryAxis, secondaryAxis).normalized;
+```
+
+#### Abusing Singularities for Fun and Profit
+
+However, it turns out we can abuse the singularity above to fit all of the axes simultaneously!  Instead of projecting the _points_ onto the plane defined by the primary axis, we project the current estimation of the secondary axis itself!  This lets us solve for both the primary and secondary axes simultaneously!
+
+```
+// Solve for the centroid (See Above)
+
+for (int iter = 0; iter < iters; iter++) {
+  newPrimaryAxis = Vector3.zero, newSecondaryAxis = Vector3.zero;
+  foreach(point in points) {
+    Vector3 point = worldSpacePoint - origin;
+    newPrimaryAxis += Vector3.Dot(primaryAxis, point) * point;
+    newSecondaryAxis += Vector3.Dot(secondaryAxis, point) * point;
+  }
+  primaryAxis = newPrimaryAxis.normalized;
+  secondaryAxis = projectOnPlane(newSecondaryAxis, primaryAxis).normalized;
+}
+normal = cross(primaryAxis, secondaryAxis).normalized;
+```
+<script type="text/javascript" src="../../assets/js/LineFitting/PlaneFitting.js" orbit="enabled" residuals="enabled"></script>
+
+From here, it is trivial to see how one might add _additional_ secondary axes of fit.  There might come a point when numerical instability will prevent the lower-order axes from fitting nicely with this speedup.  If that happens, I recommend just projecting your points down to the plane after solving each axis.
+
+I hope these techniques will come in handy whenever someone wants to fit lines or planes without incurring large dependencies within their projects.

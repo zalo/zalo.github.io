@@ -5,7 +5,8 @@ var Environment = function () {
   this.scene = new THREE.Scene();
   this.isVisible = true;
   this.orbit = document.currentScript.getAttribute("orbit") == "enabled";
-  this.viewDirty = false;
+  this.square = document.currentScript.getAttribute("square") == "enabled";
+  this.viewDirty = true;
 
   this.intersecting = function (entry) {
     if (entry.isIntersecting) {
@@ -50,7 +51,8 @@ var Environment = function () {
     document.currentScript.parentNode.insertBefore(curCanvas, document.currentScript.nextSibling);
     this.renderer = new THREE.WebGLRenderer({ canvas: curCanvas, antialias: true });
     this.renderer.setPixelRatio(2);
-    var parentWidth = document.currentScript.parentNode.getBoundingClientRect().width; //350;//
+    var parentWidth = document.currentScript.parentNode.getBoundingClientRect().width;
+    if (this.square) { parentWidth = 350; }
     this.renderer.setSize(parentWidth, 350);
     this.renderer.shadowMap.enabled = true;
     this.camera.aspect = parentWidth / 350;
