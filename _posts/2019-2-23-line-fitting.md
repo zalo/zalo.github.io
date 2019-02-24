@@ -113,7 +113,8 @@ for (int iter = 0; iter < iters; iter++) {
     newSecondaryAxis += dot(secondaryAxis, point) * point;
   }
   primaryAxis = newPrimaryAxis.normalized;
-  secondaryAxis = projectOnPlane(newSecondaryAxis, primaryAxis).normalized;
+  secondaryAxis = projectOnPlane(newSecondaryAxis, 
+                                 primaryAxis).normalized;
 }
 normal = cross(primaryAxis, secondaryAxis).normalized;
 ```
