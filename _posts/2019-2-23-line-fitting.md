@@ -25,7 +25,7 @@ Orthogonal Regression is the process of finding the line that best fits a set of
 
 This is more powerful than traditional least squares in that it is invariant to global rotation.
 
-Because of this, however, it has no analytic solution(*).  There are a variety of iterative solutions available, but they often depend on an operation called the **Singular Value Decomposition** or **SVD**.  SVDs are a complex matrix decomposition that are usually only found in heavy-weight matrix libraries.  Avoiding the imclusion of these libraries is the motivation for the technique outlined in this post.
+Because of this, however, it has no analytic solution*.  There are a variety of iterative solutions available, but they often depend on an operation called the **Singular Value Decomposition** or **SVD**.  SVDs are a complex matrix decomposition that are usually only found in heavy-weight matrix libraries.  Avoiding the inlusion of these libraries is the motivation for the technique outlined in this post.
 
 ### The Centroid
 
@@ -47,7 +47,7 @@ Now that we have a point that the line passes through, we just need to calculate
 
 Since this algorithm is iterative, we need an iteration function that gets us _closer_ to the true line direction at each step.
 
-We can choose almost any(**) direction to start, and we'll iteratively work toward the real direction.
+We can choose almost any** direction to start, and we'll iteratively work toward the real direction.
 
 The key to calculating the next direction estimate is to multiply each point by the dot product of it and the current estimate.   This moves all the points to the same hemisphere as the current guess, allowing you to simply sum them and normalize them for the new direction estimate.
 
@@ -62,7 +62,7 @@ direction = nextDirection.normalize();
 ```
 <script type="text/javascript" src="../../assets/js/LineFitting/LineStepping.js" orbit="enabled"></script>
 
-No matter what(**) direction you choose as your initial guess, the next calculated direction will have moved toward the true line of best fit direction.
+No matter what** direction you choose as your initial guess, the next calculated direction will have moved toward the true line of best fit direction.
 
 ### A Virtuous Cycle
 
@@ -81,6 +81,8 @@ No SVD's required!
 
 <small>
 (* There might be an analytic solution [with quaternions](https://en.wikipedia.org/wiki/Deming_regression#Orthogonal_regression), but I have not been able to get this technique to work out-of-plane; it appears to work only when all the points lie in the same plane (where as the technique presented above works in any number of dimensions).  [The Unity code I've been using to test quaternion based fitting is here](https://github.com/zalo/MathUtilities/blob/master/Assets/LeastSquares/LeastSquaresFitting.cs#L163-L179))
+</small>
 
+<small>
 (** The observant among you will notice that there is exists starting angles where the progress towards the true fitting line is **0**.  This is actually a singularity, where the starting guess is perfectly orthogonal to the true answer.   It's difficult to hit this in practice, but it can be useful to include explicit checks to combat this behaviour.  What's interesting is that you can abuse this singularity to save on the computation of down projecting your data when fitting secondary principal component axes, and to even fit all of the principal component axes simultaneously. )
 </small>

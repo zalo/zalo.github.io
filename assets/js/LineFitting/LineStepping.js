@@ -44,12 +44,12 @@ var LineSteppingEnvironment = function () {
 
     this.startHandle = new THREE.Mesh(this.boxGeometry, this.blue);
     this.startHandle.scale.set(0.075, 0.075, 0.075);
-    this.startHandle.position.set(average.x, average.y + 40, average.z);
+    this.startHandle.position.set(average.x - 40, average.y + 40, average.z);
     this.startHandle.castShadow = true;
     this.environment.scene.add(this.startHandle);
     this.environment.draggableObjects.push(this.startHandle);
 
-    this.startDir = new THREE.ArrowHelper(new THREE.Vector3(0, 1, 0), this.avg.position, 40, 0x1177bb);
+    this.startDir = new THREE.ArrowHelper(new THREE.Vector3(-1, 1, 0).normalize(), this.avg.position, 40, 0x1177bb);
     this.startDir.setLength(40, 10, 5);
     this.environment.scene.add(this.startDir);
 
