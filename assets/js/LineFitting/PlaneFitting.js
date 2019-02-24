@@ -14,7 +14,7 @@ var PlaneFittingEnvironment = function () {
   this.showResiduals = document.currentScript.getAttribute("residuals") == "enabled";
 
   this.initPoints = function () {
-    let scl = new THREE.Vector3(150, 25, 150);
+    let scl = new THREE.Vector3(125, 25, 125);
     for (let i = 0; i < 10; i++) {
       var box = new THREE.Mesh(this.boxGeometry, this.blue);
       this.environment.scene.add(box);
@@ -47,9 +47,9 @@ var PlaneFittingEnvironment = function () {
       this.environment.controls.update();
     }
 
-    this.grid = new THREE.GridHelper(100, 10, 0x000000, 0xdd3333);
-    this.grid.material.opacity = 0.5;
-    this.grid.material.transparent = true;
+    this.grid = new THREE.GridHelper(100, 10, 0x444444, 0xdd3333);
+    //this.grid.material.opacity = 0.5;
+    //this.grid.material.transparent = true;
     this.grid.position.set(average.x, average.y, average.z);
     this.environment.scene.add(this.grid);
   }
