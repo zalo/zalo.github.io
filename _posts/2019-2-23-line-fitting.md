@@ -80,9 +80,9 @@ No SVD's required!
 
 
 <small>
-(* There might be an analytic solution [with quaternions](https://en.wikipedia.org/wiki/Deming_regression#Orthogonal_regression), but I have not been able to get this technique to work out-of-plane; it appears to work only when all the points lie in the same plane (where as the technique presented above works in any number of dimensions).  [The Unity code I've been using to test quaternion based fitting is here](https://github.com/zalo/MathUtilities/blob/master/Assets/LeastSquares/LeastSquaresFitting.cs#L163-L179))
+(* There might be an analytic solution [with quaternions](https://en.wikipedia.org/wiki/Deming_regression#Orthogonal_regression), but I have not been able to get this technique to work out-of-plane; it appears to work only when all the points lie in the same plane (where as the technique presented above works in any number of dimensions).  [The Unity code I've been using to test quaternion-based fitting is here](https://github.com/zalo/MathUtilities/blob/master/Assets/LeastSquares/LeastSquaresFitting.cs#L163-L179) )
 </small>
 
 <small>
-(** The observant among you will notice that there is exists starting angles where the progress towards the true fitting line is **0**.  This is actually a singularity, where the starting guess is perfectly orthogonal to the true answer.   It's difficult to hit this in practice, but it can be useful to include explicit checks to combat this behaviour.  What's interesting is that you can abuse this singularity to save on the computation of down projecting your data when fitting secondary principal component axes, and to even fit all of the principal component axes simultaneously. )
+(** The observant among you will notice that there exists starting angles where the progress towards the true fitting line is **0**.  This is actually a singularity, where the starting guess is perfectly orthogonal to the true answer.   It's difficult to hit this in practice, but it can be useful to include explicit checks to combat this behaviour.  What's interesting is that one can abuse this singularity to save on the computation of down projecting the data when fitting secondary principal component axes.  This even allows one to fit all of the principal component axes simultaneously. )
 </small>
