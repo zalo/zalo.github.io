@@ -5,7 +5,6 @@ var Environment = function () {
   this.scene = new THREE.Scene();
   this.isVisible = true;
   this.orbit = document.currentScript.getAttribute("orbit") == "enabled";
-  this.orbiting = false;
   this.viewDirty = false;
 
   this.intersecting = function (entry) {
