@@ -14,7 +14,7 @@ var PlaneFittingEnvironment = function () {
   this.showResiduals = document.currentScript.getAttribute("residuals") == "enabled";
 
   this.initPoints = function () {
-    let scl = new THREE.Vector3(100, 25, 100);
+    let scl = new THREE.Vector3(150, 25, 150);
     for (let i = 0; i < 10; i++) {
       var box = new THREE.Mesh(this.boxGeometry, this.blue);
       this.environment.scene.add(box);
