@@ -1,5 +1,5 @@
 ---
-title: "Closest Points between Line Segments in 3D"
+title: "Segment-Segment Distance in 3D"
 date: 2019-3-2 20:10:33 -0000
 categories: blog
 tags:
@@ -68,4 +68,4 @@ segABtoLineCD = Lerp(segA, segB, Clamp01(t));
 segCDtoSegAB = constrainToSegment(segABtoLineCD, segC, segD);
 segABtoSegCD = constrainToSegment(segCDtoSegAB, segA, segB);
 ```
-The only branch checks if the lines are parallel (which is unlikely in real-world data).
+(The only branch checks if the lines are completely parallel (which is unlikely in real-world data)).
