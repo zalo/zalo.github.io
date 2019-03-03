@@ -1,7 +1,7 @@
 var Environment = function () {
   this.time = new THREE.Clock();
   this.lastTimeRendered = 0.0;
-  this.camera = new THREE.PerspectiveCamera(45, 1, 1, 2000);
+  this.camera = new THREE.PerspectiveCamera(45, 1, 1, 2000); //new THREE.OrthographicCamera(300 / - 2, 300 / 2, 300 / 2, 300 / - 2, 1, 1000);
   this.scene = new THREE.Scene();
   this.isVisible = true;
   this.orbit = document.currentScript.getAttribute("orbit") == "enabled";
@@ -42,7 +42,7 @@ var Environment = function () {
     mesh.receiveShadow = true;
     this.scene.add(mesh);
     var grid = new THREE.GridHelper(2000, 20, 0x000000, 0x000000);
-    grid.material.opacity = 0.2;
+    grid.material.opacity = 0.3;
     grid.material.transparent = true;
     this.scene.add(grid);
 
