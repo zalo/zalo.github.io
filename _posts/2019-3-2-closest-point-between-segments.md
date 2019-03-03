@@ -61,11 +61,11 @@ segDC = segD - segC; float lineDirSqrMag = Dot(segDC, segDC);
 inPlaneA = segA-((Dot(segA-segC, segDC)/lineDirSqrMag)*segDC);
 inPlaneB = segB-((Dot(segB-segC, segDC)/lineDirSqrMag)*segDC);
 inPlaneBA = inPlaneB - inPlaneA;
-t = Dot(segC - inPlaneA, inPlaneBA) / Dot(inPlaneBA, inPlaneBA) ;
+t = Dot(segC - inPlaneA, inPlaneBA) / Dot(inPlaneBA, inPlaneBA);
 t = (inPlaneA != inPlaneB) ? t : 0f; // Zero's t if parallel
 segABtoLineCD = Lerp(segA, segB, Clamp01(t));
 
 segCDtoSegAB = constrainToSegment(segABtoLineCD, segC, segD);
 segABtoSegCD = constrainToSegment(segCDtoSegAB, segA, segB);
 ```
-The only branch checks if the lines are parallel (which is unlikely on real-world data).
+The only branch checks if the lines are parallel (which is unlikely in real-world data).
