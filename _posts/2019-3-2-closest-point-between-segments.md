@@ -40,10 +40,10 @@ The key is to recognize that you can turn the pair of line segments INTO a point
 
 <script type="text/javascript" src="../../assets/js/ClosestSegment/SegmentSegment.js" orbit="enabled" debug="enabled"></script>
 ```
-inPlaneA = segA.projectToPlane(segC, segD - segC);
-inPlaneB = segB.projectToPlane(segC, segD - segC);
-inPlaneBA = inPlaneB - inPlaneA;
-t = Dot(segC - inPlaneA, inPlaneBA) / Dot(inPlaneBA, inPlaneBA) ;
+inPlaneA = segA.projectToPlane(segC, segD-segC);
+inPlaneB = segB.projectToPlane(segC, segD-segC);
+inPlaneBA = inPlaneB-inPlaneA;
+t = Dot(segC-inPlaneA, inPlaneBA)/Dot(inPlaneBA, inPlaneBA);
 t = (inPlaneA != inPlaneB) ? t : 0f; // Zero's t if parallel
 segABtoLineCD = Lerp(segA, segB, Clamp01(t));
 
@@ -55,13 +55,13 @@ Solving for the closest point in this reduced sub space gives you an answer that
 
 ### Optimization
 
-You can also do this function entirely without square roots in its optimized form:
+You can also do this function entirely without square roots in its slightly more optimized form:
 ```
-segDC = segD - segC; float lineDirSqrMag = Dot(segDC, segDC);
+segDC = segD-segC; float lineDirSqrMag = Dot(segDC, segDC);
 inPlaneA = segA-((Dot(segA-segC, segDC)/lineDirSqrMag)*segDC);
 inPlaneB = segB-((Dot(segB-segC, segDC)/lineDirSqrMag)*segDC);
-inPlaneBA = inPlaneB - inPlaneA;
-t = Dot(segC - inPlaneA, inPlaneBA) / Dot(inPlaneBA, inPlaneBA);
+inPlaneBA = inPlaneB-inPlaneA;
+t = Dot(segC-inPlaneA, inPlaneBA)/Dot(inPlaneBA, inPlaneBA);
 t = (inPlaneA != inPlaneB) ? t : 0f; // Zero's t if parallel
 segABtoLineCD = Lerp(segA, segB, Clamp01(t));
 
