@@ -8,6 +8,7 @@ var ClosestSegmentEnvironment = function () {
   this.dark = new THREE.MeshLambertMaterial({ color: 0x555555 });
   this.blue = new THREE.MeshPhongMaterial({ color: 0x3399dd });
   this.red = new THREE.MeshPhongMaterial({ color: 0xdd3333 });
+  this.darkline = new THREE.LineBasicMaterial({ color: 0x555555 });
 
   this.initPoints = function () {
     this.environment.camera.position.set(0, 100, 200);
@@ -44,7 +45,7 @@ var ClosestSegmentEnvironment = function () {
       this.a.position,
       this.b.position
     );
-    this.line = new THREE.Line(this.lineGeo, this.white);
+    this.line = new THREE.Line(this.lineGeo, this.darkline);
     this.environment.scene.add(this.line);
 
     this.toSegment = new THREE.ArrowHelper(new THREE.Vector3(-1, 1, 0).normalize(), this.handle.position, 40, 0xdd3333);

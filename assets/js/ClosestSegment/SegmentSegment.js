@@ -8,6 +8,7 @@ var SegmentSegmentEnvironment = function () {
   this.dark = new THREE.MeshLambertMaterial({ color: 0x555555 });
   this.blue = new THREE.MeshPhongMaterial({ color: 0x3399dd });
   this.red = new THREE.MeshPhongMaterial({ color: 0xdd3333 });
+  this.darkline = new THREE.LineBasicMaterial({ color: 0x555555 });
   this.redline = new THREE.LineBasicMaterial({ color: 0xdd3333 });
 
   this.debug = document.currentScript.getAttribute("debug") == "enabled";
@@ -40,7 +41,7 @@ var SegmentSegmentEnvironment = function () {
       this.a.position,
       this.b.position
     );
-    this.line1 = new THREE.Line(this.line1Geo, this.white);
+    this.line1 = new THREE.Line(this.line1Geo, this.darkline);
     this.environment.scene.add(this.line1);
 
     this.pointAB = new THREE.Mesh(this.boxGeometry, this.red);
@@ -71,7 +72,7 @@ var SegmentSegmentEnvironment = function () {
       this.c.position,
       this.d.position
     );
-    this.line2 = new THREE.Line(this.line2Geo, this.white);
+    this.line2 = new THREE.Line(this.line2Geo, this.darkline);
     this.environment.scene.add(this.line2);
 
     this.pointCD = new THREE.Mesh(this.boxGeometry, this.red);
@@ -118,7 +119,7 @@ var SegmentSegmentEnvironment = function () {
       new THREE.Vector3(0, 0, 0),
       new THREE.Vector3(0, 0, 0)
     );
-    this.line3 = new THREE.Line(this.line3Geo, this.dark);
+    this.line3 = new THREE.Line(this.line3Geo, this.darkline);
     this.environment.scene.add(this.line3);
     this.line3.visible = this.debug;
 
