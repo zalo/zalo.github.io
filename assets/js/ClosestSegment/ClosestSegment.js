@@ -34,7 +34,7 @@ var ClosestSegmentEnvironment = function () {
 
     this.handle = new THREE.Mesh(this.boxGeometry, this.blue);
     this.handle.scale.set(0.075, 0.075, 0.075);
-    this.handle.position.set(20, 120, 0);
+    this.handle.position.set(20, 140, 0);
     this.handle.castShadow = true;
     this.environment.scene.add(this.handle);
     this.environment.draggableObjects.push(this.handle);

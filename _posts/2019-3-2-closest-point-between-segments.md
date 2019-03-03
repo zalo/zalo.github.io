@@ -32,6 +32,8 @@ It’s just so simple, fast, and useful! It works using the dot product to do ve
 
 But did you know that you can extend this trick to find the closest point between two line segments?
 
+### Line Segments
+
 <script type="text/javascript" src="../../assets/js/ClosestSegment/SegmentSegment.js" orbit="enabled"></script>
 
 The key is to recognize that you can turn the pair of line segments INTO a point and a line segment by squishing all four points onto the plane defined by the first line segment!
@@ -51,11 +53,13 @@ segABtoSegCD = constrainToSegment(segCDtoSegAB, segA, segB);
 
 Solving for the closest point in this reduced sub space gives you an answer that is valid in the full space!
 
+### Optimization
+
 You can also do this function entirely without square roots in its optimized form:
 ```
 segDC = segD - segC; float lineDirSqrMag = Dot(segDC, segDC);
-inPlaneA = segA - ((Dot(segA - segC, segDC) / lineDirSqrMag) * segDC);
-inPlaneB = segB - ((Dot(segB - segC, segDC) / lineDirSqrMag) * segDC);
+inPlaneA = segA-((Dot(segA-segC, segDC)/lineDirSqrMag)*segDC);
+inPlaneB = segB-((Dot(segB-segC, segDC)/lineDirSqrMag)*segDC);
 inPlaneBA = inPlaneB - inPlaneA;
 t = Dot(segC - inPlaneA, inPlaneBA) / Dot(inPlaneBA, inPlaneBA) ;
 t = (inPlaneA != inPlaneB) ? t : 0f; // Zero's t if parallel
