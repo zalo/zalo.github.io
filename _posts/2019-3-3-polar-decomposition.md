@@ -22,7 +22,7 @@ zBasis = cross(xBasis, yBasis).normalized;
 
 This algorithm is nice because it is short, analytic, and trivially differentiable (which can be useful in machine learning!)
 
-However, this algorithm is dependent on the order in which you solve the bases.  The input x-direction is unmodified, the y-direction is just perpendicular to that, and the input z-direction isn't even taken into account!  It is by no means *the* optimal orthonormal matrix.
+However, this algorithm is dependent on the order in which you solve the bases.  The input x-direction is unmodified, the y-direction is just perpendicular to that, and the input z-direction isn't even taken into account!  It is by no means *the optimal* orthonormal matrix.
 
 ### Robust Polar Decomposition
 
@@ -45,7 +45,8 @@ You can play with it here
 This algorithm looks like this
 ```
 for (iter = 0; iter < iterations; iter++) {
-  setBasesFromQuaternion(curQuaternion, curXBasis, curYBasis, curZBasis);
+  setBasesFromQuaternion(curQuaternion, 
+                         curXBasis, curYBasis, curZBasis);
   omega = (cross(curXBasis, inputXBasis) +
            cross(curYBasis, inputYBasis) +
            cross(curZBasis, inputZBasis)) / 
@@ -59,8 +60,11 @@ for (iter = 0; iter < iterations; iter++) {
 ```
 
 Or, in English, it executes these steps:
+
   1) Construct the torque ("tension") between its current orthogonal estimate of each basis and each input basis
+  
   2) Take the average of all the torques summed together
+  
   3) Apply this torque to its current rotation estimate via an Angle-Axis Quaternion
 
 When there is no more torque left to apply, the `curQuaternion` has converged on the optimal rotation fitting the orthonormal basis (at least according to the "Frobenius Norm").
