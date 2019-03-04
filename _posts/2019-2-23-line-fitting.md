@@ -25,7 +25,7 @@ Orthogonal Regression is the process of finding the line that best fits a set of
 
 This is more powerful than traditional least squares in that it is invariant to global rotation.
 
-Because of this, however, it has no analytic solution in 3D and above.  There are a variety of iterative solutions available, but they often depend on an operation called the **Singular Value Decomposition** or **SVD**.  The SVD is a complex matrix decomposition that is usually only found in heavy-weight matrix libraries.  Avoiding the inlusion of these libraries is the motivation for the technique outlined in this post.
+Because of this, however, it has no analytic solution in 3D and above.  There are a variety of iterative solutions available, but they often depend on an operation called the **Singular Value Decomposition** or **SVD**.  The SVD is a complex matrix decomposition that is usually only found in heavy-weight matrix libraries.  Avoiding the inclusion of these libraries is the motivation for the technique outlined in this post.
 
 ### The Centroid
 
