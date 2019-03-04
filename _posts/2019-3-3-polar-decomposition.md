@@ -11,7 +11,11 @@ toc: true
 
 A rotation matrix is really just an orthonormal basis (a set of three orthogonal, unit vectors representing the x, y, and z bases of your rotation).
 
-Often times when doing vector math, you'll want to find the closest rotation matrix to a set of vector bases.  The cheapest/default way is [Gram-Schmidt Orthonormalization](https://en.wikipedia.org/wiki/Gram%E2%80%93Schmidt_process).  This process works in n-dimensions using vector projection.
+Often times when doing vector math, you'll want to find the closest rotation matrix to a set of vector bases.  
+
+### Gram-Schmidt Orthonormalization
+
+The cheapest/default way is [Gram-Schmidt Orthonormalization](https://en.wikipedia.org/wiki/Gram%E2%80%93Schmidt_process).  This process works in n-dimensions using vector projection.
 
 A similar algorithm can be done in 3D with cross products:
 ```
@@ -20,17 +24,8 @@ yBasis = cross(zBasis, xBasis).normalized;
 zBasis = cross(xBasis, yBasis).normalized;
 ```
 
-This algorithm is nice because it is short, analytic, and trivially differentiable (which can be useful in machine learning!)
+This algorithm is nice because it is short, analytic, and trivially differentiable (which can be useful in machine learning!)  However, it only has one small issue....
 
-However, this algorithm is dependent on the order in which you solve the bases.  The input x-direction is unmodified, the y-direction is just perpendicular to that, and the input z-direction isn't even taken into account!  It is by no means *the optimal* orthonormal matrix.
-
-### Robust Polar Decomposition
-
-The solution to this problem came from my favorite paper of 2016: [Matthias Müller's Polar Decomposition](https://animation.rwth-aachen.de/media/papers/2016-MIG-StableRotation.pdf).   
-
-This paper offers a cheap, branchless iterative approximation to the orthonormalization problem that is extremely robust, where the error is spread out evenly across the three bases.  The secret is that, instead of trying to find the optimal _orthonormal matrix_, it finds the the optimal _rotation_ that matches an identity basis with the input basis.
-
-You can play with it here
 <!-- Hide the Table of Contents (but keep the navigation :^) ... -->
 <script type="text/javascript">
   document.getElementsByClassName('toc')[0].style.display = 'none';
@@ -40,6 +35,19 @@ You can play with it here
 <script type="text/javascript" src="../../assets/js/DragControls.js"></script>
 <script type="text/javascript" src="../../assets/js/OrbitControls.js"></script>
 <script type="text/javascript" src="../../assets/js/IK/Environment.js"></script>
+<script type="text/javascript" src="../../assets/js/PolarDecomposition/PolarDecomposition.js" orbit="enabled" badDecomposition="enabled"></script>
+
+It is terrible!
+
+This algorithm is dependent on the order in which the bases are solved.  The input x-direction is unmodified, the z-direction is just perpendicular to that, and the input y-direction is not even taken into account!  It is by no means *the optimal* orthonormal matrix.
+
+### Robust Polar Decomposition
+
+The solution to this problem came from my favorite paper of 2016: [Matthias Müller's Polar Decomposition](https://animation.rwth-aachen.de/media/papers/2016-MIG-StableRotation.pdf).   
+
+This paper offers a cheap, branchless iterative approximation to the orthonormalization problem that is extremely robust, where the error is spread out evenly across the three bases.  The secret is that, instead of trying to find the optimal _orthonormal matrix_, it finds the the optimal _rotation_ that matches an identity basis with the input basis.
+
+You can play with it here
 <script type="text/javascript" src="../../assets/js/PolarDecomposition/PolarDecomposition.js" orbit="enabled"></script>
 
 This algorithm looks like this
@@ -108,9 +116,9 @@ And you can play with the result here
 
 See any issues?
 
-It converges almost instantly compared to the quaternion torque technique, and it matches up perfectly... except for when it doesn't.
+It converges almost instantly compared to the quaternion torque technique, and it matches up perfectly... except for when it does not.
 
-It's good enough that I think the concept is sound, but there's something off in the implementation.   The common wisdom in vector math is that normalization is a sign of weak understanding; it's highly likely that if those `normalized`'s are replaced with dot products in the right way, it will evaluate more quickly _and_ converge on the correct answer.
+It is good enough that I think the concept is sound, but there is something off in the implementation.   The common wisdom in vector math is that normalization is a sign of weak understanding; it is highly likely that if those `normalized`'s are replaced with dot products in the right way, it will evaluate more quickly _and_ converge on the correct answer.
 
 If you can figure out the mystery of the faster optimal orthonormal matrix, I would like to hear from you!
 

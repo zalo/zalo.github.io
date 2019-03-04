@@ -16,6 +16,7 @@ var PolarDecompositionEnvironment = function () {
   this.blueline = new THREE.LineBasicMaterial({ color: 0x3333dd });
   this.arrowOrigin = new THREE.Vector3(0, 100, 0);
 
+  this.badDecomposition = document.currentScript.getAttribute("badDecomposition") == "enabled";
   this.cheapDecomposition = document.currentScript.getAttribute("crossProductDecomposition") == "enabled";
 
   this.currentQuaternion = new THREE.Quaternion(0, 0, 0, 1);
@@ -125,6 +126,15 @@ var PolarDecompositionEnvironment = function () {
     return nB;
   }
 
+  // Simple shitty orthonormalization gah
+  this.gramSchmidt = function (A) {
+    let nB = [A[0].clone(), A[1].clone(), A[2].clone()];
+    nB[0].normalize();
+    nB[1].crossVectors(nB[2], nB[0]).normalize();
+    nB[2].crossVectors(nB[0], nB[1]).normalize();
+    return nB;
+  }
+
   this.animate = function animatethis() {
     requestAnimationFrame(() => this.animate());
     //Set up a lazy render loop where it only renders if it's been interacted with in the last second
@@ -160,12 +170,19 @@ var PolarDecompositionEnvironment = function () {
       }
 
       // Begin the Quaternion Torque Decomposition
-      this.quaternionTorqueDecomposition(curBasis, this.currentQuaternion);
-      let quatMatrix = new THREE.Matrix4().makeRotationFromQuaternion(this.currentQuaternion);
-      quatMatrix.extractBasis(curBasis[0], curBasis[1], curBasis[2]);
-      this.quatRightArrow.setDirection(curBasis[0].normalize());
-      this.quatUpArrow.setDirection(curBasis[1].normalize());
-      this.quatForwardArrow.setDirection(curBasis[2].normalize());
+      if (this.badDecomposition) {
+        let badOrthogonalBasis = this.gramSchmidt(curBasis);
+        this.quatRightArrow.setDirection(badOrthogonalBasis[0]);
+        this.quatUpArrow.setDirection(badOrthogonalBasis[1]);
+        this.quatForwardArrow.setDirection(badOrthogonalBasis[2]);
+      } else {
+        this.quaternionTorqueDecomposition(curBasis, this.currentQuaternion);
+        let quatMatrix = new THREE.Matrix4().makeRotationFromQuaternion(this.currentQuaternion);
+        quatMatrix.extractBasis(curBasis[0], curBasis[1], curBasis[2]);
+        this.quatRightArrow.setDirection(curBasis[0].normalize());
+        this.quatUpArrow.setDirection(curBasis[1].normalize());
+        this.quatForwardArrow.setDirection(curBasis[2].normalize());
+      }
 
       this.environment.renderer.render(this.environment.scene, this.environment.camera);
     }
