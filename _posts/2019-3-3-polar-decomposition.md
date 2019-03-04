@@ -39,7 +39,7 @@ This algorithm is nice because it is short, analytic, and trivially differentiab
 
 It is terrible!
 
-This algorithm is dependent on the order in which the bases are solved.  The input x-direction is unmodified, the z-direction is just perpendicular to that, and the input y-direction is not even taken into account!  It is by no means *the optimal* orthonormal matrix.
+It does not spread the error evenly between the bases _at all_.  The result is dependent on the order in which the bases are solved.  The input x-direction is unmodified, the z-direction is just perpendicular to that, and the input y-direction is not even taken into account!  It is by no means *the optimal* orthonormal matrix.
 
 ### Robust Polar Decomposition
 
@@ -79,16 +79,16 @@ When there is no more torque left to apply, the `curQuaternion` has converged on
 
 ### Applications
 
-Matthias uses this technique to great effect in Nvidia FleX's Cluster Shape Matching Solver
+Matthias uses this technique to great effect in Nvidia FleX's Cluster Shape Matching Solver (beginning at 1:15 )
 {% include video id="YOBjHpoImu8?t=74" provider="youtube" %}
 
-It is a part of the algorithm that solves for the optimal rigid transformation between two sets of points.
+The robust polar decomposition is a part of the algorithm that solves for the optimal rigid transformation between two sets of points (in the shape-matching simulation step).
 
-This simple application is called the ["Kabsch Algorithm"](https://github.com/zalo/mathutilities#kabsch).  The Polar Decomposition stands in for the SVD here.
+Out of context, this simple application is called the ["Kabsch Algorithm"](https://github.com/zalo/mathutilities#kabsch).  The Polar Decomposition stands in for the SVD here.
 
-I have found the concept of quaternion torque averaging to be useful when taking the [spherical average of multiple quaternions](https://github.com/zalo/MathUtilities/blob/master/Assets/Kabsch/AverageQuaternion.cs), and when performing [fast mesh deformation](https://github.com/zalo/MathUtilities#generalized-mesh-deformation).
+I have also found the concept of quaternion torque averaging to be useful when taking the [spherical average of multiple quaternions](https://github.com/zalo/MathUtilities/blob/master/Assets/Kabsch/AverageQuaternion.cs), and when performing [fast mesh deformation](https://github.com/zalo/MathUtilities#generalized-mesh-deformation).
 
-It can often be used as an iterative, real-time substitute for an SVD.  It can even be extended to any number of dimensions (which support constructing angle-axis rotations of course).
+Really, it can be used as an iterative, real-time substitute for an SVD.  It can even be extended to any number of dimensions (which support constructing angle-axis rotations of course).
 
 ### The Future?
 
