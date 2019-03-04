@@ -61,11 +61,11 @@ for (iter = 0; iter < iterations; iter++) {
 
 Or, in English, it executes these steps:
 
-  1) Construct the torque ("tension") between its current orthogonal estimate of each basis and each input basis
+  1) Compute the torque between each input basis and its current orthogonal estimate of each basis
   
   2) Take the average of all the torques summed together
   
-  3) Apply this torque to its current rotation estimate via an Angle-Axis Quaternion
+  3) Apply this torque to its current rotation estimate using an Angle-Axis Quaternion
 
 When there is no more torque left to apply, the `curQuaternion` has converged on the optimal rotation fitting the orthonormal basis (at least according to the "Frobenius Norm").
 
