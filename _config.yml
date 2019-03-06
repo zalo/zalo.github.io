@@ -108,7 +108,7 @@ analytics:
 author:
   name             : "Johnathon Selstad"
   avatar           : "/assets/images/bio-photo.jpeg" # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
-  bio              : "Geometry Hobbyist, professional AR/VR and Computer Vision Engineer"
+  bio              : "Hobbyist Geometer, professional AR/VR and Computer Vision Engineer"
   location         : "San Francisco, CA"
   email            : "makeshifted@gmail.com"
   links:
@@ -136,13 +136,13 @@ footer:
   links:
     - label: "Twitter"
       icon: "fab fa-fw fa-twitter-square"
-      # url:
+      url: "https://twitter.com/JohnSelstad"
     - label: "Facebook"
       icon: "fab fa-fw fa-facebook-square"
       # url:
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
-      # url:
+      url: "https://github.com/zalo"
     - label: "GitLab"
       icon: "fab fa-fw fa-gitlab"
       # url:
