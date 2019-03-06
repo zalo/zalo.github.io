@@ -62,6 +62,8 @@ direction = nextDirection.normalize();
 ```
 <script type="text/javascript" src="../../assets/js/LineFitting/LineStepping.js" orbit="enabled"></script>
 
+In formal mathematics, this is known as [Power Iteration](https://en.wikipedia.org/wiki/Power_iteration).
+
 ### A Virtuous Cycle
 
 We only need to run the stepping routine repeatedly to converge on the line of best fit.
@@ -92,9 +94,9 @@ normal = cross(primaryAxis, secondaryAxis).normalized;
 
 ### Abusing Singularities for Fun and Profit
 
-** The observant among you might have noticed that there exist starting angles where the progress towards the true fitting line is **0**.  This is actually a singularity that occurs when the starting guess is perfectly orthogonal to the true answer.   <small>One should check for these cases, though it's rare in practice.</small>
+** The observant among you might have noticed that there exist starting angles where the progress towards the true fitting line is **0**.  This is actually a "singularity" that occurs when the starting guess is perfectly orthogonal to the true answer.   <small>One should check for these cases, though it's rare in practice.</small>
 
-However, it turns out we can abuse this singularity to fit all of the axes simultaneously!  Instead of projecting the _points_ onto the plane defined by the primary axis, we project the current estimation of the secondary axis itself!  This lets us solve for both the primary and secondary axes simultaneously!
+However, it turns out we can abuse this behaviour to fit all of the axes simultaneously!  Instead of projecting the _points_ onto the plane defined by the primary axis, we project the current estimation of the secondary axis itself!  This lets us solve for both the primary and secondary axes simultaneously!
 
 ```
 // Solve for the centroid (See Above)
@@ -113,6 +115,8 @@ normal = cross(primaryAxis, secondaryAxis).normalized;
 ```
 <script type="text/javascript" src="../../assets/js/LineFitting/PlaneFitting.js" orbit="enabled" residuals="enabled"></script>
 
-From here, it is trivial to see how one might add _additional_ secondary axes of fit.  There might come a point when numerical instability will prevent the lower-order axes from fitting nicely with this speedup.  If that happens, I recommend just projecting your points down to the plane after solving each axis.
+From here, it is trivial to see how one might add _additional_ secondary axes of fit.  In formal math terminology, this is equivalent to alternating [Power Iteration](https://en.wikipedia.org/wiki/Power_iteration) and [Gram-Schmidt Orthonormalization](https://en.wikipedia.org/wiki/Gram%E2%80%93Schmidt_process).
+
+There might come a point when numerical instability will prevent the lower-order axes from fitting nicely in this paradigm.  If that happens, I recommend just projecting your points down to the plane (defined by the previous axis) after solving each axis.
 
 I hope these techniques will come in handy whenever someone wants to fit lines or planes without incurring large dependencies within their projects.
