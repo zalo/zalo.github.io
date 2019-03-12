@@ -30,7 +30,7 @@ canvas {
 .togglebox {
   margin: 0 auto;
   width: 100%;
-  border: 1px solid #268bd2;
+  //border: 1px solid #268bd2;
 
   // Visually hide checkbox buttons
   input[type="checkbox"] {
@@ -38,8 +38,8 @@ canvas {
     opacity: 0;
     
     &:focus + label {
-      color: white;
-      background-color: #1f6aa0;
+      color: #0000ff;
+      background-color: white;
     }
   }
 
@@ -48,9 +48,9 @@ canvas {
     position: relative;
     display: block;
     cursor: pointer;
-    background: #268bd2;
-    color: white;
-    padding: .15em;
+    background: white;
+    color: #0000ff;
+    padding: .1em;
     //border-bottom: 1px solid white;
   }
 
