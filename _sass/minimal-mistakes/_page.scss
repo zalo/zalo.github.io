@@ -38,8 +38,8 @@ canvas {
     opacity: 0;
     
     &:focus + label {
-      color: black;
-      background-color: #dc322f;
+      color: white;
+      background-color: #1f6aa0;
     }
   }
 
@@ -50,15 +50,15 @@ canvas {
     cursor: pointer;
     background: #268bd2;
     color: white;
-    padding: .5em;
-    border-bottom: 1px solid white;
+    padding: .25em;
+    //border-bottom: 1px solid white;
   }
 
   // Style accordion content
   section {
     height: 0;
     transition: .3s all;
-    overflow: hidden;
+    overflow: auto;
   }
 
   // Open content when clicking label
@@ -70,7 +70,7 @@ canvas {
   #toggle6:checked ~ #content6 {
     // set height for transition duration to work
     // (also can set to auto without transition)
-    height: 400px;
+    height: 300px;
   }
 }
 
