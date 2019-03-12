@@ -30,26 +30,14 @@ THREE.DragControls = function ( _objects, _camera, _domElement ) {
 
 	function activate() {
 		_domElement.addEventListener( 'mousedown', onDocumentMouseDown, false );
+		_domElement.addEventListener( 'mousemove', onDocumentMouseMove, false );
 		_domElement.addEventListener( 'touchstart', onDocumentTouchStart, false );
-
-		document.addEventListener( 'mousemove', onDocumentMouseMove, false );
-		document.addEventListener( 'mouseup', onDocumentMouseCancel, false );
-		document.addEventListener( 'mouseleave', onDocumentMouseCancel, false );
-		document.addEventListener( 'touchmove', onDocumentTouchMove, false );
-		document.addEventListener( 'touchend', onDocumentTouchEnd, false );
-
 	}
 
 	function deactivate() {
 		_domElement.removeEventListener( 'mousedown', onDocumentMouseDown, false );
+		_domElement.removeEventListener( 'mousemove', onDocumentMouseMove, false );
 		_domElement.removeEventListener( 'touchstart', onDocumentTouchStart, false );
-
-		document.removeEventListener( 'mousemove', onDocumentMouseMove, false );
-		document.removeEventListener( 'mouseup', onDocumentMouseCancel, false );
-		document.removeEventListener( 'mouseleave', onDocumentMouseCancel, false );
-		document.removeEventListener( 'touchmove', onDocumentTouchMove, false );
-		document.removeEventListener( 'touchend', onDocumentTouchEnd, false );
-
 	}
 
 	function dispose() {
@@ -140,6 +128,10 @@ THREE.DragControls = function ( _objects, _camera, _domElement ) {
 
 			scope.dispatchEvent( { type: 'dragstart', object: _selected } );
 
+			document.addEventListener( 'mousemove', onDocumentMouseMove, false );
+			document.addEventListener( 'mouseup', onDocumentMouseCancel, false );
+			document.addEventListener( 'mouseleave', onDocumentMouseCancel, false );
+
 		}
 
 
@@ -155,6 +147,9 @@ THREE.DragControls = function ( _objects, _camera, _domElement ) {
 
 			_selected = null;
 
+			document.removeEventListener( 'mousemove', onDocumentMouseMove, false );
+			document.removeEventListener( 'mouseup', onDocumentMouseCancel, false );
+			document.removeEventListener( 'mouseleave', onDocumentMouseCancel, false );
 		}
 
 		_domElement.style.cursor = _hovered ? 'pointer' : 'auto';
@@ -220,6 +215,9 @@ THREE.DragControls = function ( _objects, _camera, _domElement ) {
 
 			scope.dispatchEvent( { type: 'dragstart', object: _selected } );
 
+			document.addEventListener( 'touchmove', onDocumentTouchMove, false );
+			document.addEventListener( 'touchend', onDocumentTouchEnd, false );
+
 		}
 
 
@@ -235,6 +233,8 @@ THREE.DragControls = function ( _objects, _camera, _domElement ) {
 
 			_selected = null;
 
+			document.removeEventListener( 'touchmove', onDocumentTouchMove, false );
+			document.removeEventListener( 'touchend', onDocumentTouchEnd, false );
 		}
 
 		_domElement.style.cursor = 'auto';
