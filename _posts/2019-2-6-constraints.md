@@ -60,6 +60,23 @@ for (i = 1; i < segments.length; i++) {
 <a href="https://github.com/zalo/zalo.github.io/blob/master/assets/js/Constraints/Chain.js"><small>Full Source</small></a>
 </section>
 
+<div class="togglebox">
+  <input id="toggle1" type="checkbox" name="toggle" />
+  <label for="toggle1">Show Code</label>
+  <section id="content1" markdown="1" >
+~~~ javascript
+//Set the first link's position to be at the mouse
+rope.segments[0] = mousePos;
+for (i = 1; i < segments.length; i++) {
+  //Pull the next segment to the previous one
+  rope.segments[i] = ConstrainDistance(
+    rope.segments[i], rope.segments[i-1], distance
+  );
+}
+~~~
+  </section>
+</div>
+
 The order in which constraints are satisfied is important.  The ones here are solved stepping away from the mouse, which pulls them _towards_ the mouse.
 
 ## FABRIK Chain
