@@ -15,17 +15,6 @@ The essence of constraint is projection.
 
 The most basic constraint is the distance constraint
 
-<!-- Add the ability to toggle code blocks... -->
-<script type="text/javascript">
-  function toggle_visibility(id) {
-    var e = document.getElementById(id);
-    if(e.style.display == 'block')
-       e.style.display = 'none';
-    else
-      e.style.display = 'block';
-  }
-  document.getElementsByClassName('toc')[0].style.display = 'none';
-</script>
 <!-- Load the Paper.js library -->
 <script type="text/javascript" src="../../assets/js/paper-full.min.js"></script>
 <script type="text/paperscript" src="../../assets/js/Constraints/SimpleDistance.js" canvas="distance1"></script>
@@ -71,8 +60,10 @@ If the distance constraints are first solved in one direction, and then the othe
 
 <script type="text/paperscript" src="../../assets/js/Constraints/FABRIK.js" canvas="distance3"></script>
 <canvas id="distance3" width="350" height="350"></canvas>
-<a onclick="toggle_visibility('pseudocode2');"><small>Show Code</small></a>
-<section id="pseudocode2" markdown="1" style="display:none;">
+<div class="togglebox">
+  <input id="toggle2" type="checkbox" name="toggle" />
+  <label for="toggle2">Show Code</label>
+  <section id="content2" markdown="1" >
 ~~~ javascript
 //Set the first link's position to be at the mouse
 rope.segments[0] = mousePos;
@@ -93,7 +84,8 @@ for (i = segments.length - 1; i > 0; i--) {
 }
 ~~~
 <a href="https://github.com/zalo/zalo.github.io/blob/master/assets/js/Constraints/FABRIK.js"><small>Full Source</small></a>
-</section>
+  </section>
+</div>
 
 ## Collision Constraint
 
@@ -101,8 +93,10 @@ Distance Constraints can also be used to separate
 
 <script type="text/paperscript" src="../../assets/js/Constraints/Collision.js" canvas="distance4"></script>
 <canvas id="distance4" width="350" height="350"></canvas>
-<a onclick="toggle_visibility('pseudocode3');"><small>Show Code</small></a>
-<section id="pseudocode3" markdown="1" style="display:none;">
+<div class="togglebox">
+  <input id="toggle3" type="checkbox" name="toggle" />
+  <label for="toggle3">Show Code</label>
+  <section id="content3" markdown="1" >
 ~~~ javascript
 //Separate the balls from the mouse
 float cRadius = mRadius + bRadius;
@@ -129,7 +123,8 @@ for(i = 0; i < balls.length; i++){
 }
 ~~~
 <a href="https://github.com/zalo/zalo.github.io/blob/master/assets/js/Constraints/Collision.js"><small>Full Source</small></a>
-</section>
+  </section>
+</div>
 
 ## Collision Constraints with Verlet
 
@@ -139,8 +134,10 @@ If the constraints act symmetrically (where each participant steps half-way towa
 
 </script>
 <canvas id="distance5" width="350" height="350"></canvas>
-<a onclick="toggle_visibility('pseudocode5');"><small>Show Code</small></a>
-<section id="pseudocode5" markdown="1" style="display:none;">
+<div class="togglebox">
+  <input id="toggle4" type="checkbox" name="toggle" />
+  <label for="toggle4">Show Code</label>
+  <section id="content4" markdown="1" >
 ~~~ javascript
 for(i = 0; i < balls.length; i++){
   //-*Use Verlet Integration to add inertia*-
@@ -158,7 +155,8 @@ for(iterations = 0; iterations < 5; iterations++){
 }
 ~~~
 <a href="https://github.com/zalo/zalo.github.io/blob/master/assets/js/Constraints/VerletCollision.js"><small>Full Source</small></a>
-</section>
+  </section>
+</div>
 
 ## Verlet Rope
 
