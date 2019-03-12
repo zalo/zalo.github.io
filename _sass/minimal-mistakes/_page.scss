@@ -50,15 +50,17 @@ canvas {
     cursor: pointer;
     background: #268bd2;
     color: white;
-    padding: .25em;
+    padding: .15em;
     //border-bottom: 1px solid white;
   }
 
   // Style accordion content
   section {
-    height: 0;
-    transition: .3s all;
+    height: auto;
+    max-height: 0px;
+    transition: .4s all;
     overflow: auto;
+    padding: 0.0em;
   }
 
   // Open content when clicking label
@@ -70,7 +72,7 @@ canvas {
   #toggle6:checked ~ #content6 {
     // set height for transition duration to work
     // (also can set to auto without transition)
-    height: 300px;
+    max-height: 700px;
   }
 }
 
