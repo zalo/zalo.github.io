@@ -16,6 +16,9 @@ The essence of constraint is projection.
 The most basic constraint is the distance constraint
 
 <!-- Load the Paper.js library -->
+<script type="text/javascript">
+  document.getElementsByClassName('toc')[0].style.display = 'none';
+</script>
 <script type="text/javascript" src="../../assets/js/paper-full.min.js"></script>
 <script type="text/paperscript" src="../../assets/js/Constraints/SimpleDistance.js" canvas="distance1"></script>
 <canvas id="distance1" width="350" height="350"></canvas>
