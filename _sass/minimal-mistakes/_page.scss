@@ -50,6 +50,7 @@ canvas {
     cursor: pointer;
     background: white;
     color: #0000ff;
+    text-decoration: underline;
     //padding: .05em;
     //border-bottom: 1px solid white;
   }
@@ -73,6 +74,18 @@ canvas {
     // set height for transition duration to work
     // (also can set to auto without transition)
     max-height: 700px;
+  }
+
+  // Open content when clicking label
+  #toggle1Long:checked ~ #content1Long,
+  #toggle2Long:checked ~ #content2Long,
+  #toggle3Long:checked ~ #content3Long,
+  #toggle4Long:checked ~ #content4Long,
+  #toggle5Long:checked ~ #content5Long,
+  #toggle6Long:checked ~ #content6Long {
+    // set height for transition duration to work
+    // (also can set to auto without transition)
+    max-height: 2000px;
   }
 }
 

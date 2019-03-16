@@ -114,14 +114,14 @@ Now that the system is only "sufficiently actuated" (where the IK is using each 
 These concavities are impossible to avoid in a heuristic IK algorithm (read: all of them except `Analytic`).  However, it is possible for to "jump out of" concavities by adding large random offsets to each joint, and then attempting the IK solve again.   This is known as ["Simulated Annealing"](https://en.wikipedia.org/wiki/Simulated_annealing).  Implementing this is left as an exercise to the reader.
 
 <div class="togglebox">
-  <input id="toggle1" type="checkbox" name="toggle" />
-  <label for="toggle1">Click for Appendix: Rotation from Two Vectors</label>
-  <section id="content1" markdown="1" >
-Though 3D Engines ([Unity](https://docs.unity3d.com/ScriptReference/Quaternion.FromToRotation.html), [Three.js](https://threejs.org/docs/#api/en/math/Quaternion.setFromUnitVectors)) usually come with this function, you might find it useful to have.
+  <input id="toggle1Long" type="checkbox" name="toggle" />
+  <label for="toggle1Long">Click for Appendix: Rotation from Two Vectors</label>
+  <section id="content1Long" markdown="1" >
+While 3D Engines ([Unity](https://docs.unity3d.com/ScriptReference/Quaternion.FromToRotation.html), [Three.js](https://threejs.org/docs/#api/en/math/Quaternion.setFromUnitVectors)) come with this function, it can be useful to see how it is implemented.
 
-[Sam](http://lolengine.net/blog/2013/09/18/beautiful-maths-quaternion-from-vectors) [Hocevar](http://lolengine.net/blog/2014/02/24/quaternion-from-two-vectors-final), [Inigo Quilez](https://iquilezles.org/www/articles/noacos/noacos.htm), [Jonathon Blow](http://number-none.com/product/IK%20with%20Quaternion%20Joint%20Limits/), and [Marc B. Reynolds](http://marc-b-reynolds.github.io/quaternions/2016/08/09/TwoNormToRot.html) all give excellent implementations.
+[Sam](http://lolengine.net/blog/2013/09/18/beautiful-maths-quaternion-from-vectors) [Hocevar](http://lolengine.net/blog/2014/02/24/quaternion-from-two-vectors-final), [Inigo Quilez](https://iquilezles.org/www/articles/noacos/noacos.htm), [Jonathon Blow](http://number-none.com/product/IK%20with%20Quaternion%20Joint%20Limits/), and [Marc B. Reynolds](http://marc-b-reynolds.github.io/quaternions/2016/08/09/TwoNormToRot.html) all give excellent implementations and derivations.
 
-For convenience, I will mirror Sam's robust C++ implementation:
+For convenience, this is a mirror of Sam Hocevar's robust C++ implementation:
 ~~~ c++
 quat quat::fromtwovectors(vec3 u, vec3 v) {
     float norm_u_norm_v = sqrt(dot(u, u) * dot(v, v));
@@ -144,7 +144,7 @@ quat quat::fromtwovectors(vec3 u, vec3 v) {
 }
 ~~~
 
-and Marc's C++ implementation:
+and Marc's Simple C++ implementation:
 ~~~ c++
 vec4 q_from_normals(vec3 a, vec3 b) {
   float k = 1.0+dot(a,b);         // 1+d
