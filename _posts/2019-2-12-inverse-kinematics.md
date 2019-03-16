@@ -11,7 +11,7 @@ toc: true
 
 Inverse Kinematics is the process of finding a set of joint angles that reach a goal position.
 
-My favorite way of doing Inverse Kinematics is called "Quaternion Cyclic Coordinate Descent" or "CCDIK":
+My favorite way of doing Inverse Kinematics is called ["Quaternion Cyclic Coordinate Descent"](http://number-none.com/product/IK%20with%20Quaternion%20Joint%20Limits/) or "CCDIK":
 
 <!-- Hide the Table of Contents (but keep the navigation :^) ... -->
 <script type="text/javascript">
@@ -112,3 +112,45 @@ foreach joint in jointsTipToBase {
 Now that the system is only "sufficiently actuated" (where the IK is using each degree of freedom the arm possesses), you'll notice that it hits joint-limit based singularities more often.   
 
 These concavities are impossible to avoid in a heuristic IK algorithm (read: all of them except `Analytic`).  However, it is possible for to "jump out of" concavities by adding large random offsets to each joint, and then attempting the IK solve again.   This is known as ["Simulated Annealing"](https://en.wikipedia.org/wiki/Simulated_annealing).  Implementing this is left as an exercise to the reader.
+
+<div class="togglebox">
+  <input id="toggle1" type="checkbox" name="toggle" />
+  <label for="toggle1">Click for Appendix: Rotation from Two Vectors</label>
+  <section id="content1" markdown="1" >
+Though 3D Engines ([Unity](https://docs.unity3d.com/ScriptReference/Quaternion.FromToRotation.html), [Three.js](https://threejs.org/docs/#api/en/math/Quaternion.setFromUnitVectors)) usually come with this function, you might find it useful to have.
+
+[Sam](http://lolengine.net/blog/2013/09/18/beautiful-maths-quaternion-from-vectors) [Hocevar](http://lolengine.net/blog/2014/02/24/quaternion-from-two-vectors-final), [Inigo Quilez](https://iquilezles.org/www/articles/noacos/noacos.htm), [Jonathon Blow](http://number-none.com/product/IK%20with%20Quaternion%20Joint%20Limits/), and [Marc B. Reynolds](http://marc-b-reynolds.github.io/quaternions/2016/08/09/TwoNormToRot.html) all give excellent implementations.
+
+For convenience, I will mirror Sam's robust C++ implementation:
+~~~ c++
+quat quat::fromtwovectors(vec3 u, vec3 v) {
+    float norm_u_norm_v = sqrt(dot(u, u) * dot(v, v));
+    float real_part = norm_u_norm_v + dot(u, v);
+    vec3 w;
+
+    if (real_part < 1.e-6f * norm_u_norm_v) {
+        /* If u and v are exactly opposite, rotate 180 degrees
+         * around an arbitrary orthogonal axis. Axis normalisation
+         * can happen later, when we normalise the quaternion. */
+        real_part = 0.0f;
+        w = abs(u.x) > abs(u.z) ? vec3(-u.y, u.x, 0.f)
+                                : vec3(0.f, -u.z, u.y);
+    } else {
+        /* Otherwise, build quaternion the standard way. */
+        w = cross(u, v);
+    }
+
+    return normalize(quat(real_part, w.x, w.y, w.z));
+}
+~~~
+
+and Marc's C++ implementation:
+~~~ c++
+vec4 q_from_normals(vec3 a, vec3 b) {
+  float k = 1.0+dot(a,b);         // 1+d
+  float s = inversesqrt(k+k);     // 1/sqrt(2+2d)
+  return vec4(s*cross(a,b), k*s); // (1+d)/sqrt(2+2d) + (a x b)/sqrt(2+2d)
+}
+~~~
+  </section>
+</div>
