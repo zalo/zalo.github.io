@@ -27,15 +27,15 @@ var Environment = function () {
 
     var light = new THREE.HemisphereLight(0xffffff, 0x444444);
     light.position.set(0, 200, 0);
-    var light2 = new THREE.DirectionalLight(0xbbbbbb);
-    light2.position.set(0, 200, 100);
-    light2.castShadow = true;
-    light2.shadow.camera.top = 180;
-    light2.shadow.camera.bottom = - 100;
-    light2.shadow.camera.left = - 120;
-    light2.shadow.camera.right = 120;
+    this.light2 = new THREE.DirectionalLight(0xbbbbbb);
+    this.light2.position.set(0, 200, 100);
+    this.light2.castShadow = true;
+    this.light2.shadow.camera.top = 180;
+    this.light2.shadow.camera.bottom = - 100;
+    this.light2.shadow.camera.left = - 120;
+    this.light2.shadow.camera.right = 120;
     this.scene.add(light);
-    this.scene.add(light2);
+    this.scene.add(this.light2);
     //scene.add(new THREE.CameraHelper(light.shadow.camera));
     var mesh = new THREE.Mesh(new THREE.PlaneBufferGeometry(2000, 2000), new THREE.MeshPhongMaterial({ color: 0x999999, depthWrite: false }));
     mesh.rotation.x = - Math.PI / 2;
@@ -69,8 +69,8 @@ var Environment = function () {
       this.controls.screenSpacePanning = true;
       this.controls.update();
       this.controls.addEventListener('change', () => this.viewDirty = true);
-      this.dragControls.addEventListener('dragstart', () => this.controls.enabled = false);
-      this.dragControls.addEventListener('dragend', () => this.controls.enabled = true);
+      this.dragControls.addEventListener('dragstart', (data) => { this.controls.enabled = false;  data.object._isDragging = true; });
+      this.dragControls.addEventListener('dragend', (data) => { this.controls.enabled = true; data.object._isDragging = false; });
     }
     this.dragControls.addEventListener('drag', () => this.viewDirty = true);
 

@@ -109,9 +109,9 @@ foreach joint in jointsTipToBase {
 ```
 <script type="text/javascript" src="../../assets/js/IK/IKExample.js" ccd="enabled" hinge="enabled" limits="enabled" orbit="enabled" matchDirection="enabled"></script>
 
-Now that the system is only "sufficiently actuated" (where the IK is using each degree of freedom the arm possesses), you'll notice that it hits joint-limit based singularities more often.   
+Now that the system is only "sufficiently actuated" (where the IK is using each degree of freedom the arm possesses), you may notice that it hits joint-limit based singularities more often.   
 
-These concavities are impossible to avoid in a heuristic IK algorithm (read: all of them except `Analytic`).  However, it is possible for to "jump out of" concavities by adding large random offsets to each joint, and then attempting the IK solve again.   This is known as ["Simulated Annealing"](https://en.wikipedia.org/wiki/Simulated_annealing).  Implementing this is left as an exercise to the reader.
+These concavities are impossible to avoid in a heuristic IK algorithm (read: all of them except `Analytic`).  However, it is possible to "jump out of" concavities by adding large random offsets to each joint, and then attempting the IK solve again.   This is known as ["Simulated Annealing"](https://en.wikipedia.org/wiki/Simulated_annealing).  Implementing this is left as an exercise to the reader.
 
 <div class="togglebox">
   <input id="toggle1Long" type="checkbox" name="toggle" />

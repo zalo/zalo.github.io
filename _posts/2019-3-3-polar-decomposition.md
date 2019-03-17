@@ -6,6 +6,7 @@ tags:
   - Cross Covariance Matrix
   - Rotation Matrix
   - Polar Decomposition
+  - Kabsch
 toc: true
 ---
 

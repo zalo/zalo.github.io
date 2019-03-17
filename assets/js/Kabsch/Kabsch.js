@@ -12,6 +12,8 @@ var KabschEnvironment = function () {
 
   this.numPoints = 5;
 
+  this.showAverage = document.currentScript.getAttribute("showAverage") == "enabled";
+
   this.initPoints = function () {
     let scl = new THREE.Vector3(100, 100, 100);
     for (let i = 0; i < this.numPoints; i++) {
@@ -50,11 +52,13 @@ var KabschEnvironment = function () {
       this.environment.controls.update();
     }
 
-    this.avg = new THREE.Mesh(this.boxGeometry, new THREE.MeshPhongMaterial({ color: 0xdd3333 }));
-    this.environment.scene.add(this.avg);
-    this.avg.scale.set(0.075, 0.075, 0.075);
-    this.avg.position.set(average.x, average.y, average.z);
-    this.avg.castShadow = true;
+    if(this.showAverage){
+      this.avg = new THREE.Mesh(this.boxGeometry, new THREE.MeshPhongMaterial({ color: 0xdd3333 }));
+      this.environment.scene.add(this.avg);
+      this.avg.scale.set(0.075, 0.075, 0.075);
+      this.avg.position.set(average.x, average.y, average.z);
+      this.avg.castShadow = true;
+    }
   }
 
   this.getAverage = function (points) {
@@ -69,6 +73,9 @@ var KabschEnvironment = function () {
   //https://animation.rwth-aachen.de/media/papers/2016-MIG-StableRotation.pdf
   //Iteratively apply torque to the basis using Cross products (in place of SVD)
   this.quaternionTorqueDecomposition = function (A, curQuaternion, iterations = 9) {
+    // Cancels out the momentum from the prior frame
+    curQuaternion.copy(new THREE.Quaternion(0,0,0,1));
+
     let QuatBasis = [new THREE.Vector3(1, 0, 0), new THREE.Vector3(0, 1, 0), new THREE.Vector3(0, 0, 1)];
     let quatMatrix = new THREE.Matrix4().makeRotationFromQuaternion(curQuaternion);
 
@@ -144,7 +151,7 @@ var KabschEnvironment = function () {
       this.kabschPoints(this.pointsToMatch, this.pointsRef);
 
       let averageRef = this.getAverage(this.pointsRef);
-      this.avg.position.set(averageRef.x, averageRef.y, averageRef.z);
+      if(this.showAverage){ this.avg.position.set(averageRef.x, averageRef.y, averageRef.z); }
 
       this.environment.renderer.render(this.environment.scene, this.environment.camera);
     }
