@@ -198,9 +198,8 @@ var ShapeMatchingEnvironment = function () {
           }
         }
 
-        let blobAverage = this.getAverage(this.pointsRef);
-        this.environment.light2.position.copy(blobAverage.add(new THREE.Vector3(0, 200, 100)));
-
+        //let blobAverage = this.getAverage(this.pointsRef);
+        //this.environment.light2.position.copy(blobAverage.add(new THREE.Vector3(0, 200, 100)));
       }
 
       this.environment.renderer.render(this.environment.scene, this.environment.camera);
