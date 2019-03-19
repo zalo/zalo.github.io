@@ -62,7 +62,7 @@ Even at one iteration per frame, this is beginning to look pretty good! But real
 
 ### Limits
 
-You can apply limits in local-euler angle space
+You can apply axis-aligned hinge limits in local-euler angle space
 ```
 foreach joint in jointsTipToBase {
   // Point the effector towards the goal (See Above)
@@ -84,7 +84,7 @@ This final aspect gives you an iterative 3D IK algorithm that beats nearly every
 |----------------------------|-------------------|---------------------------|--------------------|---------------------|--------------------------------------|
 | Implementation Complexity? | Extremely Complex | Hard                      | Hard               | Easy                | Easy                                 |
 | Speed                      | Extremely Fast    | Slow To Converge          | Slow To Converge   | Fast                | Fast                                 |
-| Hinges Joints              | Only Hinges?      | Yes                       | Yes                | No!                 | Yes                                  |
+| Hinge Joints               | Only Hinges?      | Yes                       | Yes                | No!                 | Yes                                  |
 | Joint Limits               | Difficult         | Yes                       | No                 | Conical Limits      | Yes                                  |
 | Hits Singularities         | Never             | Often                     | Often              | Never (w/out hinges)| Rarely (often anneals through them) |
 | Convergence Behaviour      | Instant           | Stable                    | Stable             | Very Well Behaved   | Well Behaved across short distances  |
