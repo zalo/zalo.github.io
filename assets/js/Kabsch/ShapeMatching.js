@@ -38,7 +38,7 @@ var ShapeMatchingEnvironment = function () {
       sphere.position.set(
         (Math.random() * scl.x) - (scl.x / 2),
         (Math.random() * scl.y) - (scl.y / 2) + 100,
-        (Math.random() * scl.z) - (scl.z / 2));
+        (Math.random() * scl.z) - (scl.z / 2) - 50);
       sphere.castShadow = true;
       this.pointsRef.push(sphere);
       this.pastPoints.push(sphere.position.clone());

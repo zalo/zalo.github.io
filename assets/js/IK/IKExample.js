@@ -1,3 +1,4 @@
+// An editable version can be found here: https://codepen.io/zalo/pen/MLBKBv?editors=0010
 var IKEnvironment = function () {
   this.environment = new Environment();
   this.updating = false;
@@ -27,10 +28,7 @@ var IKEnvironment = function () {
     var target = new THREE.Mesh(this.boxGeometry, new THREE.MeshPhongMaterial({ color: 0x3399dd }));
     target.position.set(0, 100, 0);
     target.scale.set(0.075, 0.075, 0.075);
-    //target.transparent = true;
-    //target.opacity = 0.25;
     target.castShadow = true;
-    //target.receiveShadow = true;
     this.environment.scene.add(target);
     this.environment.draggableObjects.push(target);
   }
@@ -48,15 +46,12 @@ var IKEnvironment = function () {
     box.scale.set(size[0], size[1], size[2]);
     box.position.set(graphicsOffset[0], graphicsOffset[1], graphicsOffset[2]);
     box.castShadow = true;
-    //box.receiveShadow = true;
-
-    //joint.arrow = new THREE.ArrowHelper(new THREE.Vector3(1.0, 0, 0), new THREE.Vector3(0.0, 0, 0), 20, 0x3399dd);
-    //joint.add(joint.arrow);
-
     return joint;
   }
 
-  //Beautiful CCDIK
+  // The Quaternion CCDIK Step
+  // An example of a cleaner implementation can be seen in the Unity code:
+  // https://github.com/zalo/MathUtilities/blob/master/Assets/IK/CCDIK/CCDIKJoint.cs
   this.solveIK = function (targetPosition) {
     var tooltipPosition = new THREE.Vector3();
     var toolRotation = new THREE.Quaternion();
@@ -70,12 +65,12 @@ var IKEnvironment = function () {
         tooltipPosition.add(new THREE.Vector3(3.25, 0, 0));
       }
 
-      //(Ideally this could be done entirely in worldspace (instead of local space
-      //(which require all of these terrible hacks that you see)))
-      // An example of a clean implementation can be seen in the Unity code:
-      // https://github.com/zalo/MathUtilities/blob/master/Assets/IK/CCDIK/CCDIKJoint.cs
+      // (Ideally this could be done entirely in worldspace (instead of local space
+      // (which require all of these terrible hacks that you see)))
+
+      // Decide whether to point _toward_ the target, or along the target's direction
       if (this.matchDirection && (i > this.IKJoints.length - 3)) {
-        //Rotate to align with a direction
+        // Rotate to align with a direction
         var toolDirection = new THREE.Vector3(1.0, 0, 0);
         this.endEffector.getWorldQuaternion(toolRotation);
         invToolRotation = toolRotation.clone().inverse();
@@ -87,15 +82,18 @@ var IKEnvironment = function () {
         fromToQuat.setFromUnitVectors(toolDirection, targetDirection);
         this.IKJoints[i].quaternion.multiply(fromToQuat);
       } else if (this.ccd) {
-        //Rotate towards the Target
+        // Rotate towards the Target
         var toolDirection = this.IKJoints[i].worldToLocal(tooltipPosition.clone()).normalize();
         var targetDirection = this.IKJoints[i].worldToLocal(targetPosition.clone()).normalize();
         fromToQuat.setFromUnitVectors(toolDirection, targetDirection);
         this.IKJoints[i].quaternion.multiply(fromToQuat);
       }
 
-      //Find the rotation from here to the parent, and rotate the axis by it...
-      //This ensures that you're always rotating with the hinge
+      // Find the rotation from here to the parent, and rotate the axis by it...
+      // This ensures that were always rotating with the hinge
+      // (this can also be "done" by projecting the directions in the block above
+      // to the plane of the axis of rotation, but that allows for the joint's hinge 
+      // angle to drift due to floating point inaccuracy)
       if (this.hinge) {
         var invRot = this.IKJoints[i].quaternion.clone().inverse();
         var parentAxis = this.IKJoints[i].axis.clone().applyQuaternion(invRot);
@@ -103,8 +101,8 @@ var IKEnvironment = function () {
         this.IKJoints[i].quaternion.multiply(fromToQuat);
       }
 
-      //Clamp to Joint Limits - Relies on sensical computation of these values... only works for x-axis here ¯\_(ツ)_/¯
-      //Seems like rotations range from -pi, pi... not the worst... but bad for clamps through there
+      // Clamp to Joint Limits - Relies on sensical computation of these values... only works for x-axis here ¯\_(ツ)_/¯
+      // Seems like rotations range from -pi, pi... not the worst... but bad for clamps through there
       if (this.limits) {
         var clampedRot = this.IKJoints[i].rotation.toVector3().clampScalar(this.IKJoints[i].minLimit, this.IKJoints[i].maxLimit);
         this.IKJoints[i].rotation.setFromVector3(clampedRot);
@@ -128,7 +126,10 @@ var IKEnvironment = function () {
         this.environment.draggableObjects[0].position.y = Math.max(0, this.environment.draggableObjects[0].position.y);
       }
 
+      // Do one iteration of IK
       this.solveIK(this.environment.draggableObjects[0].position);
+
+      // Render
       this.environment.renderer.render(this.environment.scene, this.environment.camera);
     }
   };

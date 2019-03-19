@@ -73,6 +73,7 @@ foreach joint in jointsTipToBase {
 }
 ```
 <script type="text/javascript" src="../../assets/js/IK/IKExample.js" ccd="enabled" hinge="enabled" limits="enabled" orbit="enabled"></script>
+<small>[Full Source](https://github.com/zalo/zalo.github.io/blob/master/assets/js/IK/IKExample.js)</small>
 
 This final aspect gives you an iterative 3D IK algorithm that beats nearly every other Heuristic Inverse Kinematics algorithm out there.
 
