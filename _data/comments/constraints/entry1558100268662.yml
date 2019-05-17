@@ -1,0 +1,9 @@
+_id: f5aa0530-78a8-11e9-92ac-c7ea9b0b6095
+name: IPEG
+message: >-
+  The first example code doesn't exactly represent what the demo shows, which is
+  confusing. The constraint code produces a point that is always on the edge of
+  the circle, while the demo only moves the black point to the edge of the
+  circle if it's outside of it =)
+hidden: ''
+date: 1558100268
