@@ -1,8 +1,12 @@
-with(paper){
+with(paper) {
   var DrawingEnvironment = function () {
     //this.fullEditor = document.currentScript.getAttribute("full") == "enabled";
     this.movePath = true;
     this.brushWidth = 5;
+    this.skinningWidth = 3;
+    this.frameRate = 24;
+
+    this.reader = new FileReader();
 
     this.init = function () {
       // Create the Canvas Element
@@ -18,21 +22,62 @@ with(paper){
       // Only execute our code once the DOM is ready
       window.onload = function() {
           setup(drawingEnvironment.canvas);
+          project.activeLayer.name = "Drawing";
 
-          view.onFrame  = function(event) { }
-          view.onResize = function(event) { }
+          // Register Animation and Resizing Callbacks
+          //view.onFrame  = function(event) { }
+          //view.onResize = function(event) { }
 
-          drawingEnvironment.initBrushTool();
+          // Initialize the Brush/Manipulator/Eraser Tool
+          drawingEnvironment.initOmniTool();
 
+          // Add the Brush Width Slider
           document.getElementById("brushWidth").addEventListener('change', (data) => { 
             drawingEnvironment.brushWidth = data.target.value;
+          });
+
+          // Allow users to upload SVGs from past sessions
+          document.getElementById("svg-file").addEventListener('input', () => {
+            drawingEnvironment.reader.addEventListener("load", () => { 
+              project.importSVG(drawingEnvironment.reader.result, {
+                expandShapes: true,
+                insert: false,
+                onLoad: (item) => {
+                  let removeFirstLater = false;
+                  let layerIndex = project.activeLayer.index;
+                  if(project.layers.length == 1 && project.activeLayer.children.length==0){
+                    removeFirstLater = true;
+                  }
+                   console.log("Loading Success! Found "+item.children.length+" frames.");
+                   for (let i = 0; i < item.children.length; i++) {
+                    item.children[i].visible = true;
+                    let nextIndex = project.activeLayer.index + 1;
+                    let nextFrameLayer = new Layer({
+                      name: item.children[i].name,
+                      children: item.children[i].children
+                    });
+                    project.insertLayer(nextIndex, nextFrameLayer);
+                    nextFrameLayer.activate();
+                   }
+                   if(removeFirstLater){ project.layers[0].remove(); }
+                   project.layers[layerIndex].activate();
+                },
+                onError: (errMsg) => { console.error(errMsg); }
+              });
+              drawingEnvironment.updateOnionSkinning();
+            }); 
+
+            // Read the file!
+            drawingEnvironment.reader.readAsText(document.getElementById("svg-file").files[0]);
           });
       }
     }
 
-    this.initBrushTool = function() {
-      this.brush = new Tool();
-      this.brush.onMouseDown = function(event) {
+    // Initialize the callbacks for the mouse tool
+    this.initOmniTool = function() {
+      this.omniTool = new Tool();
+      this.omniTool.lastTolerance = 5;
+      this.omniTool.onMouseDown = function(event) {
         this.button = event.event.button;
 
         if (this.button == 0) {
@@ -43,12 +88,7 @@ with(paper){
           this.currentPath.strokeCap = 'round';
         } else {
           this.currentSegment = this.currentPath = null;
-          var hitResult = project.hitTest(event.point, {
-            segments: true,
-            stroke: true,
-            fill: false,
-            tolerance: this.lastTolerance
-          });
+          let hitResult = this.hitTestActiveLayer(event.point);
 
           // Return if there's nothing to move or delete
           if (!hitResult)
@@ -62,7 +102,7 @@ with(paper){
               if(drawingEnvironment.movePath){
                 this.currentSegment = null;
               } else {
-                var location = hitResult.location;
+                let location = hitResult.location;
                 this.currentSegment = this.currentPath.insert(location.index + 1, event.point);
                 this.currentPath.smooth();
               }
@@ -86,16 +126,17 @@ with(paper){
           }
         }
       }
-      this.brush.onMouseMove = function(event) {
+      this.omniTool.onMouseMove = function(event) {
         project.activeLayer.selected = false;
-        if (event.item){
-          event.item.selected = true;
-          if(event.item.strokeWidth){
-            this.lastTolerance = Math.max(event.item.strokeWidth/2.0, 10);
+        let hit = this.hitTestActiveLayer(event.point);
+        if (hit){
+          hit.item.selected = true;
+          if(hit.item.strokeWidth){
+            this.lastTolerance = Math.max(hit.item.strokeWidth/2.0, 10);
           }
         }
       }
-      this.brush.onMouseDrag = function(event) {
+      this.omniTool.onMouseDrag = function(event) {
         if (this.button == 0) {
           project.activeLayer.selected = false;
           this.currentPath.add(event.point);
@@ -108,23 +149,126 @@ with(paper){
           }
         }
       }
-      this.brush.onMouseUp = function(event){
+      this.omniTool.onMouseUp = function(event){
         if (this.button == 0) {
           this.currentPath.simplify(10);
         }
       }
+      this.omniTool.hitTestActiveLayer = function(point){
+        return project.hitTest(point, {
+          segments: true,
+          stroke: true,
+          fill: false,
+          tolerance: this.lastTolerance,
+          match: (hit) => {
+            return hit.item.layer == project.activeLayer; 
+          }
+        });
+      }
+    }
+
+    // Generates CSS such that only one frame shows at a time
+    this.generateAnimationCSS = function(frameRate = 24) {
+      let frameTime = 1.0/frameRate;
+      let animationTime = frameTime*project.layers.length;
+      let animationString = 
+        '  <style type="text/css">\n'+
+        '    @keyframes flash { 0%   { visibility: visible; }\n'+
+        '                       '+(100.0/project.layers.length)+'%  { visibility: hidden;  } }\n';
+        for (let i = 0; i < project.layers.length; i++) {
+          animationString += '    #' + project.layers[i].name + ' { animation: flash '+animationTime+'s linear infinite '+(frameTime*i)+'s;    }\n';
+        }
+      animationString += '  </style>';
+      return animationString;
     }
 
     this.saveSVG = function () {
+      // Ensure that all frames (but the first) are opaque and hidden by default
+      for (let i = 0; i < project.layers.length; i++) {
+        project.layers[i].visible = false;
+        project.layers[i].opacity = 1;
+      }
+
       let fileName = "drawingExport.svg";
-      var url = "data:image/svg+xml;utf8," + encodeURIComponent(project.exportSVG({asString:true}));
-      var link = document.createElement("a");
+      let svgString = project.exportSVG({asString:true});
+      svgString = svgString.substring(0, svgString.length-6) + 
+                    this.generateAnimationCSS(this.frameRate) + 
+                    svgString.substring(svgString.length-6);
+      let url = "data:image/svg+xml;utf8," + encodeURIComponent(svgString);
+      let link = document.createElement("a");
       link.download = fileName;
       link.href = url;
       link.click();
+
+      // Re-set the onion skinning
+      this.updateOnionSkinning();
     }
 
+    // Create a new frame if one doesn't exist
+    this.nextFrame = function () {
+      project.activeLayer.selected = false;
+      let nextIndex = project.activeLayer.index + 1;
+      if (project.layers.length == nextIndex) {
+        let nextFrameLayer = new Layer();
+        project.insertLayer(nextIndex, nextFrameLayer);
+        nextFrameLayer.activate();
+      } else {
+        project.layers[nextIndex].activate();
+      }
+      this.updateOnionSkinning();
+    }
+
+    // If there is content in this frame, create a new frame
+    // If this is a new frame, copy from the previous frame
+    this.duplicateFrame = function () {
+      project.activeLayer.selected = false;
+      let currentLayer = project.activeLayer;
+
+      if (currentLayer.children.length > 0) {
+        let nextFrameLayer = new Layer();
+        nextFrameLayer.copyContent(currentLayer);
+        project.insertLayer(currentLayer.index + 1, nextFrameLayer);
+        nextFrameLayer.activate();
+        this.updateOnionSkinning();
+      } else {
+        currentLayer.copyContent(project.layers[Math.max(0, currentLayer.index - 1)]);
+        currentLayer.opacity = 1;
+      }
+    }
+
+    // Go back one frame
+    this.prevFrame = function () {
+      project.activeLayer.selected = false;
+      project.layers[Math.max(0, project.activeLayer.index - 1)].activate();
+      this.updateOnionSkinning();
+    }
+
+    // Ensure all frames are named and rendering properly
+    this.updateOnionSkinning = function () {
+      let currentActiveIndex = project.activeLayer.index;
+      let minIndex = Math.max(0, currentActiveIndex - this.skinningWidth);
+      let maxIndex = Math.min(project.layers.length, currentActiveIndex + this.skinningWidth);
+      for (let i = 0; i < project.layers.length; i++) {
+        project.layers[i].name = "Frame-" + i;
+
+        // Update opacity and visibility...
+        if (i== currentActiveIndex) {
+          project.layers[i].visible = true;
+          project.layers[i].opacity = 1;
+        } else if (i >= minIndex && i <= maxIndex) {
+          project.layers[i].visible = true;
+          project.layers[i].opacity = (1.0 - ((Math.abs(i - currentActiveIndex))/(this.skinningWidth+1)))*0.25;
+        } else {
+          project.layers[i].visible = false;
+          project.layers[i].opacity = 0;
+        }
+      }
+    }
+
+    // Initialize on construct
     this.init();
   }
 }
+
+// Create a new Drawing Environment
 var drawingEnvironment = new DrawingEnvironment();
