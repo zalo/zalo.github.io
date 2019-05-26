@@ -12,7 +12,7 @@ with(paper) {
       // Create the Canvas Element
       this.canvas = document.createElement('canvas');
       this.canvas.id = "DrawingEnvironmentCanvas";
-      this.canvas.width = window.innerWidth-20;
+      this.canvas.width = 640;//window.innerWidth-20;
       this.canvas.height = 480;
       this.canvas.setAttribute("resize", "true");
       this.canvas.setAttribute("hidpi", "on");
@@ -43,24 +43,31 @@ with(paper) {
                 expandShapes: true,
                 insert: false,
                 onLoad: (item) => {
-                  let removeFirstLater = false;
-                  let layerIndex = project.activeLayer.index;
-                  if(project.layers.length == 1 && project.activeLayer.children.length==0){
-                    removeFirstLater = true;
+                  // Detect if it's an animation
+                  if(item.children[0].name && item.children[0].name.includes("Frame-0")){
+                    let removeFirstLater = false;
+                    let layerIndex = project.activeLayer.index;
+                    if(project.layers.length == 1 && project.activeLayer.children.length==0){
+                      removeFirstLater = true;
+                    }
+                    console.log("Animation Loading Success! Found "+item.children.length+" frames.");
+                    for (let i = 0; i < item.children.length; i++) {
+                      item.children[i].visible = true;
+                      let nextIndex = project.activeLayer.index + 1;
+                      let nextFrameLayer = new Layer({
+                        name: item.children[i].name,
+                        children: item.children[i].children
+                      });
+                      project.insertLayer(nextIndex, nextFrameLayer);
+                      nextFrameLayer.activate();
+                    }
+                    if(removeFirstLater){ project.layers[0].remove(); }
+                    project.layers[layerIndex].activate();
+                  } else {
+                    // Otherwise just import this .svg dumbly
+                    console.log("Static SVG Loading Success! Found " + item.children.length + " groups.");
+                    project.activeLayer.addChild(item);
                   }
-                   console.log("Loading Success! Found "+item.children.length+" frames.");
-                   for (let i = 0; i < item.children.length; i++) {
-                    item.children[i].visible = true;
-                    let nextIndex = project.activeLayer.index + 1;
-                    let nextFrameLayer = new Layer({
-                      name: item.children[i].name,
-                      children: item.children[i].children
-                    });
-                    project.insertLayer(nextIndex, nextFrameLayer);
-                    nextFrameLayer.activate();
-                   }
-                   if(removeFirstLater){ project.layers[0].remove(); }
-                   project.layers[layerIndex].activate();
                 },
                 onError: (errMsg) => { console.error(errMsg); }
               });
@@ -98,7 +105,7 @@ with(paper) {
             this.currentPath = hitResult.item;
             if (hitResult.type == 'segment') {
               this.currentSegment = hitResult.segment;
-            } else if (hitResult.type == 'stroke') {
+            } else if (hitResult.type == 'stroke' || hitResult.type == 'fill') {
               if(drawingEnvironment.movePath){
                 this.currentSegment = null;
               } else {
@@ -119,7 +126,7 @@ with(paper) {
               }else{
                 hitResult.segment.remove();
               }
-            } else if (hitResult.type == 'stroke') {
+            } else if (hitResult.type == 'stroke' || hitResult.type == 'fill') {
               hitResult.item.remove();
             }
             return;
@@ -132,7 +139,7 @@ with(paper) {
         if (hit){
           hit.item.selected = true;
           if(hit.item.strokeWidth){
-            this.lastTolerance = Math.max(hit.item.strokeWidth/2.0, 10);
+            this.lastTolerance = Math.max(hit.item.strokeWidth/4.0, 5);
           }
         }
       }
@@ -158,7 +165,7 @@ with(paper) {
         return project.hitTest(point, {
           segments: true,
           stroke: true,
-          fill: false,
+          fill: true,
           tolerance: this.lastTolerance,
           match: (hit) => {
             return hit.item.layer == project.activeLayer; 
