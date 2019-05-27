@@ -18,7 +18,7 @@ var DrawingEnvironment = function () {
   this.brushWidth = 5;
   this.skinningWidth = 3;
   this.frameRate = 24;
-  this.removePrefix = 'Remove-';
+  this.removeCmd = 'Remove-';
 
   this.reader = new FileReader();
 
@@ -60,6 +60,7 @@ var DrawingEnvironment = function () {
         drawingEnvironment.reader.readAsText(document.getElementById("svg-file").files[0]);
       });
 
+      // Process the uploaded file
       drawingEnvironment.reader.addEventListener("load", () => {
         paper.project.importSVG(drawingEnvironment.reader.result, {
           expandShapes: true,
@@ -107,6 +108,7 @@ var DrawingEnvironment = function () {
       this.button = event.event.button;
 
       if (this.button == 0) {
+        // Begin creating a new brush stroke
         this.currentPath = new paper.Path();
         this.currentPath.strokeColor = 'black';
         this.currentPath.add(event.point);
@@ -116,38 +118,41 @@ var DrawingEnvironment = function () {
         this.currentSegment = this.currentPath = null;
         let hitResult = this.hitTestActiveLayer(event.point);
 
-        // Return if there's nothing to move or delete
+        // Return if we didn't hit anything
         if (!hitResult)
           return;
 
+        // Select an element for movement
         if (this.button == 1) {
           this.currentPath = hitResult.item;
-          if (hitResult.type == 'segment') {
-            this.currentSegment = hitResult.segment;
-          } else if (hitResult.type == 'stroke' || hitResult.type == 'fill') {
-            if (drawingEnvironment.movePath) {
-              this.currentSegment = null;
-            } else {
-              let location = hitResult.location;
-              this.currentSegment = this.currentPath.insert(location.index + 1, event.point);
-              this.currentPath.smooth();
+          if(this.currentPath){
+            this.undoSaveItem(hitResult.item);
+            if (hitResult.type == 'segment') {
+              this.currentSegment = hitResult.segment;
+            } else if (hitResult.type == 'stroke' || hitResult.type == 'fill') {
+              if (drawingEnvironment.movePath) {
+                this.currentSegment = null;
+              } else {
+                let location = hitResult.location;
+                this.currentSegment = this.currentPath.insert(location.index + 1, event.point);
+                this.currentPath.smooth();
+              }
             }
           }
-          //drawingEnvironment.movePath = hitResult.type == 'fill';
-          //if (drawingEnvironment.movePath)
-          //  paper.project.activeLayer.addChild(hitResult.item);
         }
 
+        // Delete this element
         if (this.button == 2) {
           if (hitResult.type == 'segment') {
             if (hitResult.segment.path.segments.length == 2) {
-              paper.project.activeLayer.children[1].addChild(hitResult.segment.path);
+              paper.project.activeLayer.children[1].addChild(hitResult.item);
             } else {
+              this.undoSaveItem(hitResult.item);
               hitResult.segment.remove();
             }
           } else if (hitResult.type == 'stroke' || hitResult.type == 'fill') {
-            // Add Undo Object
-            paper.project.activeLayer.children[1].addChild(hitResult.item);
+            this.undoSaveItem(hitResult.item);
+            hitResult.item.remove();
           }
           return;
         }
@@ -184,47 +189,69 @@ var DrawingEnvironment = function () {
 
         // Add Undo Object to Remove Stroke Later
         paper.project.activeLayer.children[1].addChild(
-          new paper.Group({ name: drawingEnvironment.removePrefix+this.currentPath.name }));
+          new paper.Group({ name: drawingEnvironment.removeCmd+this.currentPath.name }));
       }
     }
     this.omniTool.onKeyDown = function (event) {
       if (event.modifiers.control) {
         if(event.key == 'z') {
-          // Time to dequeue an undo object...
-          let undo = paper.project.activeLayer.children[1].lastChild;
-          if(undo){
-            if(undo.name.startsWith(drawingEnvironment.removePrefix)){
-              let condemnedName = undo.name.substring(drawingEnvironment.removePrefix.length);
-              let condemnedStroke = paper.project.activeLayer.children[0].getItem({
-                match: (item)=>{ return item.name == condemnedName; }
-              });
-              paper.project.activeLayer.children[2].addChild(condemnedStroke);
-              undo.remove();
-            } else {
-              paper.project.activeLayer.children[0].addChild(undo);
-              paper.project.activeLayer.children[2].addChild(
-                new paper.Group({ name: drawingEnvironment.removePrefix+undo.name }));
-            }
-          }
+          // If pressing the Undo shortcut...
+          this.processDoCommand(
+            paper.project.activeLayer.children[0],
+            paper.project.activeLayer.children[1],
+            paper.project.activeLayer.children[2]);
         } else if(event.key == 'y') {
-          // Time to dequeue a redo object...
-          let redo = paper.project.activeLayer.children[2].lastChild;
-          if(redo){
-            if(redo.name.startsWith(drawingEnvironment.removePrefix)){
-              let condemnedName = redo.name.substring(7);
-              let condemnedStroke = paper.project.activeLayer.children[0].getItem({
-                match: (item)=>{ return item.name == condemnedName; }
-              });
-              paper.project.activeLayer.children[1].addChild(condemnedStroke);
-              redo.remove();
-            } else {
-              paper.project.activeLayer.children[0].addChild(redo);
-              paper.project.activeLayer.children[1].addChild(
-                new paper.Group({ name: drawingEnvironment.removePrefix+redo.name }));
-            }
+          // If pressing the Redo shortcut...
+          this.processDoCommand(
+            paper.project.activeLayer.children[0],
+            paper.project.activeLayer.children[2],
+            paper.project.activeLayer.children[1]);
+        }
+      }
+    }
+    this.omniTool.processDoCommand = function(drawingLayer, commandLayer, reverseLayer){
+      let command = commandLayer.lastChild;
+      if (command) {
+        // If this item's name starts with the removeCmd...
+        if(command.name && command.name.startsWith(drawingEnvironment.removeCmd)){
+          // Find this item and delete it...
+          let condemnedName = command.name.substring(
+            drawingEnvironment.removeCmd.length);
+          let condemnedStroke = drawingLayer.getItem({
+            match: (item)=>{ return item.name == condemnedName; }
+          });
+          reverseLayer.addChild(condemnedStroke);
+          command.remove();
+        } else {
+          // Check and see if this item already exists
+          let strokeToReplace = drawingLayer.getItem({
+            match: (item)=>{ return item.name == command.name; }
+          });
+          if (strokeToReplace) {
+            // If it does exist, just replace it
+            let clone = strokeToReplace.clone();
+            clone.name = strokeToReplace.name;
+            reverseLayer.addChild(clone);
+
+            // Use 'replaceWith' to preserve layer order!
+            strokeToReplace.replaceWith(command);
+          } else {
+            // If it does not exist, create it
+            drawingLayer.addChild(command);
+            reverseLayer.addChild(new paper.Group({ 
+                name: drawingEnvironment.removeCmd+command.name 
+            }));
           }
         }
       }
+    }
+    this.omniTool.undoSaveItem = function(item){
+      if(!item.name){
+        item.name = "ForeignObject-"+item.toString().hashCode();
+      }
+      let clone = item.clone();
+      clone.name = item.name;
+      paper.project.activeLayer.children[1].addChild(clone);
     }
     this.omniTool.hitTestActiveLayer = function (point) {
       return paper.project.hitTest(point, {
