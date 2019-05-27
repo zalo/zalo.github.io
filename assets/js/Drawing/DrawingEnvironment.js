@@ -126,7 +126,7 @@ var DrawingEnvironment = function () {
         if (this.button == 1) {
           this.currentPath = hitResult.item;
           if(this.currentPath){
-            this.undoSaveItem(hitResult.item);
+            this.saveItemStateForUndo(hitResult.item);
             if (hitResult.type == 'segment') {
               this.currentSegment = hitResult.segment;
             } else if (hitResult.type == 'stroke' || hitResult.type == 'fill') {
@@ -147,11 +147,11 @@ var DrawingEnvironment = function () {
             if (hitResult.segment.path.segments.length == 2) {
               paper.project.activeLayer.children[1].addChild(hitResult.item);
             } else {
-              this.undoSaveItem(hitResult.item);
+              this.saveItemStateForUndo(hitResult.item);
               hitResult.segment.remove();
             }
           } else if (hitResult.type == 'stroke' || hitResult.type == 'fill') {
-            this.undoSaveItem(hitResult.item);
+            this.saveItemStateForUndo(hitResult.item);
             hitResult.item.remove();
           }
           return;
@@ -190,6 +190,9 @@ var DrawingEnvironment = function () {
         // Add Undo Object to Remove Stroke Later
         paper.project.activeLayer.children[1].addChild(
           new paper.Group({ name: drawingEnvironment.removeCmd+this.currentPath.name }));
+          
+        // Clear the redo "history" (it's technically invalid now...)
+        paper.project.activeLayer.children[2].removeChildren();
       }
     }
     this.omniTool.onKeyDown = function (event) {
@@ -214,7 +217,7 @@ var DrawingEnvironment = function () {
       if (command) {
         // If this item's name starts with the removeCmd...
         if(command.name && command.name.startsWith(drawingEnvironment.removeCmd)){
-          // Find this item and delete it...
+          // Find this item and "delete" it...
           let condemnedName = command.name.substring(
             drawingEnvironment.removeCmd.length);
           let condemnedStroke = drawingLayer.getItem({
@@ -245,13 +248,17 @@ var DrawingEnvironment = function () {
         }
       }
     }
-    this.omniTool.undoSaveItem = function(item){
+    this.omniTool.saveItemStateForUndo = function(item){
+      // If an object doesn't have a name, give it one :)
       if(!item.name){
         item.name = "ForeignObject-"+item.toString().hashCode();
       }
       let clone = item.clone();
       clone.name = item.name;
       paper.project.activeLayer.children[1].addChild(clone);
+
+      // Clear the redo "history" (it's technically invalid now...)
+      paper.project.activeLayer.children[2].removeChildren();
     }
     this.omniTool.hitTestActiveLayer = function (point) {
       return paper.project.hitTest(point, {
@@ -267,6 +274,7 @@ var DrawingEnvironment = function () {
   }
 
   // Generates CSS such that only one frame shows at a time
+  // This is the "magic" that animates the SVG!
   this.generateAnimationCSS = function (frameRate = 24) {
     let frameTime = 1.0 / frameRate;
     let animationTime = frameTime * paper.project.layers.length;
