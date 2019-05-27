@@ -56,44 +56,45 @@ var DrawingEnvironment = function () {
 
       // Allow users to upload SVGs from past sessions
       document.getElementById("svg-file").addEventListener('input', () => {
-        drawingEnvironment.reader.addEventListener("load", () => {
-          paper.project.importSVG(drawingEnvironment.reader.result, {
-            expandShapes: true,
-            insert: false,
-            onLoad: (item) => {
-              // Detect if it's an animation
-              if (item.children[0].name && item.children[0].name.includes("Frame-0")) {
-                let removeFirstLater = false;
-                let layerIndex = paper.project.activeLayer.index;
-                if (paper.project.layers.length == 1 && paper.project.activeLayer.children[0].children.length == 0) {
-                  removeFirstLater = true;
-                }
-                console.log("Animation Loading Success! Found " + item.children.length + " frames.");
-                for (let i = 0; i < item.children.length; i++) {
-                  item.children[i].visible = true;
-                  let nextIndex = paper.project.activeLayer.index + 1;
-                  let nextFrameLayer = new paper.Layer({
-                    name: item.children[i].name,
-                    children: item.children[i].children
-                  });
-                  paper.project.insertLayer(nextIndex, nextFrameLayer);
-                  nextFrameLayer.activate();
-                }
-                if (removeFirstLater) { paper.project.layers[0].remove(); }
-                paper.project.layers[layerIndex].activate();
-              } else {
-                // Otherwise just import this .svg dumbly
-                console.log("Static SVG Loading Success! Found " + item.children.length + " groups.");
-                paper.project.activeLayer.children[0].addChild(item);
-              }
-            },
-            onError: (errMsg) => { console.error(errMsg); }
-          });
-          drawingEnvironment.updateOnionSkinning();
-        });
-
         // Read the file!
         drawingEnvironment.reader.readAsText(document.getElementById("svg-file").files[0]);
+      });
+
+      drawingEnvironment.reader.addEventListener("load", () => {
+        paper.project.importSVG(drawingEnvironment.reader.result, {
+          expandShapes: true,
+          insert: false,
+          onLoad: (item) => {
+            // Detect if it's an animation
+            if (item.children[0].name && item.children[0].name.includes("Frame-0")) {
+              let removeFirstLater = false;
+              let layerIndex = paper.project.activeLayer.index;
+              if (paper.project.layers.length == 1 && paper.project.activeLayer.children[0].children.length == 0) {
+                removeFirstLater = true;
+              }
+              console.log("Animation Loading Success! Found " + item.children.length + " frames.");
+              for (let i = 0; i < item.children.length; i++) {
+                item.children[i].visible = true;
+                let nextIndex = paper.project.activeLayer.index + 1;
+                let nextFrameLayer = new paper.Layer({
+                  name: item.children[i].name,
+                  children: item.children[i].children
+                });
+                paper.project.insertLayer(nextIndex, nextFrameLayer);
+                nextFrameLayer.activate();
+              }
+              if (removeFirstLater) { paper.project.layers[0].remove(); }
+              paper.project.layers[layerIndex].activate();
+            } else {
+              // Otherwise just import this .svg dumbly
+              console.log("Static SVG Loading Success! Found " + item.children.length + " groups.");
+              paper.project.activeLayer.children[0].addChild(item);
+            }
+          },
+          onError: (errMsg) => { console.error(errMsg); }
+        });
+        drawingEnvironment.updateOnionSkinning();
+        document.getElementById("svg-file").value = null;
       });
     }
   }
@@ -299,7 +300,7 @@ var DrawingEnvironment = function () {
     paper.project.activeLayer.selected = false;
     let currentLayer = paper.project.activeLayer;
 
-    if (currentLayer.children.length > 0) {
+    if (currentLayer.children[0].children.length > 0) {
       let nextFrameLayer = new paper.Layer();
       nextFrameLayer.copyContent(currentLayer);
       paper.project.insertLayer(currentLayer.index + 1, nextFrameLayer);
