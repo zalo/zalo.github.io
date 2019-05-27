@@ -1,9 +1,24 @@
+// Hash generation
+String.prototype.hashCode = function() {
+  var hash = 0;
+  if (this.length == 0) {
+      return hash;
+  }
+  for (var i = 0; i < this.length; i++) {
+      var char = this.charCodeAt(i);
+      hash = ((hash<<5)-hash)+char;
+      hash = hash & hash; // Convert to 32bit integer
+  }
+  return hash;
+}
+
 var DrawingEnvironment = function () {
   //this.fullEditor = document.currentScript.getAttribute("full") == "enabled";
   this.movePath = true;
   this.brushWidth = 5;
   this.skinningWidth = 3;
   this.frameRate = 24;
+  this.removePrefix = 'Remove-';
 
   this.reader = new FileReader();
 
@@ -21,7 +36,11 @@ var DrawingEnvironment = function () {
     // Only execute our code once the DOM is ready
     window.onload = function () {
       paper.setup(drawingEnvironment.canvas);
-      paper.project.activeLayer.name = "Drawing";
+      paper.project.activeLayer.name = "Frame-0";
+      paper.project.activeLayer.addChildren(
+        new paper.Group({ name:'Drawing' }), 
+        new paper.Group({ name:'Undo', visible: false }),
+        new paper.Group({ name:'Redo', visible: false }));
 
       // Register Animation and Resizing Callbacks
       //view.onFrame  = function(event) { }
@@ -46,7 +65,7 @@ var DrawingEnvironment = function () {
               if (item.children[0].name && item.children[0].name.includes("Frame-0")) {
                 let removeFirstLater = false;
                 let layerIndex = paper.project.activeLayer.index;
-                if (paper.project.layers.length == 1 && paper.project.activeLayer.children.length == 0) {
+                if (paper.project.layers.length == 1 && paper.project.activeLayer.children[0].children.length == 0) {
                   removeFirstLater = true;
                 }
                 console.log("Animation Loading Success! Found " + item.children.length + " frames.");
@@ -65,7 +84,7 @@ var DrawingEnvironment = function () {
               } else {
                 // Otherwise just import this .svg dumbly
                 console.log("Static SVG Loading Success! Found " + item.children.length + " groups.");
-                paper.project.activeLayer.addChild(item);
+                paper.project.activeLayer.children[0].addChild(item);
               }
             },
             onError: (errMsg) => { console.error(errMsg); }
@@ -121,12 +140,13 @@ var DrawingEnvironment = function () {
         if (this.button == 2) {
           if (hitResult.type == 'segment') {
             if (hitResult.segment.path.segments.length == 2) {
-              hitResult.segment.path.remove();
+              paper.project.activeLayer.children[1].addChild(hitResult.segment.path);
             } else {
               hitResult.segment.remove();
             }
           } else if (hitResult.type == 'stroke' || hitResult.type == 'fill') {
-            hitResult.item.remove();
+            // Add Undo Object
+            paper.project.activeLayer.children[1].addChild(hitResult.item);
           }
           return;
         }
@@ -158,6 +178,51 @@ var DrawingEnvironment = function () {
     this.omniTool.onMouseUp = function (event) {
       if (this.button == 0) {
         this.currentPath.simplify(10);
+        this.currentPath.name = "Stroke-" + this.currentPath.toString().hashCode();
+        this.currentPath.addTo(paper.project.activeLayer.children[0]);
+
+        // Add Undo Object to Remove Stroke Later
+        paper.project.activeLayer.children[1].addChild(
+          new paper.Group({ name: drawingEnvironment.removePrefix+this.currentPath.name }));
+      }
+    }
+    this.omniTool.onKeyDown = function (event) {
+      if (event.modifiers.control) {
+        if(event.key == 'z') {
+          // Time to dequeue an undo object...
+          let undo = paper.project.activeLayer.children[1].lastChild;
+          if(undo){
+            if(undo.name.startsWith(drawingEnvironment.removePrefix)){
+              let condemnedName = undo.name.substring(drawingEnvironment.removePrefix.length);
+              let condemnedStroke = paper.project.activeLayer.children[0].getItem({
+                match: (item)=>{ return item.name == condemnedName; }
+              });
+              paper.project.activeLayer.children[2].addChild(condemnedStroke);
+              undo.remove();
+            } else {
+              paper.project.activeLayer.children[0].addChild(undo);
+              paper.project.activeLayer.children[2].addChild(
+                new paper.Group({ name: drawingEnvironment.removePrefix+undo.name }));
+            }
+          }
+        } else if(event.key == 'y') {
+          // Time to dequeue a redo object...
+          let redo = paper.project.activeLayer.children[2].lastChild;
+          if(redo){
+            if(redo.name.startsWith(drawingEnvironment.removePrefix)){
+              let condemnedName = redo.name.substring(7);
+              let condemnedStroke = paper.project.activeLayer.children[0].getItem({
+                match: (item)=>{ return item.name == condemnedName; }
+              });
+              paper.project.activeLayer.children[1].addChild(condemnedStroke);
+              redo.remove();
+            } else {
+              paper.project.activeLayer.children[0].addChild(redo);
+              paper.project.activeLayer.children[1].addChild(
+                new paper.Group({ name: drawingEnvironment.removePrefix+redo.name }));
+            }
+          }
+        }
       }
     }
     this.omniTool.hitTestActiveLayer = function (point) {
@@ -218,6 +283,10 @@ var DrawingEnvironment = function () {
       let nextFrameLayer = new paper.Layer();
       paper.project.insertLayer(nextIndex, nextFrameLayer);
       nextFrameLayer.activate();
+      nextFrameLayer.addChildren(
+        new paper.Group({ name:'Drawing' }), 
+        new paper.Group({ name:'Undo', visible: false }),
+        new paper.Group({ name:'Redo', visible: false }));
     } else {
       paper.project.layers[nextIndex].activate();
     }
