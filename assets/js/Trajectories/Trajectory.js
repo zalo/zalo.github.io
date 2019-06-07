@@ -24,7 +24,7 @@ function getAcceleration(curve, time) {
 }
 
 //The Floor
-var domain = new Path.Line(view.center + [-800, 200], view.center + [800, 200]);
+var domain = new Path.Line(view.center + [-800, 100], view.center + [800, 100]);
 domain.strokeWidth = 5;
 domain.strokeColor = 'black';
 
@@ -57,8 +57,8 @@ function onFrame(event) {
     ball.position += new Point(0, Math.min(1, event.delta * 15 / (substeps * substeps)));
     catcher.position += new Point(0, Math.min(1, event.delta * 15 / (substeps * substeps)));
     //Floor Collision
-    ball.position.y = Math.min(ball.position.y, view.center.y + 187.5);
-    catcher.position.y = Math.min(catcher.position.y, view.center.y + 177.5);
+    ball.position.y = Math.min(ball.position.y, view.center.y + 87.5);
+    catcher.position.y = Math.min(catcher.position.y, view.center.y + 77.5);
 
     if (held) {
       if (step == substeps - 1) {
