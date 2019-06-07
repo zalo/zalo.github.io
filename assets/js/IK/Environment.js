@@ -46,6 +46,12 @@ var Environment = function () {
     grid.material.transparent = true;
     this.scene.add(grid);
 
+    this.ludic = new THREE.Mesh(new THREE.BoxBufferGeometry(30, 30, 30), 
+                                new THREE.MeshPhongMaterial({ color: 0x111111 }));
+    this.ludic.position.set(1200, 0, -100);
+    this.ludic.castShadow = true;
+    this.scene.add(this.ludic);
+
     var curCanvas = document.createElement('canvas');
     //curCanvas.id = canvasId;
     document.currentScript.parentNode.insertBefore(curCanvas, document.currentScript.nextSibling);
@@ -58,7 +64,7 @@ var Environment = function () {
     this.camera.aspect = parentWidth / 350;
     this.camera.updateProjectionMatrix();
 
-    this.draggableObjects = [];
+    this.draggableObjects = [this.ludic];
     this.dragControls = new THREE.DragControls(this.draggableObjects, this.camera, this.renderer.domElement);
 
     if (this.orbit) {
@@ -69,7 +75,8 @@ var Environment = function () {
       this.controls.screenSpacePanning = true;
       this.controls.update();
       this.controls.addEventListener('change', () => this.viewDirty = true);
-      this.dragControls.addEventListener('dragstart', (data) => { this.controls.enabled = false;  data.object._isDragging = true; });
+      this.dragControls.addEventListener('dragstart', (data) => { this.controls.enabled = false;  data.object._isDragging = true; 
+         if(data.object === this.ludic) { window.location.href = '/yrtemoegcidulbus' }});
       this.dragControls.addEventListener('dragend', (data) => { this.controls.enabled = true; data.object._isDragging = false; });
     }
     this.dragControls.addEventListener('drag', () => this.viewDirty = true);
