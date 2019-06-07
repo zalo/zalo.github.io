@@ -30,7 +30,7 @@ var IKEnvironment = function () {
     target.scale.set(0.075, 0.075, 0.075);
     target.castShadow = true;
     this.environment.scene.add(target);
-    this.environment.draggableObjects.push(target);
+    this.environment.draggableObjects.unshift(target);
   }
 
   this.addJoint = function (base, position, axis, limits, size, graphicsOffset) {
