@@ -9,7 +9,7 @@ var movingFrame = new Group([
     new Path.Rectangle({
         point: [-boxDimension, -boxDimension],
         size: [boxDimension*2, boxDimension*2],
-        strokeColor: 'black',
+        strokeColor: '#9999',
         fillColor: 'white',
         radius: new Size(2, 2)
 })]);
@@ -20,7 +20,7 @@ movingFrame.lastRot = 0;
 
 // Define the object wanting to be free...
 var circle = new Path.RegularPolygon({
-        center: view.center/2,
+        center: new Point(0, -140),
         sides: 10,
         radius: circleRadius,
         fillColor: 'black',
@@ -52,7 +52,7 @@ function mouseToProject (point) {
 
 
 function onFrame(event){
-    //view.element.style.border = "#9999 1px solid";
+    view.element.style.border = "#9999 0px solid";
     var m = movingFrame.globalMatrix.clone();
 
     // Full Rotation and Translation - Couldn't figure out how to get the mouse coordinates to work...
