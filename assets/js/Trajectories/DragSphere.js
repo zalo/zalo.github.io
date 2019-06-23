@@ -53,7 +53,7 @@ function mouseToProject (point) {
 
 
 function onFrame(event){
-    var floor = document.getElementsByTagName('footer')[0].offsetTop - view.element.offsetTop - 251;
+    var floor = document.getElementsByTagName('footer')[0].offsetTop - view.element.offsetTop - 251 - 60;
 
     view.element.style.border = "#9999 0px solid";
     var m = movingFrame.globalMatrix.clone();
