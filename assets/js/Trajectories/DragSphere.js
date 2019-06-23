@@ -37,6 +37,7 @@ var circle = new Path.RegularPolygon({
 
 var mousePos = new Point(0,0);
 function onMouseDown(event){
+  mousePos.set(event.point);
   if(event.item){
     event.item.oldLocal = event.item.globalToLocal(mouseToProject(event.point)); 
     currentDragging = event.item;
@@ -52,16 +53,17 @@ function mouseToProject (point) {
 
 
 function onFrame(event){
+    var floor = document.getElementsByTagName('footer')[0].offsetTop - view.element.offsetTop - 251;
+
     view.element.style.border = "#9999 0px solid";
     var m = movingFrame.globalMatrix.clone();
+    // Translation Only
+    view.element.style.transform = "matrix(1, 0, 0, 1, "+m._tx+", "+m._ty+")";
+    view.matrix.translate((-m.translation + [250, 250]) - view.matrix.translation);
 
     // Full Rotation and Translation - Couldn't figure out how to get the mouse coordinates to work...
     //view.element.style.transform = "matrix("+m._a+", "+m._b+", "+m._c+", "+m._d+", "+m._tx+", "+m._ty+")";
     //view.matrix.set(movingFrame.globalMatrix.translate(-boxDimension, -boxDimension).inverted());
-
-    // Translation Only
-    view.element.style.transform = "matrix(1, 0, 0, 1, "+m._tx+", "+m._ty+")";
-    view.matrix.translate((-movingFrame.globalMatrix.translation + [250, 250]) - view.matrix.translation);
 
     //cursor.position = mousePos - [0, 15];
     //movingFrame.rotation = 0;
@@ -85,8 +87,20 @@ function onFrame(event){
                          mousePos);
     }
     
+    for(var i = 0; i < 2; i++){
+      if(circle.position.y + circleRadius > floor){
+        dragPointToPoint(circle, circle.position + new Point(0, circleRadius), new Point(circle.position.x, floor));
+      }
+      for (var j = 0; j < movingFrame.children[0].segments.length; j++) {
+        var globalCorner = movingFrame.localToGlobal(movingFrame.children[0].segments[j].point);
+        if(globalCorner.y > floor){
+          dragPointToPoint(movingFrame, globalCorner, new Point(globalCorner.x, floor));
+        }
+      }
+    }
+
     // Collide the Left/Right/Top/Bottom edges with the Circle
-    for(var i = 0; i < 3; i++){
+    for(var i = 0; i < 2; i++){
         // Collide Left/Right Edges
         var localCircle = movingFrame.globalToLocal(circle.position);
         var localEdge = localCircle.clone();
