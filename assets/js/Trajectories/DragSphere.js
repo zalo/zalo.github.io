@@ -27,13 +27,13 @@ var circle = new Path.RegularPolygon({
         applyMatrix: false
 });
 
-var cursor = new Path.RegularPolygon({
-  center: view.center/2,
-  sides: 10,
-  radius: 10,
-  fillColor: 'black',
-  applyMatrix: false
-});
+//var cursor = new Path.RegularPolygon({
+//  center: view.center/2,
+//  sides: 10,
+//  radius: 10,
+//  fillColor: 'black',
+//  applyMatrix: false
+//});
 
 var mousePos = new Point(0,0);
 function onMouseDown(event){
@@ -47,20 +47,23 @@ function onMouseUp  (event){ currentDragging = undefined; }
 
 //TODO: Make this work
 function mouseToProject (point) {
-  var decomposed = view.matrix.decompose();
-  console.log(decomposed);
-  return view.matrix.transform(point);// + movingOffset;
+  return point;
 }
 
 
 function onFrame(event){
-    view.element.style.border = "#9999 1px solid";
+    //view.element.style.border = "#9999 1px solid";
     var m = movingFrame.globalMatrix.clone();
-    view.element.style.transform = "matrix("+m._a+", "+m._b+", "+m._c+", "+m._d+", "+m._tx+", "+m._ty+")";
 
-    view.matrix.set(movingFrame.globalMatrix.translate(-boxDimension, -boxDimension).inverted());
+    // Full Rotation and Translation - Couldn't figure out how to get the mouse coordinates to work...
+    //view.element.style.transform = "matrix("+m._a+", "+m._b+", "+m._c+", "+m._d+", "+m._tx+", "+m._ty+")";
+    //view.matrix.set(movingFrame.globalMatrix.translate(-boxDimension, -boxDimension).inverted());
 
-    cursor.position = mousePos - [0, 15];
+    // Translation Only
+    view.element.style.transform = "matrix(1, 0, 0, 1, "+m._tx+", "+m._ty+")";
+    view.matrix.translate((-movingFrame.globalMatrix.translation + [250, 250]) - view.matrix.translation);
+
+    //cursor.position = mousePos - [0, 15];
     //movingFrame.rotation = 0;
     //movingFrame.position.set(view.center);
     //console.log(movingFrame.globalMatrix);
@@ -68,11 +71,11 @@ function onFrame(event){
     //-*Use Verlet Integration to add inertia to the frame*-
     var tempRot = movingFrame.rotation;
     var tempPos = movingFrame.position.clone();
-    movingFrame.position += (movingFrame.position - movingFrame.lastPos)*0.95;
-    movingFrame.rotation += (movingFrame.rotation - movingFrame.lastRot)*0.95;
+    movingFrame.position += (movingFrame.position - movingFrame.lastPos);//*0.95;
+    movingFrame.rotation += (movingFrame.rotation - movingFrame.lastRot);//*0.95;
     movingFrame.lastPos.set(tempPos);
     movingFrame.lastRot = tempRot;
-    //movingFrame.position += [0, 1]; // Exert gravity by translating downwards 
+    movingFrame.position += [0, 1]; // Exert gravity by translating downwards 
                                     // half a pixel each frame
     
     // If the mouse is held down, exert the dragging force
@@ -111,20 +114,43 @@ function onFrame(event){
     }
 }
 
-// Define the function that will take one point on an object
-// and move/rotate that object so it is at a new point
+// Define the function that drags an object by a point
+// Finds the rotation that minimizes per-point translation
 function dragPointToPoint(obj, fromPoint, toPoint) {
-    // Tired: Use Center of the Object as the Pivot
-    var pivot = obj.position.clone();
-    // Wired: Use Extrapolated Opposing Point as the Pivot
-    var offset = obj.position - fromPoint;
-    pivot += offset / (offset.dot(offset) * 0.0000002); //<- Controls the Inertia
-    
-    // Drag with Maximum Rotation/Minimum Translation (about the pivot)
-    var angle = (fromPoint - pivot).getDirectedAngle(toPoint - pivot);
-    var oldDistance = fromPoint.getDistance(pivot);
-    var newPivot = (pivot - toPoint).normalize(oldDistance).add(toPoint);
-    var dragMatrix = new Matrix().translate(newPivot.clone() - pivot)
-                                 .rotate(angle, pivot);
-    obj.transform(dragMatrix);
+  if (fromPoint && toPoint) {
+    // The easy part, find the translation
+    var translation = toPoint.clone() - fromPoint;
+
+    // The hard part, find the rotation
+    var startingPoints = []; var endPoints = [];
+    var nObj = obj;
+    if(obj.children) { nObj = obj.children[0] }
+    for (var i = 0; i < nObj.segments.length; i++) {
+      var curPoint = obj.localToGlobal(nObj.segments[i].point) - toPoint;
+      startingPoints.push((curPoint.clone()));
+      endPoints.push((curPoint.clone() + translation));
+    }
+
+    // Start the least squares rotation solve
+    // Find the rotation that minimizes per-point translation
+    // Between startingPoints and endPoints when rotated about
+    // the "toPoint" as a pivot
+    var angle = 0.0;
+    for (var iters = 0; iters < 10; iters++) {
+      var curCrossSum = 0.0; var curDotSum = 0.0;
+      for (var i = 0; i < endPoints.length; i++) {
+        curCrossSum += endPoints[i].cross(startingPoints[i]);
+        curDotSum += Math.abs(startingPoints[i].dot  (endPoints[i]));
+      }
+      var curAngle = curCrossSum / curDotSum;
+      if (Math.abs(curAngle) < 0.0000001) { break; } // This usually stops at iteration 1 or 2!! Nearly Analytic!
+      curAngle *= 57.2958; // Convert to degrees
+      for (var i = 0; i < endPoints.length; i++) {
+        endPoints[i] = endPoints[i].rotate(curAngle);
+      }
+      angle += curAngle;
+    }
+    obj.translate(translation);
+    obj.rotate(angle, toPoint);
+  }
 }
