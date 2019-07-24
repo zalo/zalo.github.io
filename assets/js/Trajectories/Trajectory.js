@@ -65,7 +65,7 @@ function onFrame(event) {
         ball.position = mousePos;
         prevBall = ((prevMouse - mousePos) / substeps) + mousePos;
       }
-      currentTime = 0
+      currentTime = 0;
     } else {
       currentTime += (1 / (60 * substeps));
       // Set the Catcher to where it should be analytically

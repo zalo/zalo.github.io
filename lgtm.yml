@@ -1,0 +1,8 @@
+path_classifiers:
+  library:
+    - three.js
+    - DragControls.js
+    - OrbitControls.js
+    - ThreeInstancedMesh.js
+  generated:
+    - "*/Constraints/*.js"

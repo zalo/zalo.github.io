@@ -80,7 +80,7 @@ var ClosestSegmentEnvironment = function () {
       this.line.geometry.verticesNeedUpdate = true;
 
       this.toSegment.position.copy(this.handle.position);
-      let onSegment = this.closestToSegment(this.handle.position, this.a.position, this.b.position)
+      let onSegment = this.closestToSegment(this.handle.position, this.a.position, this.b.position);
       this.closest.position.copy(onSegment);
       onSegment.sub(this.handle.position);
       this.toSegment.setLength(onSegment.length());

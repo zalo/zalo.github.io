@@ -138,7 +138,7 @@ function dragPointToPoint(obj, fromPoint, toPoint) {
     // The hard part, find the rotation
     var startingPoints = []; var endPoints = [];
     var nObj = obj;
-    if(obj.children) { nObj = obj.children[0] }
+    if(obj.children) { nObj = obj.children[0]; }
     for (var i = 0; i < nObj.segments.length; i++) {
       var curPoint = obj.localToGlobal(nObj.segments[i].point) - toPoint;
       startingPoints.push((curPoint.clone()));

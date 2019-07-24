@@ -146,7 +146,7 @@ var PolarDecompositionEnvironment = function () {
     if (this.environment.time.getElapsedTime() - this.environment.lastTimeRendered < 2.0) {
       let curBasis = [];
 
-      dir = this.right.position.clone().sub(this.rightArrow.position);
+      let dir = this.right.position.clone().sub(this.rightArrow.position);
       curBasis.push(dir.clone());
       this.rightArrow.setLength(dir.length());
       this.rightArrow.setDirection(dir.normalize());

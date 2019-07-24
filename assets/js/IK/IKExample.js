@@ -55,7 +55,6 @@ var IKEnvironment = function () {
   this.solveIK = function (targetPosition) {
     var tooltipPosition = new THREE.Vector3();
     var toolRotation = new THREE.Quaternion();
-    var invToolRotation = new THREE.Quaternion();
     var fromToQuat = new THREE.Quaternion();
     for (var i = this.IKJoints.length - 1; i >= 0; i--) {
       this.IKJoints[i].updateMatrixWorld();
@@ -73,7 +72,7 @@ var IKEnvironment = function () {
         // Rotate to align with a direction
         var toolDirection = new THREE.Vector3(1.0, 0, 0);
         this.endEffector.getWorldQuaternion(toolRotation);
-        invToolRotation = toolRotation.clone().inverse();
+        var invToolRotation = toolRotation.clone().inverse();
         var targetDirection = toolDirection.clone().applyQuaternion(invToolRotation);
         if (i == this.IKJoints.length - 2) {
           toolDirection.applyQuaternion(this.IKJoints[this.IKJoints.length - 1].quaternion);

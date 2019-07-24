@@ -86,7 +86,7 @@ var Environment = function () {
     if (!iOS) {
       this.observer = new IntersectionObserver((entries) =>
         entries.forEach((entry) => this.intersecting(entry)));
-      this.observer.observe(this.renderer.domElement)
+      this.observer.observe(this.renderer.domElement);
     }
   }
 
