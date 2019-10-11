@@ -1,6 +1,6 @@
 fetch('https://zalo.github.io/assets/js/TextColoring/test_colors.json').then(function (response) {
     response.json().then(function (result) {
-        var words = document.body.textContent.split(/\b\w\w*\b/g);//" ");
+        var words = document.body.textContent.split(/[^a-zA-Z]+/g);
         var doneWords = {};
         var curWord = "";
         for (var i = 0; i < words.length; i++) {
