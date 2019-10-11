@@ -10,7 +10,7 @@ fetch('https://zalo.github.io/assets/js/TextColoring/test_colors.json').then(fun
                  (curWord in result   ))
             {
                 findAndReplaceDOMText(document.body, {
-                    find: new RegExp("\\b(\\w*"+curWord+"\\w*)\\b", "gi"),
+                    find: new RegExp("\\b"+curWord+"\\b", "gi"),
                     replace: function (portion, match) {
                         var span = document.createElement("SPAN");
                         span.style.color = result[curWord];
