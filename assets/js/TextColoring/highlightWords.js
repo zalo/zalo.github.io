@@ -5,12 +5,12 @@ fetch('https://zalo.github.io/assets/js/TextColoring/test_colors.json').then(fun
         var curWord = "";
         for (var i = 0; i < words.length; i++) {
             curWord = words[i].replace(/[^A-Za-z0-9\s]/g,"").trim().toLowerCase();
-            if ( (curWord.length > 2  ) &&
+            if ( (curWord.length > 0  ) &&
                 !(curWord in doneWords) && 
                  (curWord in result   ))
             {
                 findAndReplaceDOMText(document.body, {
-                    find: new RegExp("\\b(\\w*"+curWord+"\\w*)\\b", "gi"), // /\b(\w*Fire\w*)\b/g, //words[i],
+                    find: new RegExp("\\b(\\w*"+curWord+"\\w*)\\b", "gi"),
                     replace: function (portion, match) {
                         var span = document.createElement("SPAN");
                         span.style.color = result[curWord];
