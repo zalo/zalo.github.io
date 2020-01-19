@@ -60,3 +60,5 @@ This configuration is a special case of an optical system called an "Offner Rela
 #### The Only Limit Is Your Imagination
 
 <script type="text/javascript" src="../../assets/js/Ellipsoids/EllipsoidRaytracer.js" config="3" inverted="enabled" projector="enabled" projectorFoV="120" orbit="enabled"></script>
+
+<script type="text/javascript" src="../../assets/js/Ellipsoids/EllipsoidRaytracer.js" config="4" inverted="enabled" projector="enabled" projectorFoV="120" orbit="enabled"></script>

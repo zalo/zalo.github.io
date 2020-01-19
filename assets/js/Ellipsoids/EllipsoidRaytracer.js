@@ -51,10 +51,26 @@ var EllipsoidEnvironment = function () {
       this.ellipsoids.push(new Ellipsoid(
         this.environment,
         fPos.clone().add(new THREE.Vector3(-30,0,-90)),
-        fPos.clone().applyAxisAngle(new THREE.Vector3(0, 1, 0), s*(10/20)).add(new THREE.Vector3(-30,0,-90)), 50, true, s>1 ? this.ellipsoids[this.ellipsoids.length-1].focus2 : null));
+        fPos.clone().applyAxisAngle(new THREE.Vector3(0, 1, 0), s * (10 / 20)).add(new THREE.Vector3(-30, 0, -90)),
+        50, true, s > 1 ? this.ellipsoids[this.ellipsoids.length - 1].focus2 : null));
     }
+  } else if (this.config == 4) {
+    this.ellipsoids = [];
+    this.ellipsoidFoci = [
+      new THREE.Vector3(  +20, 108-20,  -37), 
+      new THREE.Vector3(  7+20,  69-20,  -44),
+      new THREE.Vector3(-58+20,  -5-20,  -41),
+      new THREE.Vector3( -0+20,  -3-20,  -39), 
+      new THREE.Vector3(-57+20,  69-20,  -38), 
+      new THREE.Vector3(-110+20,  78-20,  -34)];
+    this.ellipsoidMinorAxes = [50,50,-50,50,50,50,50];
 
-
+    for (let s = 0; s < this.ellipsoidFoci.length-1; s++){
+      this.ellipsoids.push(new Ellipsoid(
+        this.environment,
+        this.ellipsoidFoci[s],
+        this.ellipsoidFoci[s+1], Math.abs(this.ellipsoidMinorAxes[s]), this.ellipsoidMinorAxes[s]>0, s > 0 ? this.ellipsoids[this.ellipsoids.length-1].focus2 : null));
+    }
   }
   this.drawer      = new LineDrawer(this.environment);
 
@@ -84,5 +100,18 @@ var EllipsoidEnvironment = function () {
   // Initialize the view in-case we're lazy rendering...
   this.animate();
   this.environment.renderer.render(this.environment.scene, this.environment.camera);
+
+  //setInterval(() => {
+  //  let latestFoci = "";
+  //  for (let s = 0; s < this.ellipsoids.length; s++){
+  //    latestFoci += "new THREE.Vector3("+this.ellipsoids[s].focus1.position.x +", "+ this.ellipsoids[s].focus1.position.y +", "+ this.ellipsoids[s].focus1.position.z +"), \n";
+  //  }
+  //  latestFoci += "new THREE.Vector3(" +
+  //    this.ellipsoids[this.ellipsoids.length - 1].focus2.position.x + ", " +
+  //    this.ellipsoids[this.ellipsoids.length - 1].focus2.position.y + ", " +
+  //    this.ellipsoids[this.ellipsoids.length - 1].focus2.position.z + "), \n";
+  //  console.log(latestFoci);
+  //}, 5000);
 }
+
 new EllipsoidEnvironment()
