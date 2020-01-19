@@ -82,8 +82,8 @@ var Environment = function () {
     this.dragControls.addEventListener('drag', () => this.viewDirty = true);
 
     //If not on iOS, use the Intersection Observer to see if this is visible
-    var iOS = !!navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform);
-    if (!iOS) {
+    this.iOS = !!navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform);
+    if (!this.iOS) {
       this.observer = new IntersectionObserver((entries) =>
         entries.forEach((entry) => this.intersecting(entry)));
       this.observer.observe(this.renderer.domElement);
