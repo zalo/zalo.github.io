@@ -1,5 +1,8 @@
 var EllipsoidEnvironment = function () {
-  this.environment       = new Environment();
+  this.environment = new Environment();
+  //console.log(this.environment.camera.fov);
+  this.environment.camera.fov = 65;
+  this.environment.camera.updateProjectionMatrix();
 
   this.config            = parseInt  (document.currentScript.getAttribute("config"));
   this.invertedEllipsoid = document.currentScript.getAttribute("inverted" ) == "enabled";
