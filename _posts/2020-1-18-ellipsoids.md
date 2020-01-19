@@ -55,4 +55,8 @@ It is also possible to switch some of the ellipsoidal reflectors to convex surfa
 
 <script type="text/javascript" src="../../assets/js/Ellipsoids/EllipsoidRaytracer.js" config="2" inverted="enabled" projector="enabled" projectorFoV="120" orbit="enabled"></script>
 
-This configuration is a special case of an optical system called an "Offner Relay".  Convex mirrors inserted into the optical path tend to reverse the aberrations caused by the convex mirrors (and visa-versa).
+This configuration is a special case of an optical system called an "Offner Relay".  Convex mirrors inserted into the optical path tend to reverse the aberrations caused by the concave mirrors (and visa-versa).
+
+#### The Only Limit Is Your Imagination
+
+<script type="text/javascript" src="../../assets/js/Ellipsoids/EllipsoidRaytracer.js" config="3" inverted="enabled" projector="enabled" projectorFoV="120" orbit="enabled"></script>

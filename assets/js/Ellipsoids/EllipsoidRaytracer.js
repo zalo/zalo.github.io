@@ -43,6 +43,18 @@ var EllipsoidEnvironment = function () {
       new THREE.Vector3(),
       new THREE.Vector3(60, 50, -20), 100, true, ellipsoid2.focus2);
     this.ellipsoids = [ellipsoid1, ellipsoid2, ellipsoid3];
+  } else if (this.config == 3) {
+    this.ellipsoids = [];
+
+    let fPos = new THREE.Vector3(-75, 0, -75);
+    for (let s = 1; s < 10; s++){
+      this.ellipsoids.push(new Ellipsoid(
+        this.environment,
+        fPos.clone().add(new THREE.Vector3(-30,0,-90)),
+        fPos.clone().applyAxisAngle(new THREE.Vector3(0, 1, 0), s*(10/20)).add(new THREE.Vector3(-30,0,-90)), 50, true, s>1 ? this.ellipsoids[this.ellipsoids.length-1].focus2 : null));
+    }
+
+
   }
   this.drawer      = new LineDrawer(this.environment);
 

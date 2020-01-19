@@ -33,7 +33,8 @@ var Projector = function (environment, ellipsoids, lineDrawer, fov = 120, numRay
           rayOrigin.copy(hitPoint);
           rayDirection.reflect(hitNormal);
         }
-        this.drawer.drawLine(rayOrigin, rayOrigin.clone().add(rayDirection.clone().multiplyScalar(500 - totalRayLength)));
+
+        this.drawer.drawLine(rayOrigin, rayOrigin.clone().add(rayDirection.clone().multiplyScalar(200)));//100000 - totalRayLength)));
       }
     }
   }
