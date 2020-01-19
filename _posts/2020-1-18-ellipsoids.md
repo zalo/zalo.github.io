@@ -24,7 +24,7 @@ We can construct [useful ellipsoidal mirrors](https://en.wikipedia.org/wiki/Sphe
 <script type="text/javascript" src="../../assets/js/Ellipsoids/Ellipsoid.js"></script>
 <script type="text/javascript" src="../../assets/js/Ellipsoids/LineDrawer.js"></script>
 <script type="text/javascript" src="../../assets/js/Ellipsoids/Projector.js"></script>
-<script type="text/javascript" src="../../assets/js/Ellipsoids/EllipsoidRaytracer.js" orbit="enabled"></script>
+<script type="text/javascript" src="../../assets/js/Ellipsoids/EllipsoidRaytracer.js" config="0" orbit="enabled"></script>
 
 ```
 ellipsoid = new Sphere(radius = 0.5);
@@ -41,7 +41,7 @@ The Foci of Ellipsoids possess a very useful property:
 
 All rays that pass through one focus will always pass through the other focus when reflected from the internal surface of the ellipsoid.
 
-<script type="text/javascript" src="../../assets/js/Ellipsoids/EllipsoidRaytracer.js" inverted="enabled" projector="enabled" projectorFoV="165" orbit="enabled"></script>
+<script type="text/javascript" src="../../assets/js/Ellipsoids/EllipsoidRaytracer.js" config="0" inverted="enabled" projector="enabled" projectorFoV="165" orbit="enabled"></script>
 
 In addition, the path length of each of these rays will be the same.
 
