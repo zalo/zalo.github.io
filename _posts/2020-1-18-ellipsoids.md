@@ -1,5 +1,5 @@
 ---
-title: "Ellipsoids"
+title: "Ellipsoidal Mirrors"
 date: 2020-1-18 20:10:33 -0000
 categories: blog
 tags:
@@ -11,7 +11,7 @@ toc: true
 
 [Ellipsoids](https://en.wikipedia.org/wiki/Ellipsoid) are spheres that have been stretched about one or more axes.
 
-We can construct [useful ellipsoids](https://en.wikipedia.org/wiki/Spheroid#Prolate_spheroids) from two special points, called the "Foci".
+We can construct [useful ellipsoidal mirrors](https://en.wikipedia.org/wiki/Spheroid#Prolate_spheroids) from two special points, called the "Foci".
 <!-- Hide the Table of Contents (but keep the navigation :^) ... -->
 <script type="text/javascript">
   document.getElementsByClassName('toc')[0].style.display = 'none';
@@ -35,16 +35,24 @@ majorAxis = sqrt(pow(interFociDistance / 2, 2) +
 ellipsoid.scale = Vec3(minorAxis, minorAxis, majorAxis );
 ```
 
-#### Foci
+#### Foci Mirrors
 
 The Foci of Ellipsoids possess a very useful property:
 
 All rays that pass through one focus will always pass through the other focus when reflected from the internal surface of the ellipsoid.
 
-<script type="text/javascript" src="../../assets/js/Ellipsoids/EllipsoidRaytracer.js" inverted="enabled" projector="enabled" orbit="enabled"></script>
+<script type="text/javascript" src="../../assets/js/Ellipsoids/EllipsoidRaytracer.js" inverted="enabled" projector="enabled" projectorFoV=165 orbit="enabled"></script>
 
 In addition, the path length of each of these rays will be the same.
 
-#### Optics
+#### Chaining Ellipsoidal Mirrors
 
-These properties make ellipsoids ideal for a number of tasks in Optics that require reflecting light from one point to another.
+One may even chain ellipsoids together by their their foci to reflect light through an arbitrary path.
+
+<script type="text/javascript" src="../../assets/js/Ellipsoids/EllipsoidRaytracer.js" config=1 inverted="enabled" projector="enabled" projectorFoV=120 orbit="enabled"></script>
+
+It is also possible to switch some of the ellipsoidal reflectors to convex surfaces, as long as there is a concave reflector afterward to collect the rays again.
+
+<script type="text/javascript" src="../../assets/js/Ellipsoids/EllipsoidRaytracer.js" config=2 inverted="enabled" projector="enabled" projectorFoV=120 orbit="enabled"></script>
+
+This configuration is a special case of an optical system called an "Offner Relay".  Convex mirrors inserted into the optical path tend to reverse the aberrations caused by the convex mirrors (and visa-versa).

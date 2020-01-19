@@ -1,7 +1,7 @@
 var LineDrawer = function (environment) {
-  this.environment    = environment;
-  this.lines          = [];
-  this.currentLine    = 0;
+  this.environment = environment;
+  this.lines = [];
+  this.currentLine = 0;
 
   // Start the line factory...
   this.dashedMaterial = new THREE.LineDashedMaterial({
@@ -12,7 +12,7 @@ var LineDrawer = function (environment) {
     gapSize: 2
   });
 
-  this.drawLine = function(start, end){
+  this.drawLine = function (start, end) {
     if (this.currentLine < this.lines.length) {
       this.lines[this.currentLine].geometry.vertices[0].copy(start);
       this.lines[this.currentLine].geometry.vertices[1].copy(end);
@@ -25,13 +25,13 @@ var LineDrawer = function (environment) {
       let line = new THREE.Line(lineGeo, this.dashedMaterial);
       line.computeLineDistances();
       this.lines.push(line);
-      this.environment.scene.add(this.lines[this.lines.length-1]);
+      this.environment.scene.add(this.lines[this.lines.length - 1]);
     }
     this.currentLine++;
   }
 
   this.Commit = function () {
-    for(let i = 0; i < this.lines.length; i++){
+    for (let i = 0; i < this.lines.length; i++) {
       this.lines[i].visible = i < this.currentLine;
     }
     this.currentLine = 0;
