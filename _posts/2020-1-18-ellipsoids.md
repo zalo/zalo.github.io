@@ -37,9 +37,9 @@ ellipsoid.scale = Vec3(minorAxis, minorAxis, majorAxis );
 
 #### Raytracing Ellipsoids 
 
-Ellipsoids, as we're about to see, have some very special optical properties.  So it's useful to be able to raytrace against them quickly to determine how light will interact with them.
+Ellipsoids have some very special *optical* properties.  So it's useful to be able to raytrace against them quickly to determine how light will interact with them.
 
-Conceptually, the simplest method is to transform both the ray origin and ray direction into the stretched coordinate space of the sphere.  This allows us to raytrace against the sphere directly.  We can then transform that hit point (and normal) out of the stretched coordinate space to use it.
+Conceptually, the simplest method is to transform both the ray origin and ray direction into the stretched coordinate space of the sphere.  This allows one to raytrace against the sphere directly.  After that, simply transform that hit point (and normal) out of the stretched coordinate space to use it.
 
 <div class="togglebox">
   <input id="toggle2" type="checkbox" name="toggle" />
@@ -55,7 +55,7 @@ function raytraceEllipsoid (rayOrigin, rayDirection) {
     hitPoint              = worldToSphereMatrix.inverse * sphereSpaceHitPoint;
     return hitPoint;
   } else {
-    return null; // We didn't hit
+    return null; // No Hit
   }
 }
 ~~~
@@ -107,17 +107,17 @@ However, there may be one powerful way to move light around while keeping the be
 
 <script type="text/javascript" src="../../assets/js/Ellipsoids/FresnelEllipsoid.js" orbit="enabled"></script>
 
-By simply taking planar slices of many confocal ellipsoids to approximate a larger ellipsoid, we can preserve their optical properties while reducing their form-factor!
+By simply taking planar slices of many confocal ellipsoids to approximate a larger ellipsoid, one can preserve their optical properties while reducing their form-factor!
 
 * Note how these slices emulate a refracting lens when the two foci are on opposite sides of the plate.
 
 #### Practical Fresnel Reflectors
 
-This is a relatively complex shape to assemble.  [There are great guides for building large, simplfied fresnel reflectors at home to focus sunlight.](http://www.dr-iguana.com/prj_FlatPackMirror/index.html)
+This is a relatively complex shape to assemble.  [There are great guides for building large, simplified fresnel reflectors at home to focus sunlight.](http://www.dr-iguana.com/prj_FlatPackMirror/index.html)
 
-However, for near-eye displays, I believe that embedding these mirrored surfaces within clear material is the most viable near-term structure.
+However, for near-eye displays, embedding these mirrored surfaces within clear material may be the most viable near-term structure.
 
-I see two primary paths towards constructing them:
+There are two primary paths towards constructing them:
 
 * Machining a Mold (High Volume, Slow Turnaround)
  1. Use [Wire EDM](https://www.youtube.com/watch?v=pBueWfzb7P0) to cut slices from many [traditionally machined ellipsoidal mirrors](https: /www.edmundoptics.com/p/254mm-sq-2x-protected-aluminum-off-axis-ellipsoidal-mirror/41614/).  
