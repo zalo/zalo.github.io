@@ -24,12 +24,12 @@ var EllipsoidEnvironment = function () {
       new THREE.Vector3(-20, 20, 0), 70, this.invertedEllipsoid);
     let ellipsoid2 = new Ellipsoid(
       this.environment,
-      new THREE.Vector3(),
-      new THREE.Vector3(40, 20, -20), 70, this.invertedEllipsoid, ellipsoid1.focus2);
+      ellipsoid1.focus2,
+      new THREE.Vector3(40, 20, -20), 70, this.invertedEllipsoid);
     let ellipsoid3 = new Ellipsoid(
       this.environment,
-      new THREE.Vector3(),
-      new THREE.Vector3(60, 90, -50), 70, this.invertedEllipsoid, ellipsoid2.focus2);
+      ellipsoid2.focus2,
+      new THREE.Vector3(60, 90, -50), 70, this.invertedEllipsoid);
     this.ellipsoids = [ellipsoid1, ellipsoid2, ellipsoid3];
   } else if (this.config == 2) {
     let ellipsoid1 = new Ellipsoid(
@@ -38,12 +38,12 @@ var EllipsoidEnvironment = function () {
       new THREE.Vector3(-50, -20, -20), 70, true);
     let ellipsoid2 = new Ellipsoid(
       this.environment,
-      new THREE.Vector3(),
-      new THREE.Vector3(-105, 20, -20), 50, false, ellipsoid1.focus2);
+      ellipsoid1.focus2,
+      new THREE.Vector3(-105, 20, -20), 50, false);
     let ellipsoid3 = new Ellipsoid(
       this.environment,
-      new THREE.Vector3(),
-      new THREE.Vector3(60, 50, -20), 100, true, ellipsoid2.focus2);
+      ellipsoid2.focus2,
+      new THREE.Vector3(60, 50, -20), 100, true);
     this.ellipsoids = [ellipsoid1, ellipsoid2, ellipsoid3];
   } else if (this.config == 3) {
     this.ellipsoids = [];
@@ -52,9 +52,9 @@ var EllipsoidEnvironment = function () {
     for (let s = 1; s < 10; s++){
       this.ellipsoids.push(new Ellipsoid(
         this.environment,
-        fPos.clone().add(new THREE.Vector3(-30,0,-90)),
+        s > 1 ? this.ellipsoids[this.ellipsoids.length - 1].focus2 : fPos.clone().add(new THREE.Vector3(-30,0,-90)),
         fPos.clone().applyAxisAngle(new THREE.Vector3(0, 1, 0), s * (10 / 20)).add(new THREE.Vector3(-30, 0, -90)),
-        50, true, s > 1 ? this.ellipsoids[this.ellipsoids.length - 1].focus2 : null));
+        50, true));
     }
   } else if (this.config == 4) {
     this.ellipsoids = [];
@@ -70,8 +70,8 @@ var EllipsoidEnvironment = function () {
     for (let s = 0; s < this.ellipsoidFoci.length-1; s++){
       this.ellipsoids.push(new Ellipsoid(
         this.environment,
-        this.ellipsoidFoci[s],
-        this.ellipsoidFoci[s+1], Math.abs(this.ellipsoidMinorAxes[s]), this.ellipsoidMinorAxes[s]>0, s > 0 ? this.ellipsoids[this.ellipsoids.length-1].focus2 : null));
+        s > 0 ? this.ellipsoids[this.ellipsoids.length-1].focus2 : this.ellipsoidFoci[s],
+        this.ellipsoidFoci[s+1], Math.abs(this.ellipsoidMinorAxes[s]), this.ellipsoidMinorAxes[s]>0));
     }
   }
   this.drawer      = new LineDrawer(this.environment);

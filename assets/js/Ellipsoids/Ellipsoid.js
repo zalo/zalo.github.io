@@ -1,34 +1,39 @@
-var Ellipsoid = function (environment, focus1Pos, focus2Pos, minorAxisIn, invertEllipsoid = false, focus1 = null) {
+var Ellipsoid = function (environment, focus1, focus2, minorAxisIn, invertEllipsoid = false, material = null) {
 
   this.environment       = environment;
   this.sphereGeometry    = new THREE.SphereBufferGeometry(0.5, 50, 50);
   this.blue              = new THREE.MeshPhongMaterial  ({ color: 0x3399dd });
-  this.transparentGreen  = new THREE.MeshLambertMaterial({ color: 0x777777, transparent: true, opacity: 0.45, side: invertEllipsoid?THREE.BackSide:THREE.FrontSide });
-  this.inverted = invertEllipsoid;
-  this.minorAxis = minorAxisIn;
+  this.material          = material ? material : new THREE.MeshLambertMaterial({ color: 0x777777, transparent: true, opacity: 0.45, side: invertEllipsoid?THREE.BackSide:THREE.FrontSide });
+  this.inverted          = invertEllipsoid;
+  this.minorAxis         = minorAxisIn;
 
   // Set up the ellipsoid's shell
-  this.ellipsoid = new THREE.Mesh(this.sphereGeometry, this.transparentGreen);
+  this.ellipsoid = new THREE.Mesh(this.sphereGeometry, this.material);
   this.environment.scene.add(this.ellipsoid);
 
   // Set up the ellipsoid's foci
 
   // This allows them to be chained!!
-  if (focus1 == null) {
+  //console.log(focus1);
+  if (typeof focus1.z  === 'number') {
     this.focus1 = new THREE.Mesh(this.sphereGeometry, this.blue);
     this.environment.scene.add(this.focus1);
     this.focus1.scale.set(15, 15, 15);
-    this.focus1.position.set(focus1Pos.x, focus1Pos.y, focus1Pos.z);
+    this.focus1.position.set(focus1.x, focus1.y, focus1.z);
     this.environment.draggableObjects.push(this.focus1);
   } else {
     this.focus1 = focus1;
   }
 
-  this.focus2 = new THREE.Mesh(this.sphereGeometry, this.blue);
-  this.environment.scene.add(this.focus2);
-  this.focus2.scale.set(15, 15, 15);
-  this.focus2.position.set(focus2Pos.x, focus2Pos.y, focus2Pos.z);
-  this.environment.draggableObjects.push(this.focus2);
+  if (typeof focus2.z  === 'number') {
+    this.focus2 = new THREE.Mesh(this.sphereGeometry, this.blue);
+    this.environment.scene.add(this.focus2);
+    this.focus2.scale.set(15, 15, 15);
+    this.focus2.position.set(focus2.x, focus2.y, focus2.z);
+    this.environment.draggableObjects.push(this.focus2);
+  } else {
+    this.focus2 = focus2;
+  }
 
   // Set up convenience matrices that represent the conversion to sphere space
   this.sphereToSceneSpace = this.ellipsoid.matrix;

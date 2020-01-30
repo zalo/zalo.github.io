@@ -28,14 +28,14 @@ My favorite way of doing Inverse Kinematics is called ["Quaternion Cyclic Coordi
 ### CCDIK
 
 At its core, the algorithm is very simple
-```
+~~~ javascript
 foreach joint in jointsTipToBase {
   // Point the effector towards the goal
   directionToEffector = effector.position - joint.position;
   directionToGoal = goal.position - joint.position;
   joint.rotateFromTo(directionToEffector, directionToGoal);
 }
-```
+~~~
 
 We're just telling each joint to _point the end effector_ towards the goal position.
 
@@ -46,7 +46,7 @@ Of course, if it reaches for the goal without regard for the hinges, it looks un
 ### Hinges
 
 We can take the hinges into account by enforcing the hinge-axis after the CCD step
-```
+~~~ javascript
 foreach joint in jointsTipToBase {
   // Point the effector towards the goal (See Above)
 
@@ -55,7 +55,7 @@ foreach joint in jointsTipToBase {
   hingeAxis = joint.parent.rotation * joint.axis;
   joint.rotateFromTo(curHingeAxis, hingeAxis);
 }
-```
+~~~
 <script type="text/javascript" src="../../assets/js/IK/IKExample.js" ccd="enabled" hinge="enabled"  limits="disabled"></script>
 
 Even at one iteration per frame, this is beginning to look pretty good! But real joints often have limits...
@@ -63,7 +63,7 @@ Even at one iteration per frame, this is beginning to look pretty good! But real
 ### Limits
 
 You can apply axis-aligned hinge limits in local-euler angle space
-```
+~~~ javascript
 foreach joint in jointsTipToBase {
   // Point the effector towards the goal (See Above)
   // Constrain to rotate about the axis (See Above)
@@ -71,7 +71,7 @@ foreach joint in jointsTipToBase {
   // Enforce Joint Limits
   joint.localRotation.clampEuler(joint.minLimit, joint.maxLimit);
 }
-```
+~~~
 <script type="text/javascript" src="../../assets/js/IK/IKExample.js" ccd="enabled" hinge="enabled" limits="enabled" orbit="enabled"></script>
 <small>[Full Source](https://github.com/zalo/zalo.github.io/blob/master/assets/js/IK/IKExample.js)</small>
 
@@ -96,7 +96,7 @@ The astute among you might notice that this is a 5-DoF arm.  This means it is ov
 
 With 5-Dof, you can hypothetically touch any point _from any direction_.
 
-```
+~~~ javascript
 foreach joint in jointsTipToBase {
   if(joint.id > 3)
     // Point the effector along the desired direction
@@ -107,7 +107,7 @@ foreach joint in jointsTipToBase {
   // Constrain to rotate about the axis (See Above)
   // Enforce Joint Limits (See Above)
 }
-```
+~~~
 <script type="text/javascript" src="../../assets/js/IK/IKExample.js" ccd="enabled" hinge="enabled" limits="enabled" orbit="enabled" matchDirection="enabled"></script>
 
 Now that the system is only "sufficiently actuated" (where the IK is using each degree of freedom the arm possesses), you may notice that it hits joint-limit based singularities more often.   

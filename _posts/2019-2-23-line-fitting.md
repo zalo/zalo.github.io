@@ -32,13 +32,13 @@ Because of this, however, it has no analytic solution in 3D and above.  There ar
 The first key insight is that the orthogonal regression line will always pass through the average (or _centroid_) of the points.
 
 The centroid can be computed by adding the points together, and then dividing by the number of points.
-```
+~~~ javascript
 centroid = Vector3.zero;
 foreach point in points {
   centroid += point;
 }
 centroid /= points.count;
-```
+~~~
 <script type="text/javascript" src="../../assets/js/LineFitting/VisualizeAverage.js" orbit="enabled"></script>
 
 Now that we have a point that the line passes through, we just need to calculate its direction.
@@ -51,7 +51,7 @@ We can choose almost any** direction to start, and we will iteratively work towa
 
 The key to calculating the next direction estimate is to multiply each point by the dot product of it and the current estimate.   This moves all the points to the same hemisphere as the current guess, allowing you to simply sum them and normalize them for the new direction estimate.
 
-```
+~~~ javascript
 // Solve for the centroid (See Above)
 nextDirection = Vector3.zero;
 foreach point in points {
@@ -59,7 +59,7 @@ foreach point in points {
   nextDirection += dot(centeredPoint, direction) * centeredPoint;
 }
 direction = nextDirection.normalize();
-```
+~~~
 <script type="text/javascript" src="../../assets/js/LineFitting/LineStepping.js" orbit="enabled"></script>
 
 In formal mathematics, this is known as [Power Iteration](https://en.wikipedia.org/wiki/Power_iteration).
@@ -68,12 +68,12 @@ In formal mathematics, this is known as [Power Iteration](https://en.wikipedia.o
 
 We only need to run the stepping routine repeatedly to converge on the line of best fit.
 
-```
+~~~ javascript
 // Solve for the centroid (See Above)
 for(i = 0; i < iterations; i++){
  // Step the best fit line direction (See Above)
 }
-```
+~~~
 <script type="text/javascript" src="../../assets/js/LineFitting/LineFitting.js" orbit="enabled" residuals="disabled"></script>
 
 No SVD's required!
@@ -82,7 +82,7 @@ No SVD's required!
 
 Typically one might extend the line fitting code to fit planes by projecting the points onto the plane defined by the primary axis, and then fitting the secondary axis on that flattened set of points.
 
-```
+~~~ javascript
 // Solve for the centroid (See Above)
 // Fit Primary Axis with normal points(See Above)
 foreach(point in points){
@@ -90,7 +90,7 @@ foreach(point in points){
 } 
 // Fit Secondary Axis with flattened points (See Above)
 normal = cross(primaryAxis, secondaryAxis).normalized;
-```
+~~~
 
 ### Abusing Singularities for Fun and Profit
 
@@ -98,7 +98,7 @@ normal = cross(primaryAxis, secondaryAxis).normalized;
 
 However, it turns out we can abuse this behaviour to fit all of the axes simultaneously!  Instead of projecting the _points_ onto the plane defined by the primary axis, we project the current estimation of the secondary axis itself!  This lets us solve for both the primary and secondary axes simultaneously!
 
-```
+~~~ javascript
 // Solve for the centroid (See Above)
 for (int iter = 0; iter < iters; iter++) {
   newPrimaryAxis = Vector3.zero, newSecondaryAxis = Vector3.zero;
@@ -112,7 +112,7 @@ for (int iter = 0; iter < iters; iter++) {
                                  primaryAxis).normalized;
 }
 normal = cross(primaryAxis, secondaryAxis).normalized;
-```
+~~~
 <script type="text/javascript" src="../../assets/js/LineFitting/PlaneFitting.js" orbit="enabled" residuals="enabled"></script>
 
 From here, it is trivial to see how one might add _additional_ secondary axes of fit.  In formal math terminology, this is equivalent to alternating [Power Iteration](https://en.wikipedia.org/wiki/Power_iteration) and [Gram-Schmidt Orthonormalization](https://en.wikipedia.org/wiki/Gram%E2%80%93Schmidt_process).

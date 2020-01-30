@@ -19,11 +19,11 @@ Often times when doing vector math, you'll want to find the closest rotation mat
 The cheapest/default way is [Gram-Schmidt Orthonormalization](https://en.wikipedia.org/wiki/Gram%E2%80%93Schmidt_process).  This process works in n-dimensions using vector projection.
 
 A similar algorithm can be done in 3D with cross products:
-```
+~~~ javascript
 xBasis = xBasis.normalized;
 yBasis = cross(zBasis, xBasis).normalized;
 zBasis = cross(xBasis, yBasis).normalized;
-```
+~~~
 
 This algorithm is nice because it is short, analytic, and trivially differentiable (which can be useful in machine learning!)  However, it only has one small issue....
 
@@ -52,7 +52,7 @@ You can play with it here
 <script type="text/javascript" src="../../assets/js/PolarDecomposition/PolarDecomposition.js" orbit="enabled"></script>
 
 This algorithm looks like this
-```
+~~~ javascript
 for (iter = 0; iter < iterations; iter++) {
   setBasesFromQuaternion(curQuaternion, 
                          curXBasis, curYBasis, curZBasis);
@@ -66,7 +66,7 @@ for (iter = 0; iter < iterations; iter++) {
   if (w < 0.000000001f) break;
   curQuaternion = angleAxis(w, omega / w) * curQuaternion;
 }
-```
+~~~
 
 Or, in English, it executes these steps:
 
@@ -101,7 +101,7 @@ A short while ago, I had an idea:
 Instead of iteratively rotating a basis to match the input, one might just "unfold" the input to its closest orthogonal representation.
 
 So I set about putting this down into algorithm form...
-```
+~~~ javascript
 mB = [ inX.magnitude, inY.magnitude, inZ.magnitude ];
 for (int iter = 0; iter < 9; iter++) {
   unitX = (cross(inY, inZ) + inX).normalized;
@@ -109,7 +109,7 @@ for (int iter = 0; iter < 9; iter++) {
   unitZ = (cross(inX, inY) + inZ).normalized;
   inX = unitX * mB[0]; inY = unitY * mB[1]; inZ = unitZ * mB[2];
 }
-```
+~~~
 
 And you can play with the result here
 <script type="text/javascript" src="../../assets/js/PolarDecomposition/PolarDecomposition.js" orbit="enabled" crossProductDecomposition="enabled"></script>
