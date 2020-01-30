@@ -120,20 +120,23 @@ However, for near-eye displays, I believe that embedding these mirrored surfaces
 I see two primary paths towards constructing them:
 
 * Machining a Mold (High Volume, Slow Turnaround)
- * Use [Wire EDM](https://www.youtube.com/watch?v=pBueWfzb7P0) to cut slices from many [traditionally machined ellipsoidal mirrors](https: /www.edmundoptics.com/p/254mm-sq-2x-protected-aluminum-off-axis-ellipsoidal-mirror/41614/).  
- * Assemble these pieces concentrically to produce a mold.
- * This mold can be used to cast the first half of the part from a clear material.
+ 1. Use [Wire EDM](https://www.youtube.com/watch?v=pBueWfzb7P0) to cut slices from many [traditionally machined ellipsoidal mirrors](https: /www.edmundoptics.com/p/254mm-sq-2x-protected-aluminum-off-axis-ellipsoidal-mirror/41614/).  
+ 2. Assemble these pieces concentrically to produce a mold.
+ 3. This mold can be used to cast the first half of the part from a clear material.
   * Like resin, epoxy, plastic, or glass.
- * Sputter or coat this internal surface with a 50% mirror coating.
- * Cast this part with the same material to produce a flat upper surface.
+ 
+ 4. Sputter or coat this internal surface with a 50% mirror coating.
+ 5. Cast this part with the same material to produce a flat upper surface.
   * This eliminates changes in refractive index at the internal mirror's surface.  
- * Coat the smooth exterior of the part with an antireflective film.
+ 
+ 6. Coat the smooth exterior of the part with an antireflective film.
   * This minimizes secondary reflections.
-  
+
 * 3D Printing (Low Volume, Quick Turnaround)
- * An optical rapid-prototyping company like [Luxexcel](https://www.luxexcel.com/) may simply print one half of the part.  
+ 1. An optical rapid-prototyping company like [Luxexcel](https://www.luxexcel.com/) may simply print one half of the part.  
   * One may print a larger cross-section than is necessary, and shave it down afterwards to accomodate the printing processes' poor handling of discontinuities.
- * Follow steps 4-6 in the above process.
+ 
+ 2. Follow steps 4-6 in the above process.
 
 
 * Though the flat-plate structure of this technique undoes much of the [field-curvature (or "Petzval") aberration](https://en.wikipedia.org/wiki/Petzval_field_curvature) of traditional ellipsoidal reflectors, this technique can easily be extended to curved structures to suit even better form factors.
