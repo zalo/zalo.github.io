@@ -109,6 +109,8 @@ However, there may be one powerful way to move light around while keeping the be
 
 It is possible to take planar slices of many confocal ellipsoids to approximate a larger ellipsoid (while still retaining a low form-factor).
 
+* Note how these slices emulate a refracting lens when the two foci are on opposite sides of the plate.
+
 #### Practical Fresnel Reflectors
 
 This is a relatively complex shape to assemble.  [There are great guides for building large, simplfied fresnel reflectors at home to focus sunlight.](http://www.dr-iguana.com/prj_FlatPackMirror/index.html)
@@ -122,15 +124,19 @@ I see two primary paths towards constructing them:
  2. Assemble these pieces concentrically to produce a mold.
  3. This mold can be used to cast the first half of the part from a clear material.
   * Like resin, epoxy, plastic, or glass.
+
  4. Sputter or coat this internal surface with a 50% mirror coating.
  5. Cast this part with the same material to produce a flat upper surface.
   * This eliminates changes in refractive index at the internal mirror's surface.  
+
  6. Coat the smooth exterior of the part with an antireflective film.
   * This minimizes secondary reflections.
   
 * 3D Printing (Low Volume, Quick Turnaround)
  1. An optical rapid-prototyping company like [Luxexcel](https://www.luxexcel.com/) may simply print one half of the part.  
-  * One may print a larger cross-section than is necessary, and shave it down afterwards to accomodate the printing processes' poor handling of discontinuities.   
+  * One may print a larger cross-section than is necessary, and shave it down afterwards to accomodate the printing processes' poor handling of discontinuities.
+
  2. Follow steps 4-6 in the above process.
+
 
 * Though the flat-plate structure of this technique undoes much of the [field-curvature (or "Petzval") aberration](https://en.wikipedia.org/wiki/Petzval_field_curvature) of traditional ellipsoidal reflectors, this technique can easily be extended to curved structures to suit even better form factors.
