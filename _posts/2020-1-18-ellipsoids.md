@@ -107,7 +107,7 @@ However, there may be one powerful way to move light around while keeping the be
 
 <script type="text/javascript" src="../../assets/js/Ellipsoids/FresnelEllipsoid.js" orbit="enabled"></script>
 
-It is possible to take planar slices of many confocal ellipsoids to approximate a larger ellipsoid (while still retaining a low form-factor).
+Simply take planar slices of many confocal ellipsoids to approximate a larger ellipsoid.  We can preserves the optical properties of the ellipsoid, while reducing its form-factor!
 
 * Note how these slices emulate a refracting lens when the two foci are on opposite sides of the plate.
 
