@@ -124,14 +124,15 @@ I see two primary paths towards constructing them:
  2. Assemble these pieces concentrically to produce a mold.
  3. This mold can be used to cast the first half of the part from a clear material like resin, epoxy, plastic, or glass.
  4. Sputter or coat this internal surface with a 50% mirror coating.
- 5. Cast this part with the same material to produce a flat upper surface to eliminate changes in refractive index at the internal mirror's surface.
- 6. Coat the smooth exterior of the part with an antireflective film to minimizes secondary reflections.
+ 5. Cast this part with the same material to produce a flat upper surface (to eliminate changes in refractive index at the internal mirror's surface).
+ 6. Coat the smooth exterior of the part with an antireflective film to minimize secondary reflections.
 
 * 3D Printing (Low Volume, Quick Turnaround)
  1. Use an optical rapid-prototyping company like [Luxexcel](https://www.luxexcel.com/) to simply print one half of the part.  
   * One may print a larger cross-section than is necessary, and shave it down afterwards to accomodate the printing processes' poor handling of discontinuities.
  
-Afterwards, one may follow steps 4-6 in the above process.
+Afterwards, one may follow steps 4-6 from the first process.
 
+* * *
 
 * Though the flat-plate structure of this technique undoes much of the [field-curvature (or "Petzval") aberration](https://en.wikipedia.org/wiki/Petzval_field_curvature) of traditional ellipsoidal reflectors, this technique can easily be extended to curved structures to suit even better form factors.
