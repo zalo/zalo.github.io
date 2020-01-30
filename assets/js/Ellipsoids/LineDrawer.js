@@ -5,7 +5,7 @@ var LineDrawer = function (environment) {
 
   // Start the line factory...
   this.dashedMaterial = new THREE.LineDashedMaterial({
-    color: 0x555555,
+    color: 0x777777,
     linewidth: 2,
     scale: 1,
     dashSize: 5,

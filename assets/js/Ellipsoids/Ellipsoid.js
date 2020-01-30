@@ -3,7 +3,7 @@ var Ellipsoid = function (environment, focus1, focus2, minorAxisIn, invertEllips
   this.environment       = environment;
   this.sphereGeometry    = new THREE.SphereBufferGeometry(0.5, 50, 50);
   this.blue              = new THREE.MeshPhongMaterial  ({ color: 0x3399dd });
-  this.material          = material ? material : new THREE.MeshLambertMaterial({ color: 0x777777, transparent: true, opacity: 0.45, side: invertEllipsoid?THREE.BackSide:THREE.FrontSide });
+  this.material          = material ? material : new THREE.MeshLambertMaterial({ color: 0x777777, transparent: true, opacity: 0.45, side: invertEllipsoid?THREE.BackSide:THREE.FrontSide, depthWrite: false });
   this.inverted          = invertEllipsoid;
   this.minorAxis         = minorAxisIn;
 
