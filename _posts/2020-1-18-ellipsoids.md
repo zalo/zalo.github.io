@@ -73,7 +73,7 @@ Now, the Foci of Ellipsoids possess two very useful properties:
 
 <script type="text/javascript" src="../../assets/js/Ellipsoids/EllipsoidRaytracer.js" config="0" inverted="enabled" projector="enabled" projectorFoV="165" orbit="enabled"></script>
 
-Due to property 1), the path length of each of these rays will be the same.
+Due to property 1., the path length of each of these rays will be the same.
 
 #### Chaining Ellipsoidal Mirrors 
 
@@ -88,9 +88,9 @@ It is also possible to switch some of the ellipsoidal reflectors to convex surfa
 This configuration is a special case of an optical system called an "Offner Relay".  Convex mirrors inserted into the optical path tend to reverse the aberrations caused by the concave mirrors (and visa-versa).
 
 <div class="togglebox">
-  <input id="toggle3" type="checkbox" name="toggle" />
-  <label for="toggle3">The Only Limit Is Your Imagination</label>
-  <section id="content3" markdown="1" >
+  <input id="toggle1Long" type="checkbox" name="toggle" />
+  <label for="toggle1Long">The Only Limit Is Your Imagination</label>
+  <section id="content1Long" markdown="1" >
 <script type="text/javascript" src="../../assets/js/Ellipsoids/EllipsoidRaytracer.js" config="3" inverted="enabled" projector="enabled" projectorFoV="120" orbit="enabled"></script>
 
 <script type="text/javascript" src="../../assets/js/Ellipsoids/EllipsoidRaytracer.js" config="4" inverted="enabled" projector="enabled" projectorFoV="120" orbit="enabled"></script>
@@ -111,14 +111,26 @@ It is possible to take planar slices of many confocal ellipsoids to approximate 
 
 #### Practical Fresnel Reflectors
 
-This is a relatively complex shape to assemble.  [Great guides exist toward building large, simplfied fresnel reflectors at home for focusing sunlight.](http://www.dr-iguana.com/prj_FlatPackMirror/index.html)
+This is a relatively complex shape to assemble.  [There are great guides for building large, simplfied fresnel reflectors at home to focus sunlight.](http://www.dr-iguana.com/prj_FlatPackMirror/index.html)
 
-However, for near-eye displays, I believe that embedding these mirrored surfaces within clear material is the most viable near-term structure, and I see two primary paths towards constructing them:
+However, for near-eye displays, I believe that embedding these mirrored surfaces within clear material is the most viable near-term structure.
 
-  1. Using [Wire EDM](https://www.youtube.com/watch?v=pBueWfzb7P0) to cut slices from many [traditionally machined ellipsoidal mirrors](https://www.edmundoptics.com/p/254mm-sq-2x-protected-aluminum-off-axis-ellipsoidal-mirror/41614/), and assembling them into a mold.  This mold can be used to cast the first half of the part.  This half may be sputtered with a 50% mirror coating, before being cast with the second half of the material (this eliminates changes in refractive index at the mirror's surface).  Afterward, the smooth exterior faces of the part may have antireflective coatings applied to minimize secondary reflections.
+I see two primary paths towards constructing them:
+
+1. Machining a Mold (High Volume, Slow Turnaround)
+  1. Use [Wire EDM](https://www.youtube.com/watch?v=pBueWfzb7P0) to cut slices from many [traditionally machined ellipsoidal mirrors](https://www.edmundoptics.com/p/254mm-sq-2x-protected-aluminum-off-axis-ellipsoidal-mirror/41614/).  
+  2. Assemble these pieces concentrically to produce a mold.
+  3. This mold can be used to cast the first half of the part from a clear material.
+    * Like resin, epoxy, plastic, or glass.
+  4. Sputter or coat this internal surface with a 50% mirror coating.
+  5. Cast this part with the same material to produce a flat upper surface.
+    * This eliminates changes in refractive index at the internal mirror's surface.  
+  6. Coat the smooth exterior of the part with an antireflective film.
+    * This minimizes secondary reflections.
   
-  2. Alternatively, an optical rapid-prototyping company like [Luxexcel](https://www.luxexcel.com/) may simply print one half of the part.  (You may print a larger cross-section than is necessary, and shave it down afterwards to accomodate the printing processes' poor handling of discontinuities).   Afterwards, you may sputter, cast, and coat as in 1.
+2. 3D Printing (Low Volume, Quick Turnaround)
+  1. An optical rapid-prototyping company like [Luxexcel](https://www.luxexcel.com/) may simply print one half of the part.  
+    * One may print a larger cross-section than is necessary, and shave it down afterwards to accomodate the printing processes' poor handling of discontinuities.   
+  2. Follow steps 4-6 in the above process.
 
 Though the flat-plate structure of this technique undoes much of the [field-curvature (or "Petzval") aberration](https://en.wikipedia.org/wiki/Petzval_field_curvature) of traditional ellipsoidal reflectors, this technique can easily be extended to curved structures to suit even better form factors.
-
-

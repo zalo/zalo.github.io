@@ -9,7 +9,9 @@ var LineDrawer = function (environment) {
     linewidth: 2,
     scale: 1,
     dashSize: 5,
-    gapSize: 2
+    gapSize: 2,
+    transparent: true,
+    opacity: 0.5
   });
 
   this.drawLine = function (start, end) {
