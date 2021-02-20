@@ -42,13 +42,13 @@
               </div>
 
               <div class="form-group">
+                <label for="comment-form-name">{{ site.data.ui-text[site.locale].comment_form_name_label | default: "Name" }} <small class="required">*</small></label>
+                <input type="text" id="comment-form-name" name="fields[name]" tabindex="2" />
+              </div>
+              <div class="form-group">
                 <label for="comment-form-message">{{ site.data.ui-text[site.locale].comment_form_comment_label | default: "Comment" }} <small class="required">*</small></label>
                 <textarea type="text" rows="3" id="comment-form-message" name="fields[message]" tabindex="1"></textarea>
                 <div class="small help-block"><a href="https://daringfireball.net/projects/markdown/">{{ site.data.ui-text[site.locale].comment_form_md_info | default: "Markdown is supported." }}</a></div>
-              </div>
-              <div class="form-group">
-                <label for="comment-form-name">{{ site.data.ui-text[site.locale].comment_form_name_label | default: "Name" }} <small class="required">*</small></label>
-                <input type="text" id="comment-form-name" name="fields[name]" tabindex="2" />
               </div>
               <!-- <div class="form-group">
                 <label for="comment-form-email">{{ site.data.ui-text[site.locale].comment_form_email_label | default: "Email address" }} <small class="required">*</small></label>
