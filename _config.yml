@@ -84,7 +84,7 @@ naver_site_verification  :
 
 # Social Sharing
 twitter:
-  username               : "JohnSelstad"
+  username               : "makeshifted"
 facebook:
   username               :
   app_id                 :
@@ -121,7 +121,7 @@ author:
       # url: "https://your-website.com"
     - label: "Twitter"
       icon: "fab fa-fw fa-twitter-square"
-      url: "https://twitter.com/JohnSelstad"
+      url: "https://twitter.com/makeshifted"
     - label: "Facebook"
       icon: "fab fa-fw fa-facebook-square"
       # url: "https://facebook.com/"
@@ -137,7 +137,7 @@ footer:
   links:
     - label: "Twitter"
       icon: "fab fa-fw fa-twitter-square"
-      url: "https://twitter.com/JohnSelstad"
+      url: "https://twitter.com/makeshifted"
     - label: "Facebook"
       icon: "fab fa-fw fa-facebook-square"
       # url:
