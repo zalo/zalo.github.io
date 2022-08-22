@@ -113,7 +113,7 @@ By simply taking planar slices of many confocal ellipsoids to approximate a larg
 
 #### Practical Fresnel Reflectors
 
-This is a relatively complex shape to assemble.  [There are great guides for building large, simplified fresnel reflectors at home to focus sunlight.](http://www.dr-iguana.com/prj_FlatPackMirror/index.html)
+This is a relatively complex shape to assemble.  [There are great guides for building large, simplified fresnel reflectors at home to focus sunlight.](https://web.archive.org/web/20220105014640/http://www.dr-iguana.com/prj_FlatPackMirror/index.html)
 
 However, for near-eye displays, embedding these mirrored surfaces within clear material may be the most viable near-term structure.
 
